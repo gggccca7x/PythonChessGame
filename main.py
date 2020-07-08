@@ -3,12 +3,17 @@ import pygame
 # Please note: I am using a python interpreter with a conda enrivonement...
 
 pygame.init()
-win = pygame.display.set_mode((500, 500))
+win = pygame.display.set_mode((800, 800))
 pygame.display.set_caption("Chess Game")
 
 RED = (255, 0, 0)
 GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
+BLACK = (0, 0, 0)
+WHITE = (255, 255, 255)
+
+#Chess Board Bounds
+cb_bx1, cb_bx2, cb_by1, cb_by2 = 50, 750, 50, 750
 
 x, y, w, h = 50, 50, 20, 20
 
@@ -20,6 +25,15 @@ rectangle2 = pygame.rect.Rect(x, y, w, h)
 rectangle3 = pygame.rect.Rect(x, y, w, h)
 
 dragged_rect = rectangle
+
+def draw():
+    pygame.draw.rect(win, RED, rectangle)
+    pygame.draw.rect(win, GREEN, rectangle2)
+    pygame.draw.rect(win, BLUE, rectangle3)
+    pygame.draw.line(win, WHITE, (cb_bx1, cb_by1), (cb_bx1, cb_by2))
+    pygame.draw.line(win, WHITE, (cb_bx2, cb_by1), (cb_bx2, cb_by2))
+    pygame.draw.line(win, WHITE, (cb_bx1, cb_by1), (cb_bx2, cb_by1))
+    pygame.draw.line(win, WHITE, (cb_bx1, cb_by2), (cb_bx2, cb_by2))
 
 while run:
     pygame.time.delay(10)
@@ -53,10 +67,8 @@ while run:
                 dragged_rect.x = mouse_x + offset_x
                 dragged_rect.y = mouse_y + offset_y
 
-    win.fill((0, 0, 0))
-    pygame.draw.rect(win, RED, rectangle)
-    pygame.draw.rect(win, GREEN, rectangle2)
-    pygame.draw.rect(win, BLUE, rectangle3)
+    win.fill(BLACK)
+    draw()
     pygame.display.update()
 
 pygame.quit()
