@@ -4,7 +4,10 @@ import pygame
 # Include something like: Please note - I am using a python interpreter with a conda environement...
 
 # TODO: bring to front the selected piece (move to bottom of the list)
-# TODO: make pieces selectable and draggable like the coloured rectangles are
+# TODO: display black pieces
+# TODO: on white turn only move white pieces
+# TODO: white pieces cannot capture white pieces
+# TODO: fix bug cant move piece if goes off screen
 
 class ChessPiece(object):
     def __init__(self, image, idxX, idxY):
@@ -92,7 +95,7 @@ blackChessPieces = [b_rook, b_rook2, b_knight, b_knight2]
 original_idx_x = 0
 original_idx_y = 1
 dragged_piece = w_rook
-dragging_piece = False
+is_dragging_piece = False
 
 run = True
 whiteMove = True
@@ -107,13 +110,19 @@ while run:
             if event.button == 1:
                 mouse_x, mouse_y = event.pos
                 index = getIndexFromPos(mouse_x, mouse_y)
-                for c in whiteChessPieces:
-                    if index[0] == c.idxX and index[1] == c.idxY:
-                        print("piece selected")
-                        dragged_piece = c
-                        dragging_piece = True
-                        break
-                if dragging_piece:
+                if whiteMove:
+                    for c in whiteChessPieces:
+                        if index[0] == c.idxX and index[1] == c.idxY:
+                            dragged_piece = c
+                            is_dragging_piece = True
+                            break
+                # else:
+                #     for c in whiteChessPieces:
+                #         if index[0] == c.idxX and index[1] == c.idxY:
+                #             dragged_piece = c
+                #             dragging_piece = True
+                #             break
+                if is_dragging_piece:
                     dragged_piece.posX = mouse_x - w_per_sq/2
                     dragged_piece.posY = mouse_y - w_per_sq/2
                     offset_x = dragged_piece.posX - mouse_x
@@ -121,19 +130,20 @@ while run:
                     original_idx_x, original_idx_y = getIndexFromPos(mouse_x, mouse_y)
         elif event.type == pygame.MOUSEBUTTONUP:
             if event.button == 1:            
-                if dragging_piece:
+                if is_dragging_piece:
                     idx = getIndexFromPos(mouse_x, mouse_y)
                     pos = getPosFromIndex(idx[0], idx[1])
                     if(idx[0] == -1):
                         pos = getPosFromIndex(original_idx_x, original_idx_y)
-                    dragging_piece = False
+                        idx = getIndexFromPos(pos[0], pos[1])
+                    is_dragging_piece = False
                     dragged_piece.posX = pos[0]
                     dragged_piece.idxX = idx[0]
                     dragged_piece.posY = pos[1]
                     dragged_piece.idxY = idx[1]
                     checkIfPieceAlreadyThere(pos[0], pos[1], dragged_piece)
         elif event.type == pygame.MOUSEMOTION:
-            if dragging_piece:
+            if is_dragging_piece:
                 mouse_x, mouse_y = event.pos
                 dragged_piece.posX = mouse_x + offset_x
                 dragged_piece.posY = mouse_y + offset_y
