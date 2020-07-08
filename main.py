@@ -97,8 +97,12 @@ w_king_image = pygame.image.load(".\images\white_king.png")
 w_king_image = pygame.transform.scale(w_king_image, (100,100))
 w_queen_image = pygame.image.load(".\images\white_queen.png")
 w_queen_image = pygame.transform.scale(w_queen_image, (100,100))
+w_pawn_image = pygame.image.load(".\images\white_pawn.png")
+w_pawn_image = pygame.transform.scale(w_pawn_image, (100,100))
 whiteChessPieces = [ChessPiece(w_rook_image, 7, 7), ChessPiece(w_rook_image, 0, 7), ChessPiece(w_knight_image, 1, 7), ChessPiece(w_knight_image, 6, 7), 
-        ChessPiece(w_bishop_image, 5, 7), ChessPiece(w_bishop_image, 2, 7), ChessPiece(w_king_image, 4, 7), ChessPiece(w_queen_image, 3, 7)]
+        ChessPiece(w_bishop_image, 5, 7), ChessPiece(w_bishop_image, 2, 7), ChessPiece(w_king_image, 4, 7), ChessPiece(w_queen_image, 3, 7),
+        ChessPiece(w_pawn_image, 0, 6), ChessPiece(w_pawn_image, 1, 6), ChessPiece(w_pawn_image, 2, 6), ChessPiece(w_pawn_image, 3, 6), 
+        ChessPiece(w_pawn_image, 4, 6), ChessPiece(w_pawn_image, 5, 6), ChessPiece(w_pawn_image, 6, 6), ChessPiece(w_pawn_image, 7, 6)]
 
 b_rook_image = pygame.image.load(".\images\\black_rook.png")
 b_rook_image = pygame.transform.scale(b_rook_image, (100,100))
@@ -110,8 +114,12 @@ b_king_image = pygame.image.load(".\images\\black_king.png")
 b_king_image = pygame.transform.scale(b_king_image, (100,100))
 b_queen_image = pygame.image.load(".\images\\black_queen.png")
 b_queen_image = pygame.transform.scale(b_queen_image, (100,100))
+b_pawn_image = pygame.image.load(".\images\\black_pawn.png")
+b_pawn_image = pygame.transform.scale(b_pawn_image, (100,100))
 blackChessPieces = [ChessPiece(b_rook_image, 7, 0), ChessPiece(b_rook_image, 0, 0), ChessPiece(b_knight_image, 1, 0), ChessPiece(b_knight_image, 6, 0), 
-        ChessPiece(b_bishop_image, 5, 0), ChessPiece(b_bishop_image, 2, 0), ChessPiece(b_king_image, 4, 0), ChessPiece(b_queen_image, 3, 0)]
+        ChessPiece(b_bishop_image, 5, 0), ChessPiece(b_bishop_image, 2, 0), ChessPiece(b_king_image, 4, 0), ChessPiece(b_queen_image, 3, 0),
+        ChessPiece(b_pawn_image, 0, 0), ChessPiece(b_pawn_image, 1, 0), ChessPiece(b_pawn_image, 2, 0), ChessPiece(b_pawn_image, 3, 0), 
+        ChessPiece(b_pawn_image, 4, 0), ChessPiece(b_pawn_image, 5, 0), ChessPiece(b_pawn_image, 6, 0), ChessPiece(b_pawn_image, 7, 0)]
 
 # Initialisations dont matter tbh
 original_idx_x = 0
