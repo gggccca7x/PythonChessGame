@@ -4,11 +4,8 @@ import pygame
 # Include something like: Please note - I am using a python interpreter with a conda environement...
 
 # TODO: bring to front the selected piece (move to bottom of the list)
-# TODO: display black pieces - done
-# TODO: on white turn only move white pieces - done
-# TODO: white pieces cannot capture white pieces - done
 # TODO: fix bug cant move piece if goes off screen - i think done, double check
-# TODO: fix bug if click and let go on same square
+# TODO: better naming conventions such as the validMoves in the unclick mouse in the game loop
 
 class ChessPiece(object):
     def __init__(self, image, idxX, idxY):
@@ -82,7 +79,12 @@ def checkIfPieceAlreadyThere(posX, posY, piece, whiteTurn):
             opponentPieces.remove(opponentPieces[i])
             return True
     return True
-    
+
+#indexes of from and to squares to confirm if valid move - need actual chess rules
+def confirmValidity(xFrom, yFrom, xTo, yTo):
+    if xFrom == xTo and yFrom == yTo:
+        return False
+    return True
 
 w_rook_image = pygame.image.load(".\images\white_rook.png")
 w_rook_image = pygame.transform.scale(w_rook_image, (100,100))
@@ -136,7 +138,7 @@ while run:
                     offset_y = dragged_piece.posY - mouse_y
                     original_idx_x, original_idx_y = getIndexFromPos(mouse_x, mouse_y)
         elif event.type == pygame.MOUSEBUTTONUP:
-            if event.button == 1:            
+            if event.button == 1:
                 if is_dragging_piece:
                     idx = getIndexFromPos(mouse_x, mouse_y)
                     pos = getPosFromIndex(idx[0], idx[1])
@@ -150,7 +152,8 @@ while run:
                     dragged_piece.idxX = idx[0]
                     dragged_piece.posY = pos[1]
                     dragged_piece.idxY = idx[1]
-                    if validMove:
+                    validReposition = confirmValidity(original_idx_x, original_idx_y, idx[0], idx[1])
+                    if validMove and validReposition:
                         # TODO: check actual valid move, i.e. not clicking the same square as currently on
                         isWhitesMove = not isWhitesMove
         elif event.type == pygame.MOUSEMOTION:
