@@ -44,7 +44,8 @@ def drawLines():
 def draw():
     for c in whiteChessPieces:
         win.blit(c.image, (c.posX, c.posY))
-
+    for c in blackChessPieces:
+        win.blit(c.image, (c.posX, c.posY))
     drawLines()
 
 #input index (0-7) as chessboard is 8x8
@@ -101,7 +102,7 @@ run = True
 whiteMove = True
 
 while run:
-    pygame.time.delay(10)
+    pygame.time.delay(20)
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -116,12 +117,12 @@ while run:
                             dragged_piece = c
                             is_dragging_piece = True
                             break
-                # else:
-                #     for c in whiteChessPieces:
-                #         if index[0] == c.idxX and index[1] == c.idxY:
-                #             dragged_piece = c
-                #             dragging_piece = True
-                #             break
+                else:
+                    for c in blackChessPieces:
+                        if index[0] == c.idxX and index[1] == c.idxY:
+                            dragged_piece = c
+                            dragging_piece = True
+                            break
                 if is_dragging_piece:
                     dragged_piece.posX = mouse_x - w_per_sq/2
                     dragged_piece.posY = mouse_y - w_per_sq/2
@@ -142,6 +143,7 @@ while run:
                     dragged_piece.posY = pos[1]
                     dragged_piece.idxY = idx[1]
                     checkIfPieceAlreadyThere(pos[0], pos[1], dragged_piece)
+                    # TODO: check the move took place and update bool for whos turn it is
         elif event.type == pygame.MOUSEMOTION:
             if is_dragging_piece:
                 mouse_x, mouse_y = event.pos
