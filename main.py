@@ -2,6 +2,8 @@ import pygame
 
 # Please note: I am using a python interpreter with a conda environement...
 
+# TODO: bring to front the selected piece (move to bottom of the list)
+
 pygame.init()
 win = pygame.display.set_mode((900, 900))
 pygame.display.set_caption("Chess Game")
@@ -29,8 +31,8 @@ def drawLines():
         pygame.draw.line(win, WHITE, (cb_bx1 + w_per_sq * x, cb_by1), (cb_bx1 + w_per_sq * x, cb_by2))
 
 def draw():
-    for r in myReactangles:
-        pygame.draw.rect(win, RED, r)
+    for i in range(len(myReactangles)):
+        pygame.draw.rect(win, myColours[i], myReactangles[i])
     drawLines()
 
 #input index (0-7) as chessboard is 8x8
@@ -52,9 +54,10 @@ def getIndexFromPos(x, y):
     return (posX, posY)
 
 def checkIfPieceAlreadyThere(posX, posY, rect):
-    for r in myReactangles:
-        if posX == r.x and posY == r.y and rect is not r:
-            myReactangles.remove(r)
+    for i in range(len(myReactangles)):
+        if posX == myReactangles[i].x and posY == myReactangles[i].y and rect is not myReactangles[i]:
+            myReactangles.remove(myReactangles[i])
+            myColours.remove(myColours[i])
             break
 
 pos = getPosFromIndex(0,0)
@@ -70,6 +73,7 @@ original_idx_x = 0
 original_idx_y = 1
 
 myReactangles = [rectangle, rectangle2, rectangle3]
+myColours = [RED, BLUE, GREEN]
 
 while run:
     pygame.time.delay(10)
@@ -100,7 +104,6 @@ while run:
                     rectangle_draging = False
                     dragged_rect.x = pos[0]
                     dragged_rect.y = pos[1]
-                    #TODO: check if a piece is already in this location
                     checkIfPieceAlreadyThere(pos[0], pos[1], dragged_rect)
         elif event.type == pygame.MOUSEMOTION:
             if rectangle_draging:
