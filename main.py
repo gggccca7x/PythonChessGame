@@ -68,22 +68,19 @@ def getIndexFromPos(x, y):
     return (posX, posY)
 
 def checkIfPieceAlreadyThere(posX, posY, piece, whiteTurn):
+    yourPieces = blackChessPieces
+    opponentPieces = whiteChessPieces
     if whiteTurn:
-        for i in range(len(whiteChessPieces)):
-            if posX == whiteChessPieces[i].posX and posY == whiteChessPieces[i].posY and piece is not whiteChessPieces[i]:
-                return False
-        for i in range(len(blackChessPieces)):
-            if posX == blackChessPieces[i].posX and posY == blackChessPieces[i].posY and piece is not blackChessPieces[i]:
-                blackChessPieces.remove(blackChessPieces[i])
-                return True
-    else:
-        for i in range(len(blackChessPieces)):
-            if posX == blackChessPieces[i].posX and posY == blackChessPieces[i].posY and piece is not blackChessPieces[i]:
-                return False
-        for i in range(len(whiteChessPieces)):
-            if posX == whiteChessPieces[i].posX and posY == whiteChessPieces[i].posY and piece is not whiteChessPieces[i]:
-                whiteChessPieces.remove(whiteChessPieces[i])
-                return True
+        yourPieces = whiteChessPieces
+        opponentPieces = blackChessPieces
+
+    for i in range(len(yourPieces)):
+        if posX == yourPieces[i].posX and posY == yourPieces[i].posY and piece is not yourPieces[i]:
+            return False
+    for i in range(len(opponentPieces)):
+        if posX == opponentPieces[i].posX and posY == opponentPieces[i].posY and piece is not opponentPieces[i]:
+            opponentPieces.remove(opponentPieces[i])
+            return True
     return True
     
 
