@@ -7,7 +7,7 @@ import pygame
 # TODO: display black pieces
 # TODO: on white turn only move white pieces
 # TODO: white pieces cannot capture white pieces
-# TODO: fix bug cant move piece if goes off screen
+# TODO: fix bug cant move piece if goes off screen - i think done, double check
 
 class ChessPiece(object):
     def __init__(self, image, idxX, idxY):
@@ -135,7 +135,7 @@ while run:
                     pos = getPosFromIndex(idx[0], idx[1])
                     if(idx[0] == -1):
                         pos = getPosFromIndex(original_idx_x, original_idx_y)
-                        idx = getIndexFromPos(pos[0], pos[1])
+                        idx = (original_idx_x, original_idx_y)
                     is_dragging_piece = False
                     dragged_piece.posX = pos[0]
                     dragged_piece.idxX = idx[0]
