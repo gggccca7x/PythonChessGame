@@ -66,11 +66,18 @@ def getIndexFromPos(x, y):
         posX, posY = -1, -1
     return (posX, posY)
 
-def checkIfPieceAlreadyThere(posX, posY, piece):
-    for i in range(len(whiteChessPieces)):
-        if posX == whiteChessPieces[i].posX and posY == whiteChessPieces[i].posY and piece is not whiteChessPieces[i]:
-            whiteChessPieces.remove(whiteChessPieces[i])
-            break
+def checkIfPieceAlreadyThere(posX, posY, piece, whiteTurn):
+    if whiteTurn:
+        for i in range(len(whiteChessPieces)):
+            if posX == whiteChessPieces[i].posX and posY == whiteChessPieces[i].posY and piece is not whiteChessPieces[i]:
+                #whiteChessPieces.remove(whiteChessPieces[i])
+                return False
+        for i in range(len(blackChessPieces)):
+            if posX == blackChessPieces[i].posX and posY == blackChessPieces[i].posY and piece is not blackChessPieces[i]:
+                blackChessPieces.remove(blackChessPieces[i])
+                return True
+    return True
+    
 
 w_rook_image = pygame.image.load(".\images\white_rook.png")
 w_rook_image = pygame.transform.scale(w_rook_image, (100,100))
@@ -99,7 +106,7 @@ dragged_piece = w_rook
 is_dragging_piece = False
 
 run = True
-whiteMove = True
+isWhitesMove = True
 
 while run:
     pygame.time.delay(20)
@@ -111,7 +118,7 @@ while run:
             if event.button == 1:
                 mouse_x, mouse_y = event.pos
                 index = getIndexFromPos(mouse_x, mouse_y)
-                if whiteMove:
+                if isWhitesMove:
                     for c in whiteChessPieces:
                         if index[0] == c.idxX and index[1] == c.idxY:
                             dragged_piece = c
@@ -134,7 +141,8 @@ while run:
                 if is_dragging_piece:
                     idx = getIndexFromPos(mouse_x, mouse_y)
                     pos = getPosFromIndex(idx[0], idx[1])
-                    if(idx[0] == -1):
+                    validMove = checkIfPieceAlreadyThere(pos[0], pos[1], dragged_piece, isWhitesMove)
+                    if idx[0] == -1 or not validMove:
                         pos = getPosFromIndex(original_idx_x, original_idx_y)
                         idx = (original_idx_x, original_idx_y)
                     is_dragging_piece = False
@@ -142,7 +150,6 @@ while run:
                     dragged_piece.idxX = idx[0]
                     dragged_piece.posY = pos[1]
                     dragged_piece.idxY = idx[1]
-                    checkIfPieceAlreadyThere(pos[0], pos[1], dragged_piece)
                     # TODO: check the move took place and update bool for whos turn it is
         elif event.type == pygame.MOUSEMOTION:
             if is_dragging_piece:
