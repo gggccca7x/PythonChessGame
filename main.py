@@ -15,10 +15,10 @@ WHITE = (255, 255, 255)
 #Chess Board bound constants
 cb_bx1, cb_bx2, cb_by1, cb_by2 = 50, 850, 50, 850
 w_per_sq = 100
-list_sq_start = [cb_bx1, cb_bx1 + w_per_sq, 
-                cb_bx1 + w_per_sq * 2, cb_bx1 + w_per_sq * 3,
-                cb_bx1 + w_per_sq * 4, cb_bx1 + w_per_sq * 7,
-                cb_bx1 + w_per_sq * 6, cb_bx1 + w_per_sq * 8]
+list_sq_start = [cb_bx1 + w_per_sq, cb_bx1 + w_per_sq * 2, 
+                cb_bx1 + w_per_sq * 3, cb_bx1 + w_per_sq * 4,
+                cb_bx1 + w_per_sq * 5, cb_bx1 + w_per_sq * 6,
+                cb_bx1 + w_per_sq * 7, cb_bx1 + w_per_sq * 8]
 # list_sq_start = [100, 200, 300, 400, 500, 600, 700, 800]
 
 w, h = 100, 100
