@@ -33,15 +33,13 @@ list_sq_end = [cb_bx1 + w_per_sq , cb_bx1 + w_per_sq * 2,
                 cb_bx1 + w_per_sq * 5, cb_bx1 + w_per_sq * 6,
                 cb_bx1 + w_per_sq * 7, cb_bx1 + w_per_sq * 8]
 
-run = True
-
 def drawLines():
     for x in range(0,9):
         pygame.draw.line(win, WHITE, (cb_bx1, cb_by1 + w_per_sq * x), (cb_bx2, cb_by1 + w_per_sq * x))
         pygame.draw.line(win, WHITE, (cb_bx1 + w_per_sq * x, cb_by1), (cb_bx1 + w_per_sq * x, cb_by2))
 
 def draw():
-    for c in chessPieces:
+    for c in whiteChessPieces:
         win.blit(c.image, (c.posX, c.posY))
 
     drawLines()
@@ -65,9 +63,9 @@ def getIndexFromPos(x, y):
     return (posX, posY)
 
 def checkIfPieceAlreadyThere(posX, posY, piece):
-    for i in range(len(chessPieces)):
-        if posX == chessPieces[i].posX and posY == chessPieces[i].posY and piece is not chessPieces[i]:
-            chessPieces.remove(chessPieces[i])
+    for i in range(len(whiteChessPieces)):
+        if posX == whiteChessPieces[i].posX and posY == whiteChessPieces[i].posY and piece is not whiteChessPieces[i]:
+            whiteChessPieces.remove(whiteChessPieces[i])
             break
 
 rook_image = pygame.image.load(".\images\white_rook.png")
@@ -80,9 +78,13 @@ rook3 = ChessPiece(rook_image, 2, 2)
 original_idx_x = 0
 original_idx_y = 1
 
-chessPieces = [rook, rook2, rook3]
+
+whiteChessPieces = [rook, rook2, rook3]
 dragged_piece = rook
 dragging_piece = False
+
+run = True
+whiteMove = True
 
 while run:
     pygame.time.delay(10)
@@ -94,7 +96,7 @@ while run:
             if event.button == 1:
                 mouse_x, mouse_y = event.pos
                 index = getIndexFromPos(mouse_x, mouse_y)
-                for c in chessPieces:
+                for c in whiteChessPieces:
                     if index[0] == c.idxX and index[1] == c.idxY:
                         print("piece selected")
                         dragged_piece = c
