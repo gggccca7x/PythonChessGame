@@ -118,8 +118,8 @@ b_pawn_image = pygame.image.load(".\images\\black_pawn.png")
 b_pawn_image = pygame.transform.scale(b_pawn_image, (100,100))
 blackChessPieces = [ChessPiece(b_rook_image, 7, 0), ChessPiece(b_rook_image, 0, 0), ChessPiece(b_knight_image, 1, 0), ChessPiece(b_knight_image, 6, 0), 
         ChessPiece(b_bishop_image, 5, 0), ChessPiece(b_bishop_image, 2, 0), ChessPiece(b_king_image, 4, 0), ChessPiece(b_queen_image, 3, 0),
-        ChessPiece(b_pawn_image, 0, 0), ChessPiece(b_pawn_image, 1, 0), ChessPiece(b_pawn_image, 2, 0), ChessPiece(b_pawn_image, 3, 0), 
-        ChessPiece(b_pawn_image, 4, 0), ChessPiece(b_pawn_image, 5, 0), ChessPiece(b_pawn_image, 6, 0), ChessPiece(b_pawn_image, 7, 0)]
+        ChessPiece(b_pawn_image, 0, 1), ChessPiece(b_pawn_image, 1, 1), ChessPiece(b_pawn_image, 2, 1), ChessPiece(b_pawn_image, 3, 1), 
+        ChessPiece(b_pawn_image, 4, 1), ChessPiece(b_pawn_image, 5, 1), ChessPiece(b_pawn_image, 6, 1), ChessPiece(b_pawn_image, 7, 1)]
 
 # Initialisations dont matter tbh
 original_idx_x = 0
