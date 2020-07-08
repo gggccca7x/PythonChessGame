@@ -3,7 +3,7 @@ import pygame
 # Please note: I am using a python interpreter with a conda enrivonement...
 
 pygame.init()
-win = pygame.display.set_mode((800, 800))
+win = pygame.display.set_mode((900, 900))
 pygame.display.set_caption("Chess Game")
 
 RED = (255, 0, 0)
@@ -12,19 +12,16 @@ BLUE = (0, 0, 255)
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 
-#Chess Board Bounds
-cb_bx1, cb_bx2, cb_by1, cb_by2 = 50, 750, 50, 750
+#Chess Board bound constants
+cb_bx1, cb_bx2, cb_by1, cb_by2 = 50, 850, 50, 850
+w_per_sq = 100
 
-x, y, w, h = 50, 50, 20, 20
+w, h = 100, 100
 
 run = True
 rectangle_draging = False
 
-rectangle = pygame.rect.Rect(x, y, w, h)
-rectangle2 = pygame.rect.Rect(x, y, w, h)
-rectangle3 = pygame.rect.Rect(x, y, w, h)
 
-dragged_rect = rectangle
 
 def draw():
     pygame.draw.rect(win, RED, rectangle)
@@ -34,6 +31,18 @@ def draw():
     pygame.draw.line(win, WHITE, (cb_bx2, cb_by1), (cb_bx2, cb_by2))
     pygame.draw.line(win, WHITE, (cb_bx1, cb_by1), (cb_bx2, cb_by1))
     pygame.draw.line(win, WHITE, (cb_bx1, cb_by2), (cb_bx2, cb_by2))
+
+#input index (0-7) as chessboard is 8x8
+def getPos(x, y):
+    return (cb_bx1 + x * w_per_sq, cb_by1 + y * w_per_sq)
+
+pos = getPos(0,0)
+rectangle = pygame.rect.Rect(pos[0], pos[1], w, h)
+pos = getPos(0,1)
+rectangle2 = pygame.rect.Rect(pos[0], pos[1], w, h)
+pos = getPos(0,6)
+rectangle3 = pygame.rect.Rect(pos[0], pos[1], w, h)
+dragged_rect = rectangle
 
 while run:
     pygame.time.delay(10)
