@@ -10,6 +10,8 @@ class ChessPiece(object):
     def __init__(self, image, idxX, idxY):
         self.image = image
         pos = getPosFromIndex(idxX, idxY)
+        self.idxX = idxX
+        self.idxY = idxY
         self.posX = pos[0]
         self.posY = pos[1]
 
@@ -32,7 +34,6 @@ list_sq_end = [cb_bx1 + w_per_sq , cb_bx1 + w_per_sq * 2,
                 cb_bx1 + w_per_sq * 7, cb_bx1 + w_per_sq * 8]
 
 run = True
-rectangle_draging = False
 
 def drawLines():
     for x in range(0,9):
@@ -40,10 +41,6 @@ def drawLines():
         pygame.draw.line(win, WHITE, (cb_bx1 + w_per_sq * x, cb_by1), (cb_bx1 + w_per_sq * x, cb_by2))
 
 def draw():
-    # TODO: delete this
-    for i in range(len(myReactangles)):
-        pygame.draw.rect(win, myColours[i], myReactangles[i])
-
     for c in chessPieces:
         win.blit(c.image, (c.posX, c.posY))
 
@@ -67,21 +64,11 @@ def getIndexFromPos(x, y):
         posX, posY = -1, -1
     return (posX, posY)
 
-def checkIfPieceAlreadyThere(posX, posY, rect):
-    for i in range(len(myReactangles)):
-        if posX == myReactangles[i].x and posY == myReactangles[i].y and rect is not myReactangles[i]:
-            myReactangles.remove(myReactangles[i])
-            myColours.remove(myColours[i])
+def checkIfPieceAlreadyThere(posX, posY, piece):
+    for i in range(len(chessPieces)):
+        if posX == chessPieces[i].posX and posY == chessPieces[i].posY and piece is not chessPieces[i]:
+            chessPieces.remove(chessPieces[i])
             break
-
-# TODO: delete this
-pos = getPosFromIndex(0,0)
-rectangle = pygame.rect.Rect(pos[0], pos[1], w_per_sq, w_per_sq)
-pos = getPosFromIndex(0,1)
-rectangle2 = pygame.rect.Rect(pos[0], pos[1], w_per_sq, w_per_sq)
-pos = getPosFromIndex(0,6)
-rectangle3 = pygame.rect.Rect(pos[0], pos[1], w_per_sq, w_per_sq)
-dragged_rect = rectangle
 
 rook_image = pygame.image.load(".\images\white_rook.png")
 rook_image = pygame.transform.scale(rook_image, (100,100))
@@ -94,10 +81,8 @@ original_idx_x = 0
 original_idx_y = 1
 
 chessPieces = [rook, rook2, rook3]
-
-# TODO: delete this
-myReactangles = [rectangle, rectangle2, rectangle3]
-myColours = [RED, BLUE, GREEN]
+dragged_piece = rook
+dragging_piece = False
 
 while run:
     pygame.time.delay(10)
@@ -106,36 +91,41 @@ while run:
         if event.type == pygame.QUIT:
             run = False
         elif event.type == pygame.MOUSEBUTTONDOWN:
-            if event.button == 1:   
-                for r in myReactangles:
-                    if r.collidepoint(event.pos):
-                        rectangle_draging = True
-                        dragged_rect = r
-                if rectangle_draging:
-                    mouse_x, mouse_y = event.pos
-                    dragged_rect.x = mouse_x - rectangle.w/2
-                    dragged_rect.y = mouse_y - rectangle.h/2
-                    offset_x = dragged_rect.x - mouse_x
-                    offset_y = dragged_rect.y - mouse_y
+            if event.button == 1:
+                mouse_x, mouse_y = event.pos
+                index = getIndexFromPos(mouse_x, mouse_y)
+                for c in chessPieces:
+                    if index[0] == c.idxX and index[1] == c.idxY:
+                        print("piece selected")
+                        dragged_piece = c
+                        dragging_piece = True
+                        break
+                if dragging_piece:
+                    dragged_piece.posX = mouse_x - w_per_sq/2
+                    dragged_piece.posY = mouse_y - w_per_sq/2
+                    offset_x = dragged_piece.posX - mouse_x
+                    offset_y = dragged_piece.posY - mouse_y
                     original_idx_x, original_idx_y = getIndexFromPos(mouse_x, mouse_y)
         elif event.type == pygame.MOUSEBUTTONUP:
             if event.button == 1:            
-                if rectangle_draging:
+                if dragging_piece:
                     idx = getIndexFromPos(mouse_x, mouse_y)
                     pos = getPosFromIndex(idx[0], idx[1])
                     if(idx[0] == -1):
                         pos = getPosFromIndex(original_idx_x, original_idx_y)
-                    rectangle_draging = False
-                    dragged_rect.x = pos[0]
-                    dragged_rect.y = pos[1]
-                    checkIfPieceAlreadyThere(pos[0], pos[1], dragged_rect)
+                    dragging_piece = False
+                    dragged_piece.posX = pos[0]
+                    dragged_piece.idxX = idx[0]
+                    dragged_piece.posY = pos[1]
+                    dragged_piece.idxY = idx[1]
+                    checkIfPieceAlreadyThere(pos[0], pos[1], dragged_piece)
         elif event.type == pygame.MOUSEMOTION:
-            if rectangle_draging:
+            if dragging_piece:
                 mouse_x, mouse_y = event.pos
-                dragged_rect.x = mouse_x + offset_x
-                dragged_rect.y = mouse_y + offset_y
+                dragged_piece.posX = mouse_x + offset_x
+                dragged_piece.posY = mouse_y + offset_y
 
-    win.fill(BLACK)
+    win.fill(BLUE)
     draw()
     pygame.display.update()
 
