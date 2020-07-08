@@ -4,9 +4,9 @@ import pygame
 # Include something like: Please note - I am using a python interpreter with a conda environement...
 
 # TODO: Bring to front the selected piece (move to bottom of the list)
-# TODO: Put all pieces in starting positions
 # TODO: Confirm pieces have legal chess moves
 # TODO: display all possible legal moves with only press a piece or holding on it
+# TODO: MACHINE LEARN TRAIN A MECHINE TO PLAY AGAINST ME!!!!
 
 class ChessPiece(object):
     def __init__(self, image, idxX, idxY):
@@ -21,11 +21,9 @@ pygame.init()
 win = pygame.display.set_mode((900, 900))
 pygame.display.set_caption("Chess Game")
 
-RED = (255, 0, 0)
-GREEN = (0, 255, 0)
-BLUE = (0, 0, 255)
-BLACK = (0, 0, 0)
-WHITE = (255, 255, 255)
+BLACK = (20, 20, 20)
+WHITE = (230, 230, 230)
+BROWN = (165, 42, 42)
 
 #Chess Board bound constants
 cb_bx1, cb_bx2, cb_by1, cb_by2 = 50, 850, 50, 850
@@ -35,17 +33,31 @@ list_sq_end = [cb_bx1 + w_per_sq , cb_bx1 + w_per_sq * 2,
                 cb_bx1 + w_per_sq * 5, cb_bx1 + w_per_sq * 6,
                 cb_bx1 + w_per_sq * 7, cb_bx1 + w_per_sq * 8]
 
-def drawLines():
-    for x in range(0,9):
-        pygame.draw.line(win, WHITE, (cb_bx1, cb_by1 + w_per_sq * x), (cb_bx2, cb_by1 + w_per_sq * x))
-        pygame.draw.line(win, WHITE, (cb_bx1 + w_per_sq * x, cb_by1), (cb_bx1 + w_per_sq * x, cb_by2))
+# squares and lines - however, lines look a little ugly so maybe dont draw them anymore
+def drawBoard():
+    # commented out lines in between squares
+    # for x in range(0,9):
+    #     pygame.draw.line(win, BROWN, (cb_bx1, cb_by1 + w_per_sq * x), (cb_bx2, cb_by1 + w_per_sq * x))
+    #     pygame.draw.line(win, BROWN, (cb_bx1 + w_per_sq * x, cb_by1), (cb_bx1 + w_per_sq * x, cb_by2))
+
+    # border
+    pygame.draw.line(win, BLACK, (cb_bx1, cb_by1), (cb_bx2, cb_by1))
+    pygame.draw.line(win, BLACK, (cb_bx1, cb_by1), (cb_bx1, cb_by2))
+    pygame.draw.line(win, BLACK, (cb_bx2, cb_by1), (cb_bx2, cb_by2))
+    pygame.draw.line(win, BLACK, (cb_bx1, cb_by2), (cb_bx2, cb_by2))
+
+    # colour every other square black or white
+    for x in range(0,8):
+        for y in range(0,8):
+            if (x+y)%2 == 1:
+                pygame.draw.rect(win, BROWN, (x * w_per_sq + w_per_sq/2, y * w_per_sq + w_per_sq/2, 100, 100))
 
 def draw():
+    drawBoard()
     for c in whiteChessPieces:
         win.blit(c.image, (c.posX, c.posY))
     for c in blackChessPieces:
         win.blit(c.image, (c.posX, c.posY))
-    drawLines()
 
 #input index (0-7) as chessboard is 8x8
 def getPosFromIndex(x, y):
@@ -176,7 +188,7 @@ while run:
                 dragged_piece.posX = mouse_x + offset_x
                 dragged_piece.posY = mouse_y + offset_y
 
-    win.fill(BLUE)
+    win.fill(WHITE)
     draw()
     pygame.display.update()
 
