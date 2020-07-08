@@ -6,7 +6,7 @@ pygame.init()
 win = pygame.display.set_mode((500, 500))
 pygame.display.set_caption("Chess Game")
 
-RED   = (255,   0,   0)
+RED = (255, 0, 0)
 
 x = 50
 y = 50
@@ -29,6 +29,8 @@ while run:
                 if rectangle.collidepoint(event.pos):
                     rectangle_draging = True
                     mouse_x, mouse_y = event.pos
+                    rectangle.x = mouse_x - rectangle.w/2
+                    rectangle.y = mouse_y - rectangle.h/2
                     offset_x = rectangle.x - mouse_x
                     offset_y = rectangle.y - mouse_y
         elif event.type == pygame.MOUSEBUTTONUP:
