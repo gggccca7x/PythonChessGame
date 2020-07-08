@@ -15,13 +15,16 @@ WHITE = (255, 255, 255)
 #Chess Board bound constants
 cb_bx1, cb_bx2, cb_by1, cb_by2 = 50, 850, 50, 850
 w_per_sq = 100
+list_sq_start = [cb_bx1, cb_bx1 + w_per_sq, 
+                cb_bx1 + w_per_sq * 2, cb_bx1 + w_per_sq * 3,
+                cb_bx1 + w_per_sq * 4, cb_bx1 + w_per_sq * 7,
+                cb_bx1 + w_per_sq * 6, cb_bx1 + w_per_sq * 8]
+# list_sq_start = [100, 200, 300, 400, 500, 600, 700, 800]
 
 w, h = 100, 100
 
 run = True
 rectangle_draging = False
-
-
 
 def draw():
     pygame.draw.rect(win, RED, rectangle)
@@ -33,14 +36,29 @@ def draw():
     pygame.draw.line(win, WHITE, (cb_bx1, cb_by2), (cb_bx2, cb_by2))
 
 #input index (0-7) as chessboard is 8x8
-def getPos(x, y):
+def getPosFromIndex(x, y):
     return (cb_bx1 + x * w_per_sq, cb_by1 + y * w_per_sq)
 
-pos = getPos(0,0)
+def getIndexFromPos(x, y):
+    posX, posY = -1, -1
+    for i in range(len(list_sq_start)):
+        print("x is : " + str(x))
+        print("list is : " + str(list_sq_start[i]))
+        if x < list_sq_start[i]:
+            posX = i
+            print("set posX to " + str(posX))
+            break
+    for i in range(len(list_sq_start)):
+        if y < list_sq_start[i]:
+            posY = i
+            break
+    return (posX, posY)
+
+pos = getPosFromIndex(0,0)
 rectangle = pygame.rect.Rect(pos[0], pos[1], w, h)
-pos = getPos(0,1)
+pos = getPosFromIndex(0,1)
 rectangle2 = pygame.rect.Rect(pos[0], pos[1], w, h)
-pos = getPos(0,6)
+pos = getPosFromIndex(0,6)
 rectangle3 = pygame.rect.Rect(pos[0], pos[1], w, h)
 dragged_rect = rectangle
 
@@ -70,6 +88,10 @@ while run:
         elif event.type == pygame.MOUSEBUTTONUP:
             if event.button == 1:            
                 rectangle_draging = False
+                idx = getIndexFromPos(dragged_rect.x, dragged_rect.y)
+                pos = getPosFromIndex(idx[0], idx[1])
+                dragged_rect.x = pos[0]
+                dragged_rect.y = pos[1]
         elif event.type == pygame.MOUSEMOTION:
             if rectangle_draging:
                 mouse_x, mouse_y = event.pos
