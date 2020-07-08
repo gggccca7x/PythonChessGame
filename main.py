@@ -15,7 +15,7 @@ WHITE = (255, 255, 255)
 #Chess Board bound constants
 cb_bx1, cb_bx2, cb_by1, cb_by2 = 50, 850, 50, 850
 w_per_sq = 100
-list_sq_start = [cb_bx1 + w_per_sq, cb_bx1 + w_per_sq * 2, 
+list_sq_end = [cb_bx1 + w_per_sq , cb_bx1 + w_per_sq * 2, 
                 cb_bx1 + w_per_sq * 3, cb_bx1 + w_per_sq * 4,
                 cb_bx1 + w_per_sq * 5, cb_bx1 + w_per_sq * 6,
                 cb_bx1 + w_per_sq * 7, cb_bx1 + w_per_sq * 8]
@@ -41,18 +41,18 @@ def getPosFromIndex(x, y):
 
 def getIndexFromPos(x, y):
     posX, posY = -1, -1
-    for i in range(len(list_sq_start)):
-        print("x is : " + str(x))
-        print("list is : " + str(list_sq_start[i]))
-        if x <= list_sq_start[i]:
-            posX = i-1
+    for i in range(len(list_sq_end)):
+        if x <= list_sq_end[i]:
+            posX = i
             print("set posX to " + str(posX))
             break
-    for i in range(len(list_sq_start)):
-        if y <= list_sq_start[i]:
-            posY = i-1
+    for i in range(len(list_sq_end)):
+        if y <= list_sq_end[i]:
+            posY = i
+            # print("set posY to " + str(posY))
+            print("set posY to ", posY)
             break
-    if posX == -1 or posY == -1:
+    if posX == -1 or posY == -1 or x < cb_bx1 or y < cb_by1:
         posX, posY = -1, -1
     return (posX, posY)
 
