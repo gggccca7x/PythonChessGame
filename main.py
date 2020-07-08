@@ -68,19 +68,30 @@ def checkIfPieceAlreadyThere(posX, posY, piece):
             whiteChessPieces.remove(whiteChessPieces[i])
             break
 
-rook_image = pygame.image.load(".\images\white_rook.png")
-rook_image = pygame.transform.scale(rook_image, (100,100))
-rook = ChessPiece(rook_image, 0, 0)
-rook2 = ChessPiece(rook_image, 1, 1)
-rook3 = ChessPiece(rook_image, 2, 2)
+w_rook_image = pygame.image.load(".\images\white_rook.png")
+w_rook_image = pygame.transform.scale(w_rook_image, (100,100))
+w_knight_image = pygame.image.load(".\images\white_knight.png")
+w_knight_image = pygame.transform.scale(w_knight_image, (100,100))
+w_rook = ChessPiece(w_rook_image, 0, 0)
+w_rook2 = ChessPiece(w_rook_image, 1, 1)
+w_knight = ChessPiece(w_knight_image, 2, 2)
+w_knight2 = ChessPiece(w_knight_image, 2, 3)
+whiteChessPieces = [w_rook, w_rook2, w_knight, w_knight2]
+
+b_rook_image = pygame.image.load(".\images\\black_rook.png")
+b_rook_image = pygame.transform.scale(b_rook_image, (100,100))
+b_knight_image = pygame.image.load(".\images\\black_knight.png")
+b_knight_image = pygame.transform.scale(b_knight_image, (100,100))
+b_rook = ChessPiece(b_rook_image, 7, 0)
+b_rook2 = ChessPiece(b_rook_image, 7, 1)
+b_knight = ChessPiece(b_knight_image, 7, 2)
+b_knight2 = ChessPiece(b_knight_image, 7, 3)
+blackChessPieces = [b_rook, b_rook2, b_knight, b_knight2]
 
 # Initialisations dont matter tbh
 original_idx_x = 0
 original_idx_y = 1
-
-
-whiteChessPieces = [rook, rook2, rook3]
-dragged_piece = rook
+dragged_piece = w_rook
 dragging_piece = False
 
 run = True
