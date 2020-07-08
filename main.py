@@ -4,6 +4,13 @@ import pygame
 
 # TODO: bring to front the selected piece (move to bottom of the list)
 
+class ChessPiece(object):
+    def __init__(self, image, idxX, idxY):
+        self.image = image
+        pos = getPosFromIndex(idxX, idxY)
+        self.posX = pos[0]
+        self.posY = pos[1]
+
 pygame.init()
 win = pygame.display.set_mode((900, 900))
 pygame.display.set_caption("Chess Game")
@@ -33,6 +40,8 @@ def drawLines():
 def draw():
     for i in range(len(myReactangles)):
         pygame.draw.rect(win, myColours[i], myReactangles[i])
+
+    win.blit(rook.image, (rook.posX, rook.posY))
     drawLines()
 
 #input index (0-7) as chessboard is 8x8
@@ -66,6 +75,10 @@ pos = getPosFromIndex(0,1)
 rectangle2 = pygame.rect.Rect(pos[0], pos[1], w_per_sq, w_per_sq)
 pos = getPosFromIndex(0,6)
 rectangle3 = pygame.rect.Rect(pos[0], pos[1], w_per_sq, w_per_sq)
+
+rook_image = pygame.image.load(".\images\white_rook.png")
+rook_image = pygame.transform.scale(rook_image, (100,100))
+rook = ChessPiece(rook_image, 0, 0)
 
 # Initialisations dont matter tbh
 dragged_rect = rectangle
