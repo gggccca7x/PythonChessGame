@@ -4,10 +4,11 @@ import pygame
 # Include something like: Please note - I am using a python interpreter with a conda environement...
 
 # TODO: bring to front the selected piece (move to bottom of the list)
-# TODO: display black pieces
-# TODO: on white turn only move white pieces
-# TODO: white pieces cannot capture white pieces
+# TODO: display black pieces - done
+# TODO: on white turn only move white pieces - done
+# TODO: white pieces cannot capture white pieces - done
 # TODO: fix bug cant move piece if goes off screen - i think done, double check
+# TODO: fix bug if click and let go on same square
 
 class ChessPiece(object):
     def __init__(self, image, idxX, idxY):
@@ -70,11 +71,18 @@ def checkIfPieceAlreadyThere(posX, posY, piece, whiteTurn):
     if whiteTurn:
         for i in range(len(whiteChessPieces)):
             if posX == whiteChessPieces[i].posX and posY == whiteChessPieces[i].posY and piece is not whiteChessPieces[i]:
-                #whiteChessPieces.remove(whiteChessPieces[i])
                 return False
         for i in range(len(blackChessPieces)):
             if posX == blackChessPieces[i].posX and posY == blackChessPieces[i].posY and piece is not blackChessPieces[i]:
                 blackChessPieces.remove(blackChessPieces[i])
+                return True
+    else:
+        for i in range(len(blackChessPieces)):
+            if posX == blackChessPieces[i].posX and posY == blackChessPieces[i].posY and piece is not blackChessPieces[i]:
+                return False
+        for i in range(len(whiteChessPieces)):
+            if posX == whiteChessPieces[i].posX and posY == whiteChessPieces[i].posY and piece is not whiteChessPieces[i]:
+                whiteChessPieces.remove(whiteChessPieces[i])
                 return True
     return True
     
@@ -128,7 +136,7 @@ while run:
                     for c in blackChessPieces:
                         if index[0] == c.idxX and index[1] == c.idxY:
                             dragged_piece = c
-                            dragging_piece = True
+                            is_dragging_piece = True
                             break
                 if is_dragging_piece:
                     dragged_piece.posX = mouse_x - w_per_sq/2
@@ -145,12 +153,15 @@ while run:
                     if idx[0] == -1 or not validMove:
                         pos = getPosFromIndex(original_idx_x, original_idx_y)
                         idx = (original_idx_x, original_idx_y)
+                        validMove = False
                     is_dragging_piece = False
                     dragged_piece.posX = pos[0]
                     dragged_piece.idxX = idx[0]
                     dragged_piece.posY = pos[1]
                     dragged_piece.idxY = idx[1]
-                    # TODO: check the move took place and update bool for whos turn it is
+                    if validMove:
+                        # TODO: check actual valid move, i.e. not clicking the same square as currently on
+                        isWhitesMove = not isWhitesMove
         elif event.type == pygame.MOUSEMOTION:
             if is_dragging_piece:
                 mouse_x, mouse_y = event.pos
