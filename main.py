@@ -29,9 +29,8 @@ def drawLines():
         pygame.draw.line(win, WHITE, (cb_bx1 + w_per_sq * x, cb_by1), (cb_bx1 + w_per_sq * x, cb_by2))
 
 def draw():
-    pygame.draw.rect(win, RED, rectangle)
-    pygame.draw.rect(win, GREEN, rectangle2)
-    pygame.draw.rect(win, BLUE, rectangle3)
+    for r in myReactangles:
+        pygame.draw.rect(win, RED, r)
     drawLines()
 
 #input index (0-7) as chessboard is 8x8
@@ -51,6 +50,12 @@ def getIndexFromPos(x, y):
     if posX == -1 or posY == -1 or x < cb_bx1 or y < cb_by1:
         posX, posY = -1, -1
     return (posX, posY)
+
+def checkIfPieceAlreadyThere(posX, posY, rect):
+    for r in myReactangles:
+        if posX == r.x and posY == r.y and rect is not r:
+            myReactangles.remove(r)
+            break
 
 pos = getPosFromIndex(0,0)
 rectangle = pygame.rect.Rect(pos[0], pos[1], w_per_sq, w_per_sq)
@@ -78,15 +83,6 @@ while run:
                     if r.collidepoint(event.pos):
                         rectangle_draging = True
                         dragged_rect = r
-                # if rectangle.collidepoint(event.pos):
-                #     rectangle_draging = True
-                #     dragged_rect = rectangle
-                # elif rectangle2.collidepoint(event.pos):
-                #     rectangle_draging = True
-                #     dragged_rect = rectangle2
-                # elif rectangle3.collidepoint(event.pos):
-                #     rectangle_draging = True
-                #     dragged_rect = rectangle3
                 if rectangle_draging:
                     mouse_x, mouse_y = event.pos
                     dragged_rect.x = mouse_x - rectangle.w/2
@@ -101,9 +97,11 @@ while run:
                     pos = getPosFromIndex(idx[0], idx[1])
                     if(idx[0] == -1):
                         pos = getPosFromIndex(original_idx_x, original_idx_y)
+                    rectangle_draging = False
                     dragged_rect.x = pos[0]
                     dragged_rect.y = pos[1]
-                    rectangle_draging = False
+                    #TODO: check if a piece is already in this location
+                    checkIfPieceAlreadyThere(pos[0], pos[1], dragged_rect)
         elif event.type == pygame.MOUSEMOTION:
             if rectangle_draging:
                 mouse_x, mouse_y = event.pos
