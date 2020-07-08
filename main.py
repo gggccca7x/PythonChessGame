@@ -123,18 +123,12 @@ while run:
             if event.button == 1:
                 mouse_x, mouse_y = event.pos
                 index = getIndexFromPos(mouse_x, mouse_y)
-                if isWhitesMove:
-                    for c in whiteChessPieces:
-                        if index[0] == c.idxX and index[1] == c.idxY:
-                            dragged_piece = c
-                            is_dragging_piece = True
-                            break
-                else:
-                    for c in blackChessPieces:
-                        if index[0] == c.idxX and index[1] == c.idxY:
-                            dragged_piece = c
-                            is_dragging_piece = True
-                            break
+                chessPieces = whiteChessPieces if isWhitesMove else blackChessPieces
+                for c in chessPieces:
+                    if index[0] == c.idxX and index[1] == c.idxY:
+                        dragged_piece = c
+                        is_dragging_piece = True
+                        break
                 if is_dragging_piece:
                     dragged_piece.posX = mouse_x - w_per_sq/2
                     dragged_piece.posY = mouse_y - w_per_sq/2
