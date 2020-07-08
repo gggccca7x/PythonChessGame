@@ -1,8 +1,10 @@
 import pygame
 
-# Please note: I am using a python interpreter with a conda environement...
+# TODO: Have a REDAME.MD
+# Include something like: Please note - I am using a python interpreter with a conda environement...
 
 # TODO: bring to front the selected piece (move to bottom of the list)
+# TODO: make pieces selectable and draggable like the coloured rectangles are
 
 class ChessPiece(object):
     def __init__(self, image, idxX, idxY):
@@ -38,10 +40,13 @@ def drawLines():
         pygame.draw.line(win, WHITE, (cb_bx1 + w_per_sq * x, cb_by1), (cb_bx1 + w_per_sq * x, cb_by2))
 
 def draw():
+    # TODO: delete this
     for i in range(len(myReactangles)):
         pygame.draw.rect(win, myColours[i], myReactangles[i])
 
-    win.blit(rook.image, (rook.posX, rook.posY))
+    for c in chessPieces:
+        win.blit(c.image, (c.posX, c.posY))
+
     drawLines()
 
 #input index (0-7) as chessboard is 8x8
@@ -69,22 +74,28 @@ def checkIfPieceAlreadyThere(posX, posY, rect):
             myColours.remove(myColours[i])
             break
 
+# TODO: delete this
 pos = getPosFromIndex(0,0)
 rectangle = pygame.rect.Rect(pos[0], pos[1], w_per_sq, w_per_sq)
 pos = getPosFromIndex(0,1)
 rectangle2 = pygame.rect.Rect(pos[0], pos[1], w_per_sq, w_per_sq)
 pos = getPosFromIndex(0,6)
 rectangle3 = pygame.rect.Rect(pos[0], pos[1], w_per_sq, w_per_sq)
+dragged_rect = rectangle
 
 rook_image = pygame.image.load(".\images\white_rook.png")
 rook_image = pygame.transform.scale(rook_image, (100,100))
 rook = ChessPiece(rook_image, 0, 0)
+rook2 = ChessPiece(rook_image, 1, 1)
+rook3 = ChessPiece(rook_image, 2, 2)
 
 # Initialisations dont matter tbh
-dragged_rect = rectangle
 original_idx_x = 0
 original_idx_y = 1
 
+chessPieces = [rook, rook2, rook3]
+
+# TODO: delete this
 myReactangles = [rectangle, rectangle2, rectangle3]
 myColours = [RED, BLUE, GREEN]
 
