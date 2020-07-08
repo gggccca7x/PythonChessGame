@@ -44,14 +44,16 @@ def getIndexFromPos(x, y):
     for i in range(len(list_sq_start)):
         print("x is : " + str(x))
         print("list is : " + str(list_sq_start[i]))
-        if x < list_sq_start[i]:
-            posX = i
+        if x <= list_sq_start[i]:
+            posX = i-1
             print("set posX to " + str(posX))
             break
     for i in range(len(list_sq_start)):
-        if y < list_sq_start[i]:
-            posY = i
+        if y <= list_sq_start[i]:
+            posY = i-1
             break
+    if posX == -1 or posY == -1:
+        posX, posY = -1, -1
     return (posX, posY)
 
 pos = getPosFromIndex(0,0)
@@ -87,11 +89,13 @@ while run:
                     offset_y = dragged_rect.y - mouse_y
         elif event.type == pygame.MOUSEBUTTONUP:
             if event.button == 1:            
-                rectangle_draging = False
-                idx = getIndexFromPos(dragged_rect.x, dragged_rect.y)
-                pos = getPosFromIndex(idx[0], idx[1])
-                dragged_rect.x = pos[0]
-                dragged_rect.y = pos[1]
+                if rectangle_draging:
+                    idx = getIndexFromPos(mouse_x, mouse_y)
+                    pos = getPosFromIndex(idx[0], idx[1])
+                    #TODO: if pos is -1 then set to original square, which currently isnt tracked
+                    dragged_rect.x = pos[0]
+                    dragged_rect.y = pos[1]
+                    rectangle_draging = False
         elif event.type == pygame.MOUSEMOTION:
             if rectangle_draging:
                 mouse_x, mouse_y = event.pos
