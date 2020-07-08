@@ -1,6 +1,6 @@
 import pygame
 
-# Please note: I am using a python interpreter with a conda enrivonement...
+# Please note: I am using a python interpreter with a conda environement...
 
 pygame.init()
 win = pygame.display.set_mode((900, 900))
@@ -19,9 +19,6 @@ list_sq_end = [cb_bx1 + w_per_sq , cb_bx1 + w_per_sq * 2,
                 cb_bx1 + w_per_sq * 3, cb_bx1 + w_per_sq * 4,
                 cb_bx1 + w_per_sq * 5, cb_bx1 + w_per_sq * 6,
                 cb_bx1 + w_per_sq * 7, cb_bx1 + w_per_sq * 8]
-# list_sq_start = [100, 200, 300, 400, 500, 600, 700, 800]
-
-w, h = 100, 100
 
 run = True
 rectangle_draging = False
@@ -56,15 +53,18 @@ def getIndexFromPos(x, y):
     return (posX, posY)
 
 pos = getPosFromIndex(0,0)
-rectangle = pygame.rect.Rect(pos[0], pos[1], w, h)
+rectangle = pygame.rect.Rect(pos[0], pos[1], w_per_sq, w_per_sq)
 pos = getPosFromIndex(0,1)
-rectangle2 = pygame.rect.Rect(pos[0], pos[1], w, h)
+rectangle2 = pygame.rect.Rect(pos[0], pos[1], w_per_sq, w_per_sq)
 pos = getPosFromIndex(0,6)
-rectangle3 = pygame.rect.Rect(pos[0], pos[1], w, h)
+rectangle3 = pygame.rect.Rect(pos[0], pos[1], w_per_sq, w_per_sq)
 
+# Initialisations dont matter tbh
 dragged_rect = rectangle
 original_idx_x = 0
 original_idx_y = 1
+
+myReactangles = [rectangle, rectangle2, rectangle3]
 
 while run:
     pygame.time.delay(10)
@@ -73,16 +73,20 @@ while run:
         if event.type == pygame.QUIT:
             run = False
         elif event.type == pygame.MOUSEBUTTONDOWN:
-            if event.button == 1:            
-                if rectangle.collidepoint(event.pos):
-                    rectangle_draging = True
-                    dragged_rect = rectangle
-                elif rectangle2.collidepoint(event.pos):
-                    rectangle_draging = True
-                    dragged_rect = rectangle2
-                elif rectangle3.collidepoint(event.pos):
-                    rectangle_draging = True
-                    dragged_rect = rectangle3
+            if event.button == 1:   
+                for r in myReactangles:
+                    if r.collidepoint(event.pos):
+                        rectangle_draging = True
+                        dragged_rect = r
+                # if rectangle.collidepoint(event.pos):
+                #     rectangle_draging = True
+                #     dragged_rect = rectangle
+                # elif rectangle2.collidepoint(event.pos):
+                #     rectangle_draging = True
+                #     dragged_rect = rectangle2
+                # elif rectangle3.collidepoint(event.pos):
+                #     rectangle_draging = True
+                #     dragged_rect = rectangle3
                 if rectangle_draging:
                     mouse_x, mouse_y = event.pos
                     dragged_rect.x = mouse_x - rectangle.w/2
@@ -96,7 +100,7 @@ while run:
                     idx = getIndexFromPos(mouse_x, mouse_y)
                     pos = getPosFromIndex(idx[0], idx[1])
                     if(idx[0] == -1):
-                        pos = getPosFromIndex(original_idx_x,original_idx_y)
+                        pos = getPosFromIndex(original_idx_x, original_idx_y)
                     dragged_rect.x = pos[0]
                     dragged_rect.y = pos[1]
                     rectangle_draging = False
