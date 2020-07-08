@@ -3,9 +3,10 @@ import pygame
 # TODO: Have a REDAME.MD
 # Include something like: Please note - I am using a python interpreter with a conda environement...
 
-# TODO: bring to front the selected piece (move to bottom of the list)
-# TODO: fix bug cant move piece if goes off screen - i think done, double check
-# TODO: better naming conventions such as the validMoves in the unclick mouse in the game loop
+# TODO: Bring to front the selected piece (move to bottom of the list)
+# TODO: Put all pieces in starting positions
+# TODO: Confirm pieces have legal chess moves
+# TODO: display all possible legal moves with only press a piece or holding on it
 
 class ChessPiece(object):
     def __init__(self, image, idxX, idxY):
@@ -90,26 +91,18 @@ w_rook_image = pygame.image.load(".\images\white_rook.png")
 w_rook_image = pygame.transform.scale(w_rook_image, (100,100))
 w_knight_image = pygame.image.load(".\images\white_knight.png")
 w_knight_image = pygame.transform.scale(w_knight_image, (100,100))
-w_rook = ChessPiece(w_rook_image, 0, 0)
-w_rook2 = ChessPiece(w_rook_image, 1, 1)
-w_knight = ChessPiece(w_knight_image, 2, 2)
-w_knight2 = ChessPiece(w_knight_image, 2, 3)
-whiteChessPieces = [w_rook, w_rook2, w_knight, w_knight2]
+whiteChessPieces = [ChessPiece(w_rook_image, 7, 7), ChessPiece(w_rook_image, 0, 7), ChessPiece(w_knight_image, 1, 7), ChessPiece(w_knight_image, 6, 7)]
 
 b_rook_image = pygame.image.load(".\images\\black_rook.png")
 b_rook_image = pygame.transform.scale(b_rook_image, (100,100))
 b_knight_image = pygame.image.load(".\images\\black_knight.png")
 b_knight_image = pygame.transform.scale(b_knight_image, (100,100))
-b_rook = ChessPiece(b_rook_image, 7, 0)
-b_rook2 = ChessPiece(b_rook_image, 7, 1)
-b_knight = ChessPiece(b_knight_image, 7, 2)
-b_knight2 = ChessPiece(b_knight_image, 7, 3)
-blackChessPieces = [b_rook, b_rook2, b_knight, b_knight2]
+blackChessPieces = [ChessPiece(b_rook_image, 7, 0), ChessPiece(b_rook_image, 0, 0), ChessPiece(b_knight_image, 1, 0), ChessPiece(b_knight_image, 6, 0)]
 
 # Initialisations dont matter tbh
 original_idx_x = 0
 original_idx_y = 1
-dragged_piece = w_rook
+dragged_piece = whiteChessPieces[0]
 is_dragging_piece = False
 
 run = True
