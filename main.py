@@ -26,14 +26,16 @@ w, h = 100, 100
 run = True
 rectangle_draging = False
 
+def drawLines():
+    for x in range(0,9):
+        pygame.draw.line(win, WHITE, (cb_bx1, cb_by1 + w_per_sq * x), (cb_bx2, cb_by1 + w_per_sq * x))
+        pygame.draw.line(win, WHITE, (cb_bx1 + w_per_sq * x, cb_by1), (cb_bx1 + w_per_sq * x, cb_by2))
+
 def draw():
     pygame.draw.rect(win, RED, rectangle)
     pygame.draw.rect(win, GREEN, rectangle2)
     pygame.draw.rect(win, BLUE, rectangle3)
-    pygame.draw.line(win, WHITE, (cb_bx1, cb_by1), (cb_bx1, cb_by2))
-    pygame.draw.line(win, WHITE, (cb_bx2, cb_by1), (cb_bx2, cb_by2))
-    pygame.draw.line(win, WHITE, (cb_bx1, cb_by1), (cb_bx2, cb_by1))
-    pygame.draw.line(win, WHITE, (cb_bx1, cb_by2), (cb_bx2, cb_by2))
+    drawLines()
 
 #input index (0-7) as chessboard is 8x8
 def getPosFromIndex(x, y):
