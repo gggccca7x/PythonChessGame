@@ -13,7 +13,8 @@ def getAllLegalMoves(x, y, yourPcs, oppoPcs, piece, isWhite):
     switcher = {
         KING: getKingMoves(x, y, yourPcs, oppoPcs, piece),
         QUEEN: [(2,0), (2,3)], 
-        ROOK: [(2,2), (2,4)], 
+        # ROOK:  [(2,2), (7,3)],
+        ROOK: getRookMoves(x, y, yourPcs, oppoPcs, piece), 
         KNIGHT: [(2,2), (7,3)], 
         BISHOP: [(2,5), (5,3)], 
         PAWN: getPawnMoves(x, y, yourPcs, oppoPcs, piece, isWhite)
@@ -22,6 +23,26 @@ def getAllLegalMoves(x, y, yourPcs, oppoPcs, piece, isWhite):
 
 def getRookMoves(x, y, yourPcs, oppoPcs, piece):
     moves = []
+    ix = x
+    while ix <= 7:
+        ix += 1
+        if ix <= 7:
+            moves.append((ix, y))
+    ix = x
+    while ix >= 0:
+        ix -= 1
+        if ix >= 0:
+            moves.append((ix, y))
+    iy = y
+    while iy <=  7:
+        iy += 1
+        if iy <= 7:
+            moves.append((x, iy))
+    iy = y
+    while iy >= 0:
+        iy -= 1
+        if iy >= 0:
+            moves.append((x, iy))
 
     return moves
 
