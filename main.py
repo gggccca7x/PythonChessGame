@@ -1,7 +1,9 @@
 import pygame
+from ChessBoard import getAllLegalMoves
 
 # TODO: Have a README.MD
 # Include something like: Please note - I am using a python interpreter with a conda environement...
+# pygame: 1.9.6, python 3.7.6, conda 4.8.3
 
 # TODO: create a method which inputs a piece, list of all your pieces, list of all opponent pieces, the location of the piece selected
 # and returns a list of all legal positions
@@ -15,6 +17,7 @@ import pygame
 # TODO: allow castrol
 # TODO: MACHINE LEARN TRAIN A MACHINE TO PLAY AGAINST ME!!!!
 # TODO: fix clicking to move piece - needs minor adjustment
+# TODO: add opacity to legal move rectangles
 
 class ChessPiece(object):
     def __init__(self, image, idxX, idxY):
@@ -33,6 +36,7 @@ BLACK = (20, 20, 20)
 WHITE = (230, 230, 230)
 BROWN = (165, 42, 42)
 GREEN = (40, 220, 40)
+YELLOW = (180, 180, 30)
 
 #Chess Board bound constants
 cb_bx1, cb_bx2, cb_by1, cb_by2 = 50, 850, 50, 850
@@ -58,8 +62,13 @@ def drawBoard():
 
 def draw():
     drawBoard()
+
     if isPieceClicked:
-        drawSelectPieceHighlight(dragged_piece)
+        # TODO: calculate legal moves and then draw
+        colourSelectedIndex(dragged_piece.idxX, dragged_piece.idxY, GREEN)
+        for idx in legalMovesList:
+            colourSelectedIndex(idx[0], idx[1], YELLOW)
+
     for c in whiteChessPieces:
         win.blit(c.image, (c.posX, c.posY))
     for c in blackChessPieces:
@@ -70,8 +79,8 @@ def drawLegalMoves():
     for move in legalMovesList:
         break
 
-def drawSelectPieceHighlight(piece):
-    pygame.draw.rect(win, GREEN, (piece.idxX * w_per_sq + w_per_sq/2, piece.idxY * w_per_sq + w_per_sq/2, 100, 100))
+def colourSelectedIndex(x, y, color):
+    pygame.draw.rect(win, color, (x * w_per_sq + w_per_sq/2, y * w_per_sq + w_per_sq/2, 100, 100))
 
 #input index (0-7) as chessboard is 8x8
 def getPosFromIndex(x, y):
@@ -218,6 +227,10 @@ while run:
                     sameSquare = checkDifferentSquare(original_idx_x, original_idx_y, idx[0], idx[1])
                     if sameSquare:
                         # TODO: handle if just clicked a piece
+                        legalMovesList = getAllLegalMoves(original_idx_x, original_idx_y, 
+                        whiteChessPieces if isWhitesMove else blackChessPieces, 
+                        blackChessPieces if isWhitesMove else whiteChessPieces, 
+                        dragged_piece)
                         isPieceClicked = True
                     else:
                         validMove = checkIfPieceAlreadyThere(pos[0], pos[1], dragged_piece, isWhitesMove) and confirmValidity(original_idx_x, original_idx_y, idx[0], idx[1])

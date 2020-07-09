@@ -1,31 +1,14 @@
-class ChessPiece(object):
-    def __init__(self, image, idxX, idxY):
-        self.image = image
-        pos = getPosFromIndex(idxX, idxY)
-        self.idxX = idxX
-        self.idxY = idxY
-        self.posX = pos[0]
-        self.posY = pos[1]
+# list of numbers associated to specific type
+KING = 0
+QUEEN = 1
+ROOK = 2
+KNIGHT = 3
+BISHOP = 4
+PAWN = 5
 
-#input index (0-7) as chessboard is 8x8
-def getPosFromIndex(x, y):
-    return (cb_bx1 + x * w_per_sq, cb_by1 + y * w_per_sq)
+# return tuples of indexes e.g. (2, 3)
+def getAllLegalMoves(oX, oY, yourPcs, oppoPcs, piece):
 
-def getIndexFromPos(x, y):
-    posX, posY = -1, -1
-    for i in range(len(list_sq_end)):
-        if x <= list_sq_end[i]:
-            posX = i
-            break
-    for i in range(len(list_sq_end)):
-        if y <= list_sq_end[i]:
-            posY = i
-            break
-    if posX == -1 or posY == -1 or x < cb_bx1 or y < cb_by1:
-        posX, posY = -1, -1
-    return (posX, posY)
+    # TODO: complete this with chess logic
 
-def getAllLegalMoves(oX, oY, toX, toY, yourPcs, oppoPcs, piece):
-    
-
-    return []
+    return [(2,2), (2,3)]
