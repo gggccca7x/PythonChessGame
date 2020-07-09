@@ -10,5 +10,12 @@ PAWN = 5
 def getAllLegalMoves(oX, oY, yourPcs, oppoPcs, piece):
 
     # TODO: complete this with chess logic
-
-    return [(2,2), (2,3)]
+    switcher = {
+        KING: [(0,0), (1,0)],
+        QUEEN: [(2,0), (2,3)], 
+        ROOK: [(2,2), (2,4)], 
+        KNIGHT: [(2,2), (7,3)], 
+        BISHOP: [(2,5), (5,3)], 
+        PAWN: [(2,7), (7,7)]
+    }
+    return switcher.get(piece.pType, (-1, -1))
