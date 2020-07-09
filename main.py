@@ -211,6 +211,11 @@ while run:
                     for c in chessPieces:
                         if index[0] == c.idxX and index[1] == c.idxY:
                             dragged_piece = c
+                            # Test here to see if works as inteded
+                            legalMovesList = getAllLegalMoves(original_idx_x, original_idx_y, 
+                                    whiteChessPieces if isWhitesMove else blackChessPieces, 
+                                    blackChessPieces if isWhitesMove else whiteChessPieces, 
+                                    dragged_piece)
                             is_dragging_piece = True
                             break
                     if is_dragging_piece:
@@ -227,11 +232,6 @@ while run:
                     pos = getPosFromIndex(idx[0], idx[1])
                     sameSquare = checkDifferentSquare(original_idx_x, original_idx_y, idx[0], idx[1])
                     if sameSquare:
-                        # TODO: handle if just clicked a piece
-                        legalMovesList = getAllLegalMoves(original_idx_x, original_idx_y, 
-                        whiteChessPieces if isWhitesMove else blackChessPieces, 
-                        blackChessPieces if isWhitesMove else whiteChessPieces, 
-                        dragged_piece)
                         isPieceClicked = True
                     else:
                         validMove = checkIfPieceAlreadyThere(pos[0], pos[1], dragged_piece, isWhitesMove) and confirmValidity(original_idx_x, original_idx_y, idx[0], idx[1])
