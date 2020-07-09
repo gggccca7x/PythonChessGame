@@ -1,7 +1,11 @@
 import pygame
 
-# TODO: Have a REDAME.MD
+# TODO: Have a README.MD
 # Include something like: Please note - I am using a python interpreter with a conda environement...
+
+# TODO: create a method which inputs a piece, list of all your pieces, list of all opponent pieces, the location of the piece selected
+# and returns a list of all legal positions
+# TODO: after this method above ^ has been created, use the list to populate a visual effect on moveable squares - account for empty or not
 
 # TODO: Bring to front the selected piece (move to bottom of the list)
 # TODO: Confirm pieces have legal chess moves
@@ -9,7 +13,8 @@ import pygame
 # TODO: have some sort of take back mechanism
 # TODO: when clicking a piece not dragging should 'select' the piece
 # TODO: allow castrol
-# TODO: MACHINE LEARN TRAIN A MECHINE TO PLAY AGAINST ME!!!!
+# TODO: MACHINE LEARN TRAIN A MACHINE TO PLAY AGAINST ME!!!!
+# TODO: fix clicking to move piece - needs minor adjustment
 
 class ChessPiece(object):
     def __init__(self, image, idxX, idxY):
