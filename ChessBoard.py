@@ -20,6 +20,11 @@ def getAllLegalMoves(x, y, yourPcs, oppoPcs, piece, isWhite):
     }
     return switcher.get(piece.pType, (-1, -1))
 
+def getRookMoves(x, y, yourPcs, oppoPcs, piece):
+    moves = []
+
+    return moves
+
 def getPawnMoves(x, y, yourPcs, oppoPcs, piece, isWhite):
     moves = []
     if isWhite:

@@ -123,7 +123,6 @@ def checkTakeOpponentPiece(idxX, idxY, piece, whiteTurn):
 
     for oppoPiece in opponentPieces:
         if idxX == oppoPiece.idxX and idxY == oppoPiece.idxY:
-            print("remove opponenet piece")
             opponentPieces.remove(oppoPiece)
             break
 
