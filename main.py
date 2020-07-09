@@ -212,11 +212,11 @@ while run:
                             validMove = False
                         if validMove:
                             # TODO: check actual valid move, i.e. not clicking the same square as currently on
+                            checkTakeOpponentPiece(idx[0], idx[1], dragged_piece, isWhitesMove)
                             isWhitesMove = not isWhitesMove
                             isPieceClicked = False
                     # TODO: confirm is in the legal moves list
                     dragged_piece.setNewPosition(idx[0], idx[1], pos[0], pos[1])
-                    checkTakeOpponentPiece(idx[0], idx[1], dragged_piece, isWhitesMove)
                 else:
                     index = getIndexFromPos(mouse_x, mouse_y)
                     chessPieces = whiteChessPieces if isWhitesMove else blackChessPieces
@@ -255,11 +255,11 @@ while run:
                             validMove = False
                         if validMove:
                             # TODO: check actual valid move, i.e. not clicking the same square as currently on
+                            checkTakeOpponentPiece(idx[0], idx[1], dragged_piece, isWhitesMove)
                             isWhitesMove = not isWhitesMove
                     # TODO: confirm is in the legal moves list
                     # note i am setting set position or original index above if not a valid move
                     dragged_piece.setNewPosition(idx[0], idx[1], pos[0], pos[1])
-                    checkTakeOpponentPiece(idx[0], idx[1], dragged_piece, isWhitesMove)
 
 
         elif event.type == pygame.MOUSEMOTION:
