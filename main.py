@@ -128,7 +128,10 @@ def checkIfPieceAlreadyThere(posX, posY, piece, whiteTurn):
 # TODO: find out all the legal moves it has
 # TODO: return true if valid move
 def confirmValidity(xFrom, yFrom, xTo, yTo):
-    return True
+    for pos in legalMovesList:
+        if(xTo, yTo) == pos:
+            return True
+    return False
 
 def checkDifferentSquare(xFrom, yFrom, xTo, yTo):
     if xFrom == xTo and yFrom == yTo:
@@ -207,6 +210,7 @@ while run:
                             # TODO: check actual valid move, i.e. not clicking the same square as currently on
                             isWhitesMove = not isWhitesMove
                             isPieceClicked = False
+                    # TODO: confirm is in the legal moves list
                     dragged_piece.setNewPosition(idx[0], idx[1], pos[0], pos[1])
                 else:
                     index = getIndexFromPos(mouse_x, mouse_y)
@@ -218,7 +222,7 @@ while run:
                             legalMovesList = getAllLegalMoves(dragged_piece.idxX, dragged_piece.idxY, 
                                     whiteChessPieces if isWhitesMove else blackChessPieces, 
                                     blackChessPieces if isWhitesMove else whiteChessPieces, 
-                                    dragged_piece)
+                                    dragged_piece, isWhitesMove)
                             is_dragging_piece = True
                             break
                     if is_dragging_piece:
@@ -247,6 +251,8 @@ while run:
                         if validMove:
                             # TODO: check actual valid move, i.e. not clicking the same square as currently on
                             isWhitesMove = not isWhitesMove
+                    # TODO: confirm is in the legal moves list
+                    # note i am setting set position or original index above if not a valid move
                     dragged_piece.setNewPosition(idx[0], idx[1], pos[0], pos[1])
 
 

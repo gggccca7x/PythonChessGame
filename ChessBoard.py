@@ -7,20 +7,39 @@ BISHOP = 4
 PAWN = 5
 
 # return tuples of indexes e.g. (2, 3)
-def getAllLegalMoves(x, y, yourPcs, oppoPcs, piece):
+def getAllLegalMoves(x, y, yourPcs, oppoPcs, piece, isWhite):
 
     # TODO: complete this with chess logic
-    print("position x: " + str(x))
-    print("position y: " + str(y))
     switcher = {
         KING: getKingMoves(x, y, yourPcs, oppoPcs, piece),
         QUEEN: [(2,0), (2,3)], 
         ROOK: [(2,2), (2,4)], 
         KNIGHT: [(2,2), (7,3)], 
         BISHOP: [(2,5), (5,3)], 
-        PAWN: [(2,7), (7,7)]
+        PAWN: getPawnMoves(x, y, yourPcs, oppoPcs, piece, isWhite)
     }
     return switcher.get(piece.pType, (-1, -1))
+
+def getPawnMoves(x, y, yourPcs, oppoPcs, piece, isWhite):
+    moves = []
+    if isWhite:
+        if y == 6:
+            moves.append((x,y-1))
+            moves.append((x,y-2))
+        # elif y == 1:
+            # promote?
+        else:
+            moves.append((x,y-1))
+
+        # TODO: account for taking, and then en passant
+    else:
+        if y == 1:
+            moves.append((x,y+1))
+            moves.append((x,y+2))
+        else:
+            moves.append((x,y+1))
+    return moves
+
 
 def getKingMoves(x, y, yourPcs, oppoPcs, piece):
     moves = []
@@ -40,6 +59,4 @@ def getKingMoves(x, y, yourPcs, oppoPcs, piece):
             moves.append((x+1,y-1))
         if y < 7:
             moves.append((x+1,y+1))
-
-    # TODO: remove copies - create a new list maybe?
     return moves
