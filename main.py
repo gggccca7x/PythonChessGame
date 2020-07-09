@@ -32,7 +32,7 @@ pygame.display.set_caption("Chess Game")
 BLACK = (20, 20, 20)
 WHITE = (230, 230, 230)
 BROWN = (165, 42, 42)
-LIME = (40, 220, 40)
+GREEN = (40, 220, 40)
 
 #Chess Board bound constants
 cb_bx1, cb_bx2, cb_by1, cb_by2 = 50, 850, 50, 850
@@ -71,7 +71,7 @@ def drawLegalMoves():
         break
 
 def drawSelectPieceHighlight(piece):
-    pygame.draw.rect(win, LIME, (piece.idxX * w_per_sq + w_per_sq/2, piece.idxY * w_per_sq + w_per_sq/2, 100, 100))
+    pygame.draw.rect(win, GREEN, (piece.idxX * w_per_sq + w_per_sq/2, piece.idxY * w_per_sq + w_per_sq/2, 100, 100))
 
 #input index (0-7) as chessboard is 8x8
 def getPosFromIndex(x, y):
