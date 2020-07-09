@@ -215,7 +215,7 @@ while run:
                         if index[0] == c.idxX and index[1] == c.idxY:
                             dragged_piece = c
                             # Test here to see if works as inteded
-                            legalMovesList = getAllLegalMoves(original_idx_x, original_idx_y, 
+                            legalMovesList = getAllLegalMoves(dragged_piece.idxX, dragged_piece.idxY, 
                                     whiteChessPieces if isWhitesMove else blackChessPieces, 
                                     blackChessPieces if isWhitesMove else whiteChessPieces, 
                                     dragged_piece)
@@ -227,7 +227,7 @@ while run:
                         offset_x = dragged_piece.posX - mouse_x
                         offset_y = dragged_piece.posY - mouse_y
                         original_idx_x, original_idx_y = getIndexFromPos(mouse_x, mouse_y)
-                        
+
 
         elif event.type == pygame.MOUSEBUTTONUP:
             if event.button == 1:
