@@ -6,6 +6,9 @@ import pygame
 # TODO: Bring to front the selected piece (move to bottom of the list)
 # TODO: Confirm pieces have legal chess moves
 # TODO: display all possible legal moves with only press a piece or holding on it
+# TODO: have some sort of take back mechanism
+# TODO: when clicking a piece not dragging should 'select' the piece
+# TODO: allow castrol
 # TODO: MACHINE LEARN TRAIN A MECHINE TO PLAY AGAINST ME!!!!
 
 class ChessPiece(object):
@@ -35,11 +38,6 @@ list_sq_end = [cb_bx1 + w_per_sq , cb_bx1 + w_per_sq * 2,
 
 # squares and lines - however, lines look a little ugly so maybe dont draw them anymore
 def drawBoard():
-    # commented out lines in between squares
-    # for x in range(0,9):
-    #     pygame.draw.line(win, BROWN, (cb_bx1, cb_by1 + w_per_sq * x), (cb_bx2, cb_by1 + w_per_sq * x))
-    #     pygame.draw.line(win, BROWN, (cb_bx1 + w_per_sq * x, cb_by1), (cb_bx1 + w_per_sq * x, cb_by2))
-
     # border
     pygame.draw.line(win, BLACK, (cb_bx1, cb_by1), (cb_bx2, cb_by1))
     pygame.draw.line(win, BLACK, (cb_bx1, cb_by1), (cb_bx1, cb_by2))
@@ -58,6 +56,11 @@ def draw():
         win.blit(c.image, (c.posX, c.posY))
     for c in blackChessPieces:
         win.blit(c.image, (c.posX, c.posY))
+
+# TODO: complete and call this method
+def drawLegalMoves():
+    for move in legalMovesList:
+        break
 
 #input index (0-7) as chessboard is 8x8
 def getPosFromIndex(x, y):
@@ -93,11 +96,17 @@ def checkIfPieceAlreadyThere(posX, posY, piece, whiteTurn):
             return True
     return True
 
-#indexes of from and to squares to confirm if valid move - need actual chess rules
+# need actual chess rules
+# TODO: find out what piece is moving
+# TODO: find out all the legal moves it has
+# TODO: return true if valid move
 def confirmValidity(xFrom, yFrom, xTo, yTo):
-    if xFrom == xTo and yFrom == yTo:
-        return False
     return True
+
+def checkDifferentSquare(xFrom, yFrom, xTo, yTo):
+    if xFrom == xTo and yFrom == yTo:
+        return True
+    return False
 
 w_rook_image = pygame.image.load(".\images\white_rook.png")
 w_rook_image = pygame.transform.scale(w_rook_image, (100,100))
@@ -141,6 +150,9 @@ is_dragging_piece = False
 
 run = True
 isWhitesMove = True
+isPieceClicked = False # Specifically Clicked
+
+legalMovesList = []
 
 while run:
     pygame.time.delay(15)
@@ -151,37 +163,64 @@ while run:
         elif event.type == pygame.MOUSEBUTTONDOWN:
             if event.button == 1:
                 mouse_x, mouse_y = event.pos
-                index = getIndexFromPos(mouse_x, mouse_y)
-                chessPieces = whiteChessPieces if isWhitesMove else blackChessPieces
-                for c in chessPieces:
-                    if index[0] == c.idxX and index[1] == c.idxY:
-                        dragged_piece = c
-                        is_dragging_piece = True
-                        break
-                if is_dragging_piece:
-                    dragged_piece.posX = mouse_x - w_per_sq/2
-                    dragged_piece.posY = mouse_y - w_per_sq/2
-                    offset_x = dragged_piece.posX - mouse_x
-                    offset_y = dragged_piece.posY - mouse_y
-                    original_idx_x, original_idx_y = getIndexFromPos(mouse_x, mouse_y)
-        elif event.type == pygame.MOUSEBUTTONUP:
-            if event.button == 1:
-                if is_dragging_piece:
+                if isPieceClicked:
+                    # TODO: process next move if clicked
                     idx = getIndexFromPos(mouse_x, mouse_y)
                     pos = getPosFromIndex(idx[0], idx[1])
-                    validMove = checkIfPieceAlreadyThere(pos[0], pos[1], dragged_piece, isWhitesMove) and confirmValidity(original_idx_x, original_idx_y, idx[0], idx[1])
-                    if idx[0] == -1 or not validMove:
-                        pos = getPosFromIndex(original_idx_x, original_idx_y)
-                        idx = (original_idx_x, original_idx_y)
-                        validMove = False
-                    is_dragging_piece = False
+                    sameSquare = checkDifferentSquare(original_idx_x, original_idx_y, idx[0], idx[1])
+                    if sameSquare:
+                        isPieceClicked = False
+                    else:
+                        validMove = checkIfPieceAlreadyThere(pos[0], pos[1], dragged_piece, isWhitesMove) and confirmValidity(original_idx_x, original_idx_y, idx[0], idx[1])
+                        if idx[0] == -1 or not validMove:
+                            pos = getPosFromIndex(original_idx_x, original_idx_y)
+                            idx = (original_idx_x, original_idx_y)
+                            validMove = False
+                        if validMove:
+                            # TODO: check actual valid move, i.e. not clicking the same square as currently on
+                            isWhitesMove = not isWhitesMove
+                            isPieceClicked = False
                     dragged_piece.posX = pos[0]
                     dragged_piece.idxX = idx[0]
                     dragged_piece.posY = pos[1]
                     dragged_piece.idxY = idx[1]
-                    if validMove:
-                        # TODO: check actual valid move, i.e. not clicking the same square as currently on
-                        isWhitesMove = not isWhitesMove
+                else:
+                    index = getIndexFromPos(mouse_x, mouse_y)
+                    chessPieces = whiteChessPieces if isWhitesMove else blackChessPieces
+                    for c in chessPieces:
+                        if index[0] == c.idxX and index[1] == c.idxY:
+                            dragged_piece = c
+                            is_dragging_piece = True
+                            break
+                    if is_dragging_piece:
+                        dragged_piece.posX = mouse_x - w_per_sq/2
+                        dragged_piece.posY = mouse_y - w_per_sq/2
+                        offset_x = dragged_piece.posX - mouse_x
+                        offset_y = dragged_piece.posY - mouse_y
+                        original_idx_x, original_idx_y = getIndexFromPos(mouse_x, mouse_y)
+        elif event.type == pygame.MOUSEBUTTONUP:
+            if event.button == 1:
+                if is_dragging_piece:
+                    is_dragging_piece = False
+                    idx = getIndexFromPos(mouse_x, mouse_y)
+                    pos = getPosFromIndex(idx[0], idx[1])
+                    sameSquare = checkDifferentSquare(original_idx_x, original_idx_y, idx[0], idx[1])
+                    if sameSquare:
+                        # TODO: handle if just clicked a piece
+                        isPieceClicked = True
+                    else:
+                        validMove = checkIfPieceAlreadyThere(pos[0], pos[1], dragged_piece, isWhitesMove) and confirmValidity(original_idx_x, original_idx_y, idx[0], idx[1])
+                        if idx[0] == -1 or not validMove:
+                            pos = getPosFromIndex(original_idx_x, original_idx_y)
+                            idx = (original_idx_x, original_idx_y)
+                            validMove = False
+                        if validMove:
+                            # TODO: check actual valid move, i.e. not clicking the same square as currently on
+                            isWhitesMove = not isWhitesMove
+                    dragged_piece.posX = pos[0]
+                    dragged_piece.idxX = idx[0]
+                    dragged_piece.posY = pos[1]
+                    dragged_piece.idxY = idx[1]
         elif event.type == pygame.MOUSEMOTION:
             if is_dragging_piece:
                 mouse_x, mouse_y = event.pos
