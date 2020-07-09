@@ -29,6 +29,12 @@ class ChessPiece(object):
         self.posY = pos[1]
         self.pType = pType
 
+    def setNewPosition(self, ix, iy, px, py):
+        self.idxX = ix
+        self.idxY = iy
+        self.posX = px
+        self.posY = py
+
 pygame.init()
 win = pygame.display.set_mode((900, 900))
 pygame.display.set_caption("Chess Game")
@@ -201,10 +207,7 @@ while run:
                             # TODO: check actual valid move, i.e. not clicking the same square as currently on
                             isWhitesMove = not isWhitesMove
                             isPieceClicked = False
-                    dragged_piece.posX = pos[0]
-                    dragged_piece.idxX = idx[0]
-                    dragged_piece.posY = pos[1]
-                    dragged_piece.idxY = idx[1]
+                    dragged_piece.setNewPosition(idx[0], idx[1], pos[0], pos[1])
                 else:
                     index = getIndexFromPos(mouse_x, mouse_y)
                     chessPieces = whiteChessPieces if isWhitesMove else blackChessPieces
