@@ -245,10 +245,7 @@ while run:
                         if validMove:
                             # TODO: check actual valid move, i.e. not clicking the same square as currently on
                             isWhitesMove = not isWhitesMove
-                    dragged_piece.posX = pos[0]
-                    dragged_piece.idxX = idx[0]
-                    dragged_piece.posY = pos[1]
-                    dragged_piece.idxY = idx[1]
+                    dragged_piece.setNewPosition(idx[0], idx[1], pos[0], pos[1])
         elif event.type == pygame.MOUSEMOTION:
             if is_dragging_piece:
                 mouse_x, mouse_y = event.pos
