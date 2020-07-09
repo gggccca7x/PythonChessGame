@@ -9,15 +9,17 @@ from ChessBoard import getAllLegalMoves
 # and returns a list of all legal positions
 # TODO: after this method above ^ has been created, use the list to populate a visual effect on moveable squares - account for empty or not
 
+# TODO: fix bug illegal move still takes piece
 # TODO: Bring to front the selected piece (move to bottom of the list)
 # TODO: Confirm pieces have legal chess moves
 # TODO: display all possible legal moves with only press a piece or holding on it
 # TODO: have some sort of take back mechanism
-# TODO: when clicking a piece not dragging should 'select' the piece
+# TODO: dragging shows legal moves
 # TODO: allow castrol
-# TODO: MACHINE LEARN TRAIN A MACHINE TO PLAY AGAINST ME!!!!
 # TODO: fix clicking to move piece - needs minor adjustment
 # TODO: add opacity to legal move rectangles
+
+# TODO: MACHINE LEARN TRAIN A MACHINE TO PLAY AGAINST ME!!!!
 
 class ChessPiece(object):
     def __init__(self, image, idxX, idxY, pType):
@@ -107,21 +109,23 @@ def getIndexFromPos(x, y):
         posX, posY = -1, -1
     return (posX, posY)
 
-def checkIfPieceAlreadyThere(posX, posY, piece, whiteTurn):
-    yourPieces = blackChessPieces
-    opponentPieces = whiteChessPieces
-    if whiteTurn:
-        yourPieces = whiteChessPieces
-        opponentPieces = blackChessPieces
+def checkIfYourPieceAlreadyThere(posX, posY, piece, whiteTurn):
+    yourPieces = whiteChessPieces if whiteTurn else blackChessPieces
 
     for i in range(len(yourPieces)):
         if posX == yourPieces[i].posX and posY == yourPieces[i].posY and piece is not yourPieces[i]:
-            return False
-    for i in range(len(opponentPieces)):
-        if posX == opponentPieces[i].posX and posY == opponentPieces[i].posY and piece is not opponentPieces[i]:
-            opponentPieces.remove(opponentPieces[i])
             return True
-    return True
+    
+    return False # TODO: questioning if this should be here??
+
+def checkTakeOpponentPiece(idxX, idxY, piece, whiteTurn):
+    opponentPieces = blackChessPieces if whiteTurn else whiteChessPieces
+
+    for oppoPiece in opponentPieces:
+        if idxX == oppoPiece.idxX and idxY == oppoPiece.idxY:
+            print("remove opponenet piece")
+            opponentPieces.remove(oppoPiece)
+            break
 
 # need actual chess rules
 # TODO: find out what piece is moving
@@ -201,7 +205,7 @@ while run:
                     if sameSquare:
                         isPieceClicked = False
                     else:
-                        validMove = checkIfPieceAlreadyThere(pos[0], pos[1], dragged_piece, isWhitesMove) and confirmValidity(original_idx_x, original_idx_y, idx[0], idx[1])
+                        validMove = not checkIfYourPieceAlreadyThere(pos[0], pos[1], dragged_piece, isWhitesMove) and confirmValidity(original_idx_x, original_idx_y, idx[0], idx[1])
                         if idx[0] == -1 or not validMove:
                             pos = getPosFromIndex(original_idx_x, original_idx_y)
                             idx = (original_idx_x, original_idx_y)
@@ -212,6 +216,7 @@ while run:
                             isPieceClicked = False
                     # TODO: confirm is in the legal moves list
                     dragged_piece.setNewPosition(idx[0], idx[1], pos[0], pos[1])
+                    checkTakeOpponentPiece(idx[0], idx[1], dragged_piece, isWhitesMove)
                 else:
                     index = getIndexFromPos(mouse_x, mouse_y)
                     chessPieces = whiteChessPieces if isWhitesMove else blackChessPieces
@@ -243,7 +248,7 @@ while run:
                     if sameSquare:
                         isPieceClicked = True
                     else:
-                        validMove = checkIfPieceAlreadyThere(pos[0], pos[1], dragged_piece, isWhitesMove) and confirmValidity(original_idx_x, original_idx_y, idx[0], idx[1])
+                        validMove = not checkIfYourPieceAlreadyThere(pos[0], pos[1], dragged_piece, isWhitesMove) and confirmValidity(original_idx_x, original_idx_y, idx[0], idx[1])
                         if idx[0] == -1 or not validMove:
                             pos = getPosFromIndex(original_idx_x, original_idx_y)
                             idx = (original_idx_x, original_idx_y)
@@ -254,6 +259,7 @@ while run:
                     # TODO: confirm is in the legal moves list
                     # note i am setting set position or original index above if not a valid move
                     dragged_piece.setNewPosition(idx[0], idx[1], pos[0], pos[1])
+                    checkTakeOpponentPiece(idx[0], idx[1], dragged_piece, isWhitesMove)
 
 
         elif event.type == pygame.MOUSEMOTION:
