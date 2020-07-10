@@ -142,34 +142,34 @@ def checkDifferentSquare(xFrom, yFrom, xTo, yTo):
     return False
 
 w_rook_image = pygame.image.load(".\images\white_rook.png")
-w_rook_image = pygame.transform.scale(w_rook_image, (100,100))
+w_rook_image = pygame.transform.scale(w_rook_image, (w_per_sq,w_per_sq))
 w_knight_image = pygame.image.load(".\images\white_knight.png")
-w_knight_image = pygame.transform.scale(w_knight_image, (100,100))
+w_knight_image = pygame.transform.scale(w_knight_image, (w_per_sq,w_per_sq))
 w_bishop_image = pygame.image.load(".\images\white_bishop.png")
-w_bishop_image = pygame.transform.scale(w_bishop_image, (100,100))
+w_bishop_image = pygame.transform.scale(w_bishop_image, (w_per_sq,w_per_sq))
 w_king_image = pygame.image.load(".\images\white_king.png")
-w_king_image = pygame.transform.scale(w_king_image, (100,100))
+w_king_image = pygame.transform.scale(w_king_image, (w_per_sq,w_per_sq))
 w_queen_image = pygame.image.load(".\images\white_queen.png")
-w_queen_image = pygame.transform.scale(w_queen_image, (100,100))
+w_queen_image = pygame.transform.scale(w_queen_image, (w_per_sq,w_per_sq))
 w_pawn_image = pygame.image.load(".\images\white_pawn.png")
-w_pawn_image = pygame.transform.scale(w_pawn_image, (100,100))
+w_pawn_image = pygame.transform.scale(w_pawn_image, (w_per_sq,w_per_sq))
 whiteChessPieces = [ChessPiece(w_rook_image, 7, 7, 2), ChessPiece(w_rook_image, 0, 7, 2), ChessPiece(w_knight_image, 1, 7, 3), ChessPiece(w_knight_image, 6, 7, 3), 
         ChessPiece(w_bishop_image, 5, 7, 4), ChessPiece(w_bishop_image, 2, 7, 4), ChessPiece(w_king_image, 4, 7, 0), ChessPiece(w_queen_image, 3, 7, 1),
         ChessPiece(w_pawn_image, 0, 6, 5), ChessPiece(w_pawn_image, 1, 6, 5), ChessPiece(w_pawn_image, 2, 6, 5), ChessPiece(w_pawn_image, 3, 6, 5), 
         ChessPiece(w_pawn_image, 4, 6, 5), ChessPiece(w_pawn_image, 5, 6, 5), ChessPiece(w_pawn_image, 6, 6, 5), ChessPiece(w_pawn_image, 7, 6, 5)]
 
 b_rook_image = pygame.image.load(".\images\\black_rook.png")
-b_rook_image = pygame.transform.scale(b_rook_image, (100,100))
+b_rook_image = pygame.transform.scale(b_rook_image, (w_per_sq,w_per_sq))
 b_knight_image = pygame.image.load(".\images\\black_knight.png")
-b_knight_image = pygame.transform.scale(b_knight_image, (100,100))
+b_knight_image = pygame.transform.scale(b_knight_image, (w_per_sq,w_per_sq))
 b_bishop_image = pygame.image.load(".\images\\black_bishop.png")
-b_bishop_image = pygame.transform.scale(b_bishop_image, (100,100))
+b_bishop_image = pygame.transform.scale(b_bishop_image, (w_per_sq,w_per_sq))
 b_king_image = pygame.image.load(".\images\\black_king.png")
-b_king_image = pygame.transform.scale(b_king_image, (100,100))
+b_king_image = pygame.transform.scale(b_king_image, (w_per_sq,w_per_sq))
 b_queen_image = pygame.image.load(".\images\\black_queen.png")
-b_queen_image = pygame.transform.scale(b_queen_image, (100,100))
+b_queen_image = pygame.transform.scale(b_queen_image, (w_per_sq,w_per_sq))
 b_pawn_image = pygame.image.load(".\images\\black_pawn.png")
-b_pawn_image = pygame.transform.scale(b_pawn_image, (100,100))
+b_pawn_image = pygame.transform.scale(b_pawn_image, (w_per_sq,w_per_sq))
 blackChessPieces = [ChessPiece(b_rook_image, 7, 0, 2), ChessPiece(b_rook_image, 0, 0, 2), ChessPiece(b_knight_image, 1, 0, 3), ChessPiece(b_knight_image, 6, 0, 3), 
         ChessPiece(b_bishop_image, 5, 0, 4), ChessPiece(b_bishop_image, 2, 0, 4), ChessPiece(b_king_image, 4, 0, 0), ChessPiece(b_queen_image, 3, 0, 1),
         ChessPiece(b_pawn_image, 0, 1, 5), ChessPiece(b_pawn_image, 1, 1, 5), ChessPiece(b_pawn_image, 2, 1, 5), ChessPiece(b_pawn_image, 3, 1, 5), 
