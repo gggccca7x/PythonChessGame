@@ -27,6 +27,7 @@ def getRookMoves(x, y, yourPcs, oppoPcs, piece):
     while ix <= 7:
         ix += 1
         if ix <= 7:
+            # TODO: if piece already there then return
             moves.append((ix, y))
     ix = x
     while ix >= 0:
@@ -85,4 +86,12 @@ def getKingMoves(x, y, yourPcs, oppoPcs, piece):
             moves.append((x+1,y-1))
         if y < 7:
             moves.append((x+1,y+1))
-    return moves
+
+    return checkYourPieces(moves, yourPcs)
+
+# input: moves possible by piece, all your chess pieces on the board
+# returns list of valid moves if chess piece isnt on that square
+def checkYourPieces(moves, yourPcs):
+    piecesPositions = [(piece.idxX,piece.idxY) for piece in yourPcs]
+    myList = [x for x in moves if x not in piecesPositions]
+    return myList

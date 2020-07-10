@@ -1,5 +1,5 @@
 import pygame
-from ChessBoard import getAllLegalMoves
+from ChessBoard import getAllLegalMoves, checkYourPieces
 
 # TODO: Have a README.MD
 # Include something like: Please note - I am using a python interpreter with a conda environement...
