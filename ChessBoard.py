@@ -28,38 +28,54 @@ def getRookMoves(x, y, yourPcs, oppoPcs, piece):
         ix += 1
         if ix <= 7:
             # TODO: if piece already there then return
-            moves.append((ix, y))
+            if pieceNotThere((ix, y), yourPcs):
+                moves.append((ix, y))
+                if not pieceNotThere((ix, y), oppoPcs): break
+            else:
+                break
     ix = x
     while ix >= 0:
         ix -= 1
         if ix >= 0:
-            moves.append((ix, y))
+            if pieceNotThere((ix, y), yourPcs):
+                moves.append((ix, y))
+                if not pieceNotThere((ix, y), oppoPcs): break
+            else:
+                break
     iy = y
-    while iy <=  7:
+    while iy <= 7:
         iy += 1
         if iy <= 7:
-            moves.append((x, iy))
+            if pieceNotThere((x, iy), yourPcs):
+                moves.append((x, iy))
+                if not pieceNotThere((x, iy), oppoPcs): break
+            else:
+                break
     iy = y
     while iy >= 0:
         iy -= 1
         if iy >= 0:
-            moves.append((x, iy))
+            if pieceNotThere((x, iy), yourPcs):
+                moves.append((x, iy))
+                if not pieceNotThere((x, iy), oppoPcs): break
+            else:
+                break
 
     return moves
 
 def getPawnMoves(x, y, yourPcs, oppoPcs, piece, isWhite):
     moves = []
     if isWhite:
-        if yourPieceNotThere((x,y-1), yourPcs): moves.append((x,y-1))
+        if pieceNotThere((x,y-1), yourPcs): moves.append((x,y-1))
         if y == 6:
-            if yourPieceNotThere((x,y-2), yourPcs) and yourPieceNotThere((x,y-1), yourPcs): moves.append((x,y-2))
+            if pieceNotThere((x,y-2), yourPcs) and pieceNotThere((x,y-1), yourPcs): moves.append((x,y-2))
         # elif y == 1:
             # promote?
         # TODO: account for taking, and then en passant
     else:
-        if yourPieceNotThere((x,y+1), yourPcs): moves.append((x,y+1))
+        if pieceNotThere((x,y+1), yourPcs): moves.append((x,y+1))
         if y == 1:
-            if yourPieceNotThere((x,y+2), yourPcs) and yourPieceNotThere((x,y+1), yourPcs): moves.append((x,y+2))
+            if pieceNotThere((x,y+2), yourPcs) and pieceNotThere((x,y+1), yourPcs): moves.append((x,y+2))
     return moves
 
 
@@ -92,6 +108,7 @@ def checkYourPieces(moves, yourPcs):
     return myList
 
 # inputs an index tuple (x,y) and your pieces and returns true if your piece isnt there
-def yourPieceNotThere(pos, yourPcs):
-    piecesPositions = [(piece.idxX, piece.idxY) for piece in yourPcs]
+# or opponenet pieces depending which list put in
+def pieceNotThere(pos, pcs):
+    piecesPositions = [(piece.idxX, piece.idxY) for piece in pcs]
     return True if pos not in piecesPositions else False
