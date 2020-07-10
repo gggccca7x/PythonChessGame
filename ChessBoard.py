@@ -50,21 +50,17 @@ def getRookMoves(x, y, yourPcs, oppoPcs, piece):
 def getPawnMoves(x, y, yourPcs, oppoPcs, piece, isWhite):
     moves = []
     if isWhite:
+        if yourPieceNotThere((x,y-1), yourPcs): moves.append((x,y-1))
         if y == 6:
-            moves.append((x,y-1))
-            moves.append((x,y-2))
+            # TODO: account for pieces on square before this one
+            if yourPieceNotThere((x,y-2), yourPcs): moves.append((x,y-2))
         # elif y == 1:
             # promote?
-        else:
-            moves.append((x,y-1))
-
         # TODO: account for taking, and then en passant
     else:
+        if yourPieceNotThere((x,y+1), yourPcs): moves.append((x,y+1))
         if y == 1:
-            moves.append((x,y+1))
-            moves.append((x,y+2))
-        else:
-            moves.append((x,y+1))
+            if yourPieceNotThere((x,y+2), yourPcs): moves.append((x,y+2))
     return moves
 
 
@@ -92,6 +88,14 @@ def getKingMoves(x, y, yourPcs, oppoPcs, piece):
 # input: moves possible by piece, all your chess pieces on the board
 # returns list of valid moves if chess piece isnt on that square
 def checkYourPieces(moves, yourPcs):
-    piecesPositions = [(piece.idxX,piece.idxY) for piece in yourPcs]
+    piecesPositions = [(piece.idxX, piece.idxY) for piece in yourPcs]
     myList = [x for x in moves if x not in piecesPositions]
     return myList
+
+# inputs an index tuple (x,y) and your pieces and returns true if your piece isnt there
+def yourPieceNotThere(pos, yourPcs):
+    piecesPositions = [(piece.idxX, piece.idxY) for piece in yourPcs]
+    if pos not in piecesPositions:
+        return True
+    else:
+        return False

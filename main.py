@@ -1,5 +1,5 @@
 import pygame
-from ChessBoard import getAllLegalMoves, checkYourPieces
+from ChessBoard import getAllLegalMoves
 
 # TODO: Have a README.MD
 # Include something like: Please note - I am using a python interpreter with a conda environement...
@@ -188,7 +188,7 @@ isPieceClicked = False # Specifically Clicked
 legalMovesList = []
 
 while run:
-    pygame.time.delay(15)
+    pygame.time.delay(10)
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
