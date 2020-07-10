@@ -160,18 +160,28 @@ def getPawnMoves(x, y, yourPcs, oppoPcs, piece, isWhite):
     moves = []
     if isWhite:
         if pieceNotThere((x,y-1), yourPcs) and pieceNotThere((x,y-1), oppoPcs): moves.append((x,y-1))
+        # Note: dont need to worry about out of bounds i dont think?
+        if not pieceNotThere((x+1,y-1), oppoPcs):
+            moves.append((x+1,y-1))
+        if not pieceNotThere((x-1,y-1), oppoPcs):
+            moves.append((x-1,y-1))
         if y == 6:
             if (pieceNotThere((x,y-2), yourPcs) and pieceNotThere((x,y-1), yourPcs) 
-                and pieceNotThere((x,y-2), oppoPcs) and pieceNotThere((x,y-1), oppoPcs) ): 
+                and pieceNotThere((x,y-2), oppoPcs) and pieceNotThere((x,y-1), oppoPcs)): 
                 moves.append((x,y-2))
         # elif y == 1:
             # promote?
         # TODO: account for taking, and then en passant
     else:
         if pieceNotThere((x,y+1), yourPcs) and pieceNotThere((x,y+1), oppoPcs): moves.append((x,y+1))
+        # Note: dont need to worry about out of bounds i dont think?
+        if not pieceNotThere((x+1,y+1), oppoPcs):
+                moves.append((x+1,y+1))
+        if not pieceNotThere((x-1,y+1), oppoPcs):
+            moves.append((x-1,y+1))
         if y == 1:
             if (pieceNotThere((x,y+2), yourPcs) and pieceNotThere((x,y+1), yourPcs)
-                and pieceNotThere((x,y+2), oppoPcs) and pieceNotThere((x,y+1), oppoPcs) ): 
+                and pieceNotThere((x,y+2), oppoPcs) and pieceNotThere((x,y+1), oppoPcs)): 
                 moves.append((x,y+2))
     return moves
 
