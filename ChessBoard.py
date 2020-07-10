@@ -161,16 +161,18 @@ def getPawnMoves(x, y, yourPcs, oppoPcs, piece, isWhite):
     if isWhite:
         if pieceNotThere((x,y-1), yourPcs) and pieceNotThere((x,y-1), oppoPcs): moves.append((x,y-1))
         if y == 6:
-            if pieceNotThere((x,y-2), yourPcs) and pieceNotThere((x,y-1), yourPcs)
-            and pieceNotThere((x,y-2), oppoPcs) and pieceNotThere((x,y-1), oppoPcs): moves.append((x,y-2))
+            if (pieceNotThere((x,y-2), yourPcs) and pieceNotThere((x,y-1), yourPcs) 
+                and pieceNotThere((x,y-2), oppoPcs) and pieceNotThere((x,y-1), oppoPcs) ): 
+                moves.append((x,y-2))
         # elif y == 1:
             # promote?
         # TODO: account for taking, and then en passant
     else:
         if pieceNotThere((x,y+1), yourPcs) and pieceNotThere((x,y+1), oppoPcs): moves.append((x,y+1))
         if y == 1:
-            if pieceNotThere((x,y+2), yourPcs) and pieceNotThere((x,y+1), yourPcs)
-            and pieceNotThere((x,y+2), oppoPcs) and pieceNotThere((x,y+1), oppoPcs): moves.append((x,y+2))
+            if (pieceNotThere((x,y+2), yourPcs) and pieceNotThere((x,y+1), yourPcs)
+                and pieceNotThere((x,y+2), oppoPcs) and pieceNotThere((x,y+1), oppoPcs) ): 
+                moves.append((x,y+2))
     return moves
 
 # TODO: complete except castroling and checks
