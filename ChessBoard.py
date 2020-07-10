@@ -12,22 +12,21 @@ def getAllLegalMoves(x, y, yourPcs, oppoPcs, piece, isWhite):
     # TODO: complete this with chess logic
     switcher = {
         KING: getKingMoves(x, y, yourPcs, oppoPcs, piece),
-        QUEEN: [(2,0), (2,3)], 
-        # ROOK:  [(2,2), (7,3)],
+        QUEEN: getQueenMoves(x, y, yourPcs, oppoPcs, piece), 
         ROOK: getRookMoves(x, y, yourPcs, oppoPcs, piece), 
         KNIGHT: [(2,2), (7,3)], 
-        BISHOP: [(2,5), (5,3)], 
+        BISHOP: getBishopMoves(x, y, yourPcs, oppoPcs, piece), 
         PAWN: getPawnMoves(x, y, yourPcs, oppoPcs, piece, isWhite)
     }
     return switcher.get(piece.pType, (-1, -1))
 
+# TODO: complete except castroling and checks
 def getRookMoves(x, y, yourPcs, oppoPcs, piece):
     moves = []
     ix = x
     while ix <= 7:
         ix += 1
         if ix <= 7:
-            # TODO: if piece already there then return
             if pieceNotThere((ix, y), yourPcs):
                 moves.append((ix, y))
                 if not pieceNotThere((ix, y), oppoPcs): break
@@ -63,6 +62,60 @@ def getRookMoves(x, y, yourPcs, oppoPcs, piece):
 
     return moves
 
+# TODO: bishop working perfectly except checks
+def getBishopMoves(x, y, yourPcs, oppoPcs, piece):
+    moves = []
+    ix = x
+    iy = y
+    while ix <= 7 and iy <= 7:
+        ix += 1
+        iy += 1
+        if ix <= 7 and iy <= 7:
+            if pieceNotThere((ix, iy), yourPcs):
+                moves.append((ix, iy))
+                if not pieceNotThere((ix, iy), oppoPcs): break
+            else:
+                break
+    ix = x
+    iy = y
+    while ix <= 7 and iy >= 0:
+        ix += 1
+        iy -= 1
+        if ix <= 7 and iy >= 0:
+            if pieceNotThere((ix, iy), yourPcs):
+                moves.append((ix, iy))
+                if not pieceNotThere((ix, iy), oppoPcs): break
+            else:
+                break
+    ix = x
+    iy = y
+    while ix >= 0 and iy <= 7:
+        ix -= 1
+        iy += 1
+        if ix >= 0 and iy <= 7:
+            if pieceNotThere((ix, iy), yourPcs):
+                moves.append((ix, iy))
+                if not pieceNotThere((ix, iy), oppoPcs): break
+            else:
+                break
+    ix = x
+    iy = y
+    while ix >= 0 and iy >= 0:
+        ix -= 1
+        iy -= 1
+        if ix >= 0 and iy >= 0:
+            if pieceNotThere((ix, iy), yourPcs):
+                moves.append((ix, iy))
+                if not pieceNotThere((ix, iy), oppoPcs): break
+            else:
+                break
+
+    return moves
+
+# TODO: complete except accounting for castling unlike rook this cannot do it and checks
+def getQueenMoves(x, y, yourPcs, oppoPcs, piece):
+    return getBishopMoves(x, y, yourPcs, oppoPcs, piece) + getRookMoves(x, y, yourPcs, oppoPcs, piece)
+
 def getPawnMoves(x, y, yourPcs, oppoPcs, piece, isWhite):
     moves = []
     if isWhite:
@@ -78,7 +131,7 @@ def getPawnMoves(x, y, yourPcs, oppoPcs, piece, isWhite):
             if pieceNotThere((x,y+2), yourPcs) and pieceNotThere((x,y+1), yourPcs): moves.append((x,y+2))
     return moves
 
-
+# TODO: complete except castroling and checks
 def getKingMoves(x, y, yourPcs, oppoPcs, piece):
     moves = []
     if y > 0:
