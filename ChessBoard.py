@@ -94,7 +94,4 @@ def checkYourPieces(moves, yourPcs):
 # inputs an index tuple (x,y) and your pieces and returns true if your piece isnt there
 def yourPieceNotThere(pos, yourPcs):
     piecesPositions = [(piece.idxX, piece.idxY) for piece in yourPcs]
-    if pos not in piecesPositions:
-        return True
-    else:
-        return False
+    return True if pos not in piecesPositions else False
