@@ -1,3 +1,5 @@
+# TODO: rename to "ChessLogic" maybe?
+
 # list of numbers associated to specific type
 KING = 0
 QUEEN = 1
@@ -14,7 +16,7 @@ def getAllLegalMoves(x, y, yourPcs, oppoPcs, piece, isWhite):
         KING: getKingMoves(x, y, yourPcs, oppoPcs, piece),
         QUEEN: getQueenMoves(x, y, yourPcs, oppoPcs, piece), 
         ROOK: getRookMoves(x, y, yourPcs, oppoPcs, piece), 
-        KNIGHT: [(2,2), (7,3)], 
+        KNIGHT: getKnightMoves(x, y, yourPcs, oppoPcs, piece), 
         BISHOP: getBishopMoves(x, y, yourPcs, oppoPcs, piece), 
         PAWN: getPawnMoves(x, y, yourPcs, oppoPcs, piece, isWhite)
     }
@@ -112,10 +114,48 @@ def getBishopMoves(x, y, yourPcs, oppoPcs, piece):
 
     return moves
 
+# TODO: knight working perfectly except checks
+def getKnightMoves(x, y, yourPcs, oppoPcs, piece):
+    moves = []
+    ix = x - 2
+    iy = y - 1
+    if ix >= 0 and iy >= 0 and pieceNotThere((ix,iy), yourPcs):
+        moves.append((ix, iy))
+    ix = x - 1
+    iy = y - 2
+    if ix >= 0 and iy >= 0 and pieceNotThere((ix,iy), yourPcs):
+        moves.append((ix, iy))
+    ix = x + 1
+    iy = y - 2
+    if ix <= 7 and iy >= 0 and pieceNotThere((ix,iy), yourPcs):
+        moves.append((ix, iy))
+    ix = x + 2
+    iy = y - 1
+    if ix <= 7 and iy >= 0 and pieceNotThere((ix,iy), yourPcs):
+        moves.append((ix, iy))
+    ix = x + 2
+    iy = y + 1
+    if ix <= 7 and iy <= 7 and pieceNotThere((ix,iy), yourPcs):
+        moves.append((ix, iy))
+    ix = x + 1
+    iy = y + 2
+    if ix <= 7 and iy <= 7 and pieceNotThere((ix,iy), yourPcs):
+        moves.append((ix, iy))
+    ix = x - 2
+    iy = y + 1
+    if ix >= 0 and iy <= 7 and pieceNotThere((ix,iy), yourPcs):
+        moves.append((ix, iy))
+    ix = x - 1
+    iy = y + 2
+    if ix >= 0 and iy <= 7 and pieceNotThere((ix,iy), yourPcs):
+        moves.append((ix, iy))
+    return moves
+
 # TODO: complete except accounting for castling unlike rook this cannot do it and checks
 def getQueenMoves(x, y, yourPcs, oppoPcs, piece):
     return getBishopMoves(x, y, yourPcs, oppoPcs, piece) + getRookMoves(x, y, yourPcs, oppoPcs, piece)
 
+# TODO: checks, taking, enpassant
 def getPawnMoves(x, y, yourPcs, oppoPcs, piece, isWhite):
     moves = []
     if isWhite:
