@@ -52,15 +52,14 @@ def getPawnMoves(x, y, yourPcs, oppoPcs, piece, isWhite):
     if isWhite:
         if yourPieceNotThere((x,y-1), yourPcs): moves.append((x,y-1))
         if y == 6:
-            # TODO: account for pieces on square before this one
-            if yourPieceNotThere((x,y-2), yourPcs): moves.append((x,y-2))
+            if yourPieceNotThere((x,y-2), yourPcs) and yourPieceNotThere((x,y-1), yourPcs): moves.append((x,y-2))
         # elif y == 1:
             # promote?
         # TODO: account for taking, and then en passant
     else:
         if yourPieceNotThere((x,y+1), yourPcs): moves.append((x,y+1))
         if y == 1:
-            if yourPieceNotThere((x,y+2), yourPcs): moves.append((x,y+2))
+            if yourPieceNotThere((x,y+2), yourPcs) and yourPieceNotThere((x,y+1), yourPcs): moves.append((x,y+2))
     return moves
 
 
