@@ -5,14 +5,10 @@ from ChessBoard import getAllLegalMoves
 # Include something like: Please note - I am using a python interpreter with a conda environement...
 # pygame: 1.9.6, python 3.7.6, conda 4.8.3
 
-# TODO: create a method which inputs a piece, list of all your pieces, list of all opponent pieces, the location of the piece selected
-# and returns a list of all legal positions
-# TODO: after this method above ^ has been created, use the list to populate a visual effect on moveable squares - account for empty or not
-
+# TODO: confirm player not in check
 # TODO: fix bug illegal move still takes piece
 # TODO: Bring to front the selected piece (move to bottom of the list)
 # TODO: Confirm pieces have legal chess moves
-# TODO: display all possible legal moves with only press a piece or holding on it
 # TODO: have some sort of take back mechanism
 # TODO: dragging shows legal moves
 # TODO: allow castrol
@@ -236,7 +232,6 @@ while run:
                         offset_y = dragged_piece.posY - mouse_y
                         original_idx_x, original_idx_y = getIndexFromPos(mouse_x, mouse_y)
 
-
         elif event.type == pygame.MOUSEBUTTONUP:
             if event.button == 1:
                 if is_dragging_piece:
@@ -259,7 +254,6 @@ while run:
                     # TODO: confirm is in the legal moves list
                     # note i am setting set position or original index above if not a valid move
                     dragged_piece.setNewPosition(idx[0], idx[1], pos[0], pos[1])
-
 
         elif event.type == pygame.MOUSEMOTION:
             if is_dragging_piece:

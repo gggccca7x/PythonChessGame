@@ -11,6 +11,13 @@ PAWN = 5
 # return tuples of indexes e.g. (2, 3)
 def getAllLegalMoves(x, y, yourPcs, oppoPcs, piece, isWhite):
 
+    king = piece
+    for p in yourPcs:
+        if p.pType == KING:
+            king = p
+            break
+    inCheck = checkKingInCheck((king.idxX, king.idxY), yourPcs, oppoPcs, isWhite)
+
     # TODO: complete this with chess logic
     switcher = {
         KING: getKingMoves(x, y, yourPcs, oppoPcs, piece),
@@ -21,6 +28,31 @@ def getAllLegalMoves(x, y, yourPcs, oppoPcs, piece, isWhite):
         PAWN: getPawnMoves(x, y, yourPcs, oppoPcs, piece, isWhite)
     }
     return switcher.get(piece.pType, (-1, -1))
+
+# Returns true if king in check, theres probs a better way to do this entire function though tbh
+def checkKingInCheck(kPos, yourPcs, oppoPcs, isWhite):
+    oppoMoves = []
+    for p in oppoPcs:
+        switcher = {
+            # note: had to switch over oppoPcs and yourPcs in these methods
+            KING: getKingMoves(p.idxX, p.idxY, oppoPcs, yourPcs, p),
+            QUEEN: getQueenMoves(p.idxX, p.idxY, oppoPcs, yourPcs, p), 
+            ROOK: getRookMoves(p.idxX, p.idxY, oppoPcs, yourPcs, p), 
+            KNIGHT: getKnightMoves(p.idxX, p.idxY, oppoPcs, yourPcs, p), 
+            BISHOP: getBishopMoves(p.idxX, p.idxY, oppoPcs, yourPcs, p), 
+            PAWN: getPawnMoves(p.idxX, p.idxY, oppoPcs, yourPcs, p, not isWhite)
+        }
+        oppoMoves = oppoMoves + switcher.get(p.pType)
+    
+    print("Size of oppo moves: " + str(len(oppoMoves)))
+    print("king pos is: " + str(kPos))
+    if (kPos[0], kPos[1]) in oppoMoves:
+        print("king in check")
+        return True
+    else:
+        print("not in check")
+        return False
+        
 
 # TODO: complete except castroling and checks
 def getRookMoves(x, y, yourPcs, oppoPcs, piece):
