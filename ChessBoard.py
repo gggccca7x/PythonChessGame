@@ -32,6 +32,7 @@ def getAllLegalMoves(x, y, yourPcs, oppoPcs, piece, isWhite):
 # Returns true if king in check, theres probs a better way to do this entire function though tbh
 def checkKingInCheck(kPos, yourPcs, oppoPcs, isWhite):
     oppoMoves = []
+    inCheck = False
     for p in oppoPcs:
         switcher = {
             # note: had to switch over oppoPcs and yourPcs in these methods
@@ -42,17 +43,13 @@ def checkKingInCheck(kPos, yourPcs, oppoPcs, isWhite):
             BISHOP: getBishopMoves(p.idxX, p.idxY, oppoPcs, yourPcs, p), 
             PAWN: getPawnMoves(p.idxX, p.idxY, oppoPcs, yourPcs, p, not isWhite)
         }
-        oppoMoves = oppoMoves + switcher.get(p.pType)
-    
-    print("Size of oppo moves: " + str(len(oppoMoves)))
-    print("king pos is: " + str(kPos))
-    if (kPos[0], kPos[1]) in oppoMoves:
-        print("king in check")
-        return True
-    else:
-        print("not in check")
-        return False
-        
+        pieceMoves = switcher.get(p.pType)
+        oppoMoves = oppoMoves + pieceMoves
+        if (kPos[0], kPos[1]) in pieceMoves:
+            print("piece putting them in check: " + str(p.pType))
+            inCheck = True
+
+    return inCheck
 
 # TODO: complete except castroling and checks
 def getRookMoves(x, y, yourPcs, oppoPcs, piece):
