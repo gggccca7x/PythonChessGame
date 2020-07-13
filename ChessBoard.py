@@ -33,17 +33,17 @@ def getAllLegalMoves(x, y, yourPcs, oppoPcs, piece, isWhite):
     else: 
         # TODO: complete this with chess logic
         switcher = {
-            KING: getKingMoves(x, y, yourPcs, oppoPcs, piece),
-            QUEEN: getQueenMoves(x, y, yourPcs, oppoPcs, piece), 
-            ROOK: getRookMoves(x, y, yourPcs, oppoPcs, piece), 
-            KNIGHT: getKnightMoves(x, y, yourPcs, oppoPcs, piece), 
-            BISHOP: getBishopMoves(x, y, yourPcs, oppoPcs, piece), 
-            PAWN: getPawnMoves(x, y, yourPcs, oppoPcs, piece, isWhite)
+            KING: getKingMoves(x, y, yourPcs, oppoPcs, piece, inCheckList),
+            QUEEN: getQueenMoves(x, y, yourPcs, oppoPcs, piece, inCheckList), 
+            ROOK: getRookMoves(x, y, yourPcs, oppoPcs, piece, inCheckList), 
+            KNIGHT: getKnightMoves(x, y, yourPcs, oppoPcs, piece, inCheckList), 
+            BISHOP: getBishopMoves(x, y, yourPcs, oppoPcs, piece, inCheckList), 
+            PAWN: getPawnMoves(x, y, yourPcs, oppoPcs, piece, isWhite,inCheckList)
         }
         return switcher.get(piece.pType, (-1, -1))
 
 # Returns true if king in check, theres probs a better way to do this entire function though tbh
-def checkKingInCheck(kPos, yourPcs, oppoPcs, isWhite):
+def checkKingInCheck(kPos, yourPcs, oppoPcs, isWhite, oppoCheckingPcs):
     oppoPieces = []
     inCheck = False
     for p in oppoPcs:
@@ -63,7 +63,7 @@ def checkKingInCheck(kPos, yourPcs, oppoPcs, isWhite):
     return oppoPieces
 
 # TODO: complete except castroling and checks
-def getRookMoves(x, y, yourPcs, oppoPcs, piece):
+def getRookMoves(x, y, yourPcs, oppoPcs, piece, oppoCheckingPcs):
     moves = []
     ix = x
     while ix <= 7:
@@ -105,7 +105,7 @@ def getRookMoves(x, y, yourPcs, oppoPcs, piece):
     return moves
 
 # TODO: bishop working perfectly except checks
-def getBishopMoves(x, y, yourPcs, oppoPcs, piece):
+def getBishopMoves(x, y, yourPcs, oppoPcs, piece, oppoCheckingPcs):
     moves = []
     ix = x
     iy = y
@@ -155,7 +155,7 @@ def getBishopMoves(x, y, yourPcs, oppoPcs, piece):
     return moves
 
 # TODO: knight working perfectly except checks
-def getKnightMoves(x, y, yourPcs, oppoPcs, piece):
+def getKnightMoves(x, y, yourPcs, oppoPcs, piece, oppoCheckingPcs):
     moves = []
     ix = x - 2
     iy = y - 1
@@ -192,11 +192,11 @@ def getKnightMoves(x, y, yourPcs, oppoPcs, piece):
     return moves
 
 # TODO: complete except accounting for castling unlike rook this cannot do it and checks
-def getQueenMoves(x, y, yourPcs, oppoPcs, piece):
+def getQueenMoves(x, y, yourPcs, oppoPcs, piece, oppoCheckingPcs):
     return getBishopMoves(x, y, yourPcs, oppoPcs, piece) + getRookMoves(x, y, yourPcs, oppoPcs, piece)
 
 # TODO: checks, taking, enpassant
-def getPawnMoves(x, y, yourPcs, oppoPcs, piece, isWhite):
+def getPawnMoves(x, y, yourPcs, oppoPcs, piece, isWhite, oppoCheckingPcs):
     moves = []
     if isWhite:
         if pieceNotThere((x,y-1), yourPcs) and pieceNotThere((x,y-1), oppoPcs): moves.append((x,y-1))
@@ -226,7 +226,7 @@ def getPawnMoves(x, y, yourPcs, oppoPcs, piece, isWhite):
     return moves
 
 # TODO: complete except castroling and checks
-def getKingMoves(x, y, yourPcs, oppoPcs, piece):
+def getKingMoves(x, y, yourPcs, oppoPcs, piece, oppoCheckingPcs):
     moves = []
     if y > 0:
         moves.append((x,y-1))
