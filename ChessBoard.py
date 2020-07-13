@@ -16,7 +16,13 @@ def getAllLegalMoves(x, y, yourPcs, oppoPcs, piece, isWhite):
         if p.pType == KING:
             king = p
             break
-    inCheck = checkKingInCheck((king.idxX, king.idxY), yourPcs, oppoPcs, isWhite)
+
+    # All pieces putting king in check
+    # TODO: surely if 2 pieces checking the king, he is FORCED to move?
+    # and if 0 pieces checking king, it is fine
+    inCheckList = checkKingInCheck((king.idxX, king.idxY), yourPcs, oppoPcs, isWhite)
+    if len(inCheckList) > 0:
+        print("king in check: " + str(len(inCheckList)))
 
     # TODO: complete this with chess logic
     switcher = {
@@ -31,7 +37,7 @@ def getAllLegalMoves(x, y, yourPcs, oppoPcs, piece, isWhite):
 
 # Returns true if king in check, theres probs a better way to do this entire function though tbh
 def checkKingInCheck(kPos, yourPcs, oppoPcs, isWhite):
-    oppoMoves = []
+    oppoPieces = []
     inCheck = False
     for p in oppoPcs:
         switcher = {
@@ -43,13 +49,11 @@ def checkKingInCheck(kPos, yourPcs, oppoPcs, isWhite):
             BISHOP: getBishopMoves(p.idxX, p.idxY, oppoPcs, yourPcs, p), 
             PAWN: getPawnMoves(p.idxX, p.idxY, oppoPcs, yourPcs, p, not isWhite)
         }
-        pieceMoves = switcher.get(p.pType)
-        oppoMoves = oppoMoves + pieceMoves
+        pieceMoves = switcher.get(p.pType, (-1, -1))
         if (kPos[0], kPos[1]) in pieceMoves:
-            print("piece putting them in check: " + str(p.pType))
-            inCheck = True
+            oppoPieces.append(p)
 
-    return inCheck
+    return oppoPieces
 
 # TODO: complete except castroling and checks
 def getRookMoves(x, y, yourPcs, oppoPcs, piece):
