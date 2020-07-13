@@ -20,14 +20,14 @@ def getAllLegalMoves(x, y, yourPcs, oppoPcs, piece, isWhite):
     # All pieces putting king in check
     # TODO: surely if 2 pieces checking the king, he is FORCED to move?
     # and if 0 pieces checking king, it is fine
-    inCheckList = checkKingInCheck((king.idxX, king.idxY), yourPcs, oppoPcs, isWhite)
+    inCheckList = checkKingInCheck((king.idxX, king.idxY), yourPcs, oppoPcs, isWhite, [])
     numCheckingPcs = len(inCheckList)
     if numCheckingPcs > 0:
         print("king in check: " + str(numCheckingPcs))
 
     if numCheckingPcs == 2:
         if piece.pType == KING:
-            return getKingMoves(x, y, yourPcs, oppoPcs, piece)
+            return getKingMoves(x, y, yourPcs, oppoPcs, piece, [])
         else:
             return []
     else: 
@@ -49,12 +49,12 @@ def checkKingInCheck(kPos, yourPcs, oppoPcs, isWhite, oppoCheckingPcs):
     for p in oppoPcs:
         switcher = {
             # note: had to switch over oppoPcs and yourPcs in these methods
-            KING: getKingMoves(p.idxX, p.idxY, oppoPcs, yourPcs, p),
-            QUEEN: getQueenMoves(p.idxX, p.idxY, oppoPcs, yourPcs, p), 
-            ROOK: getRookMoves(p.idxX, p.idxY, oppoPcs, yourPcs, p), 
-            KNIGHT: getKnightMoves(p.idxX, p.idxY, oppoPcs, yourPcs, p), 
-            BISHOP: getBishopMoves(p.idxX, p.idxY, oppoPcs, yourPcs, p), 
-            PAWN: getPawnMoves(p.idxX, p.idxY, oppoPcs, yourPcs, p, not isWhite)
+            KING: getKingMoves(p.idxX, p.idxY, oppoPcs, yourPcs, p, []),
+            QUEEN: getQueenMoves(p.idxX, p.idxY, oppoPcs, yourPcs, p, []), 
+            ROOK: getRookMoves(p.idxX, p.idxY, oppoPcs, yourPcs, p, []), 
+            KNIGHT: getKnightMoves(p.idxX, p.idxY, oppoPcs, yourPcs, p, []), 
+            BISHOP: getBishopMoves(p.idxX, p.idxY, oppoPcs, yourPcs, p, []), 
+            PAWN: getPawnMoves(p.idxX, p.idxY, oppoPcs, yourPcs, p, not isWhite, [])
         }
         pieceMoves = switcher.get(p.pType, (-1, -1))
         if (kPos[0], kPos[1]) in pieceMoves:
@@ -193,7 +193,7 @@ def getKnightMoves(x, y, yourPcs, oppoPcs, piece, oppoCheckingPcs):
 
 # TODO: complete except accounting for castling unlike rook this cannot do it and checks
 def getQueenMoves(x, y, yourPcs, oppoPcs, piece, oppoCheckingPcs):
-    return getBishopMoves(x, y, yourPcs, oppoPcs, piece) + getRookMoves(x, y, yourPcs, oppoPcs, piece)
+    return getBishopMoves(x, y, yourPcs, oppoPcs, piece, oppoCheckingPcs) + getRookMoves(x, y, yourPcs, oppoPcs, piece, oppoCheckingPcs)
 
 # TODO: checks, taking, enpassant
 def getPawnMoves(x, y, yourPcs, oppoPcs, piece, isWhite, oppoCheckingPcs):
