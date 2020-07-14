@@ -42,6 +42,17 @@ def getAllLegalMoves(x, y, yourPcs, oppoPcs, piece, isWhite):
         }
         return switcher.get(piece.pType, (-1, -1))
 
+def returnAllMoves(x, y, yourPcs, oppoPcs, piece, isWhite, inCheckList):
+    switcher = {
+        KING: getKingMoves(x, y, yourPcs, oppoPcs, piece, inCheckList),
+        QUEEN: getQueenMoves(x, y, yourPcs, oppoPcs, piece, inCheckList), 
+        ROOK: getRookMoves(x, y, yourPcs, oppoPcs, piece, inCheckList), 
+        KNIGHT: getKnightMoves(x, y, yourPcs, oppoPcs, piece, inCheckList), 
+        BISHOP: getBishopMoves(x, y, yourPcs, oppoPcs, piece, inCheckList), 
+        PAWN: getPawnMoves(x, y, yourPcs, oppoPcs, piece, isWhite,inCheckList)
+    }
+    return switcher.get(piece.pType, (-1, -1))
+
 # Returns true if king in check, theres probs a better way to do this entire function though tbh
 def checkKingInCheck(kPos, yourPcs, oppoPcs, isWhite, oppoCheckingPcs):
     oppoPieces = []
@@ -49,12 +60,12 @@ def checkKingInCheck(kPos, yourPcs, oppoPcs, isWhite, oppoCheckingPcs):
     for p in oppoPcs:
         switcher = {
             # note: had to switch over oppoPcs and yourPcs in these methods
-            KING: getKingMoves(p.idxX, p.idxY, oppoPcs, yourPcs, p, []),
-            QUEEN: getQueenMoves(p.idxX, p.idxY, oppoPcs, yourPcs, p, []), 
-            ROOK: getRookMoves(p.idxX, p.idxY, oppoPcs, yourPcs, p, []), 
-            KNIGHT: getKnightMoves(p.idxX, p.idxY, oppoPcs, yourPcs, p, []), 
-            BISHOP: getBishopMoves(p.idxX, p.idxY, oppoPcs, yourPcs, p, []), 
-            PAWN: getPawnMoves(p.idxX, p.idxY, oppoPcs, yourPcs, p, not isWhite, [])
+            KING: getKingMoves(p.idxX, p.idxY, oppoPcs, yourPcs, p, oppoCheckingPcs),
+            QUEEN: getQueenMoves(p.idxX, p.idxY, oppoPcs, yourPcs, p, oppoCheckingPcs), 
+            ROOK: getRookMoves(p.idxX, p.idxY, oppoPcs, yourPcs, p, oppoCheckingPcs), 
+            KNIGHT: getKnightMoves(p.idxX, p.idxY, oppoPcs, yourPcs, p, oppoCheckingPcs), 
+            BISHOP: getBishopMoves(p.idxX, p.idxY, oppoPcs, yourPcs, p, oppoCheckingPcs),
+            PAWN: getPawnMoves(p.idxX, p.idxY, oppoPcs, yourPcs, p, not isWhite, oppoCheckingPcs)
         }
         pieceMoves = switcher.get(p.pType, (-1, -1))
         if (kPos[0], kPos[1]) in pieceMoves:
@@ -63,14 +74,25 @@ def checkKingInCheck(kPos, yourPcs, oppoPcs, isWhite, oppoCheckingPcs):
     return oppoPieces
 
 # TODO: complete except castroling and checks
-def getRookMoves(x, y, yourPcs, oppoPcs, piece, oppoCheckingPcs):
+def getRookMoves(x, y, yourPcs, oppoPcs, piece, oppoCheckingPc):
+    isInCheck = len(oppoCheckingPc) == 1
+    if isInCheck:
+        checkingMoves = returnAllMoves(oppoCheckingPc[0].idxX, oppoCheckingPc[0].idxY, oppoPcs, yourPcs, oppoCheckingPc[0], True, [])
     moves = []
     ix = x
     while ix <= 7:
         ix += 1
         if ix <= 7:
             if pieceNotThere((ix, y), yourPcs):
-                moves.append((ix, y))
+                if isInCheck:
+                    if oppoCheckingPc[0].pType == QUEEN or oppoCheckingPc[0].pType == BISHOP or oppoCheckingPc[0].pType == ROOK:
+                        if (ix, y) in checkingMoves:
+                            # TODO cant move on all squares that queen can move to - only move to block the queen checking the king
+                            moves.append((ix, y))
+                    if ix == oppoCheckingPc[0].idxX and y == oppoCheckingPc[0].idxY:
+                        moves.append((ix, y))
+                else:
+                    moves.append((ix, y))   
                 if not pieceNotThere((ix, y), oppoPcs): break
             else:
                 break
@@ -79,7 +101,14 @@ def getRookMoves(x, y, yourPcs, oppoPcs, piece, oppoCheckingPcs):
         ix -= 1
         if ix >= 0:
             if pieceNotThere((ix, y), yourPcs):
-                moves.append((ix, y))
+                if isInCheck:
+                    if oppoCheckingPc[0].pType == QUEEN or oppoCheckingPc[0].pType == BISHOP or oppoCheckingPc[0].pType == ROOK:
+                        if (ix, y) in checkingMoves:
+                            moves.append((ix, y))
+                    if ix == oppoCheckingPc[0].idxX and y == oppoCheckingPc[0].idxY:
+                        moves.append((ix, y))
+                else:
+                    moves.append((ix, y))
                 if not pieceNotThere((ix, y), oppoPcs): break
             else:
                 break
