@@ -22,8 +22,6 @@ def getAllLegalMoves(x, y, yourPcs, oppoPcs, piece, isWhite):
     # and if 0 pieces checking king, it is fine
     inCheckList = checkKingInCheck((king.idxX, king.idxY), yourPcs, oppoPcs, isWhite, [])
     numCheckingPcs = len(inCheckList)
-    if numCheckingPcs > 0:
-        print("king in check: " + str(numCheckingPcs))
 
     if numCheckingPcs == 2:
         if piece.pType == KING:
@@ -40,7 +38,22 @@ def getAllLegalMoves(x, y, yourPcs, oppoPcs, piece, isWhite):
             BISHOP: getBishopMoves(x, y, yourPcs, oppoPcs, piece, inCheckList), 
             PAWN: getPawnMoves(x, y, yourPcs, oppoPcs, piece, isWhite,inCheckList)
         }
-        return switcher.get(piece.pType, (-1, -1))
+        pieceMoves =  switcher.get(piece.pType, (-1, -1))
+
+        # Loop through every move, make the move in a copied array and confirm if the king is in check after it
+        validPieceMoves = []
+        for move in pieceMoves:
+            yourPcsCopy = yourPcs
+            for p in yourPcsCopy:
+                if p.idxX == piece.idxX and p.idxY == piece.idxY:
+                    p.idxX = move[0]
+                    p.idxY = move[1]
+            isKingInCheckStill = checkKingInCheck((king.idxX, king.idxY), yourPcsCopy, oppoPcs, isWhite, [])
+            print("is king in check: " + str(len(isKingInCheckStill)))
+            if len(isKingInCheckStill) == 0:
+                validPieceMoves.append(move)
+
+        return validPieceMoves
 
 def returnAllMoves(x, y, yourPcs, oppoPcs, piece, isWhite, inCheckList):
     switcher = {
@@ -75,24 +88,13 @@ def checkKingInCheck(kPos, yourPcs, oppoPcs, isWhite, oppoCheckingPcs):
 
 # TODO: complete except castroling and checks
 def getRookMoves(x, y, yourPcs, oppoPcs, piece, oppoCheckingPc):
-    isInCheck = len(oppoCheckingPc) == 1
-    if isInCheck:
-        checkingMoves = returnAllMoves(oppoCheckingPc[0].idxX, oppoCheckingPc[0].idxY, oppoPcs, yourPcs, oppoCheckingPc[0], True, [])
     moves = []
     ix = x
     while ix <= 7:
         ix += 1
         if ix <= 7:
             if pieceNotThere((ix, y), yourPcs):
-                if isInCheck:
-                    if oppoCheckingPc[0].pType == QUEEN or oppoCheckingPc[0].pType == BISHOP or oppoCheckingPc[0].pType == ROOK:
-                        if (ix, y) in checkingMoves:
-                            # TODO cant move on all squares that queen can move to - only move to block the queen checking the king
-                            moves.append((ix, y))
-                    if ix == oppoCheckingPc[0].idxX and y == oppoCheckingPc[0].idxY:
-                        moves.append((ix, y))
-                else:
-                    moves.append((ix, y))   
+                moves.append((ix, y))
                 if not pieceNotThere((ix, y), oppoPcs): break
             else:
                 break
@@ -101,14 +103,7 @@ def getRookMoves(x, y, yourPcs, oppoPcs, piece, oppoCheckingPc):
         ix -= 1
         if ix >= 0:
             if pieceNotThere((ix, y), yourPcs):
-                if isInCheck:
-                    if oppoCheckingPc[0].pType == QUEEN or oppoCheckingPc[0].pType == BISHOP or oppoCheckingPc[0].pType == ROOK:
-                        if (ix, y) in checkingMoves:
-                            moves.append((ix, y))
-                    if ix == oppoCheckingPc[0].idxX and y == oppoCheckingPc[0].idxY:
-                        moves.append((ix, y))
-                else:
-                    moves.append((ix, y))
+                moves.append((ix, y))
                 if not pieceNotThere((ix, y), oppoPcs): break
             else:
                 break
