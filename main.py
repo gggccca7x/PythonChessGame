@@ -99,6 +99,8 @@ def checkIfYourPieceAlreadyThere(posX, posY, piece, whiteTurn):
             return True
     return False 
 
+# only place where pieces are removed
+# TODO: account for en passant
 def checkTakeOpponentPiece(idxX, idxY, piece, whiteTurn):
     opponentPieces = blackChessPieces if whiteTurn else whiteChessPieces
 
