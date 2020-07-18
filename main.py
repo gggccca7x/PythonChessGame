@@ -1,5 +1,6 @@
 import pygame
-from ChessBoard import getAllLegalMoves
+from ChessLogic import getAllLegalMoves
+from ChessLogic import opponentLastMovePawn2Spaces
 
 # TODO: Have a README.MD
 # Include something like: Please note - I am using a python interpreter with a conda environement...

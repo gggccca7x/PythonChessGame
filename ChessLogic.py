@@ -8,6 +8,9 @@ KNIGHT = 3
 BISHOP = 4
 PAWN = 5
 
+# to check for en passant 
+opponentLastMovePawn2Spaces = False
+
 # returns list of tuples of indexes e.g. [(3, 3), (4, 4)]
 def getAllLegalMoves(x, y, yourPcs, oppoPcs, piece, isWhite):
 
@@ -51,7 +54,6 @@ def getAllLegalMoves(x, y, yourPcs, oppoPcs, piece, isWhite):
                     p.idxX = move[0]
                     p.idxY = move[1]
             isKingInCheckStill = checkKingInCheck((king.idxX, king.idxY), yourPcsCopy, oppoPcs, isWhite, [])
-            print("is king in check: " + str(len(isKingInCheckStill)))
             if len(isKingInCheckStill) == 0 or (isKingInCheckStill[0].idxX == move[0] and isKingInCheckStill[0].idxY == move[1]):
                 validPieceMoves.append(move)
 
