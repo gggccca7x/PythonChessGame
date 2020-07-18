@@ -201,7 +201,7 @@ while run:
                             isWhitesMove = not isWhitesMove
                             opponentLastMovePawn2Spaces = False
                             if dragged_piece.pType == ChessPieceTypes.PAWN:
-                                if original_idx_x == idx[0] and abs(original_idx_x - idx[1]) == 2:
+                                if original_idx_x == idx[0] and abs(original_idx_y - idx[1]) == 2:
                                     opponentLastMovePawn2Spaces = True
                                     opponentLastMovePawnLocation = idx
 
@@ -252,7 +252,7 @@ while run:
                             isWhitesMove = not isWhitesMove
                             opponentLastMovePawn2Spaces = False
                             if dragged_piece.pType == ChessPieceTypes.PAWN:
-                                if original_idx_x == idx[0] and abs(original_idx_x - idx[1]) == 2:
+                                if original_idx_x == idx[0] and abs(original_idx_y - idx[1]) == 2:
                                     opponentLastMovePawn2Spaces = True
                                     opponentLastMovePawnLocation = idx
 
