@@ -1,6 +1,7 @@
 import pygame
 from ChessLogic import getAllLegalMoves
 from ChessLogic import opponentLastMovePawn2Spaces
+from ChessLogic import opponentLastMovePawnLocation
 from ChessLogic import ChessPiece
 from ChessLogic import ChessPieceTypes
 
@@ -117,13 +118,6 @@ def checkDifferentSquare(xFrom, yFrom, xTo, yTo):
         return True
     return False
 
-def changedTurn(pieceType, fromIdx, toIdx):
-    opponentLastMovePawn2Spaces = False
-    if pieceType == ChessPieceTypes.PAWN:
-        if fromIdx[0] == toIdx[0] and abs(fromIdx[1] - toIdx[1]) == 2:
-            print("set to true")
-            opponentLastMovePawn2Spaces = True
-
 w_rook_image = pygame.image.load(".\images\white_rook.png")
 w_rook_image = pygame.transform.scale(w_rook_image, (w_per_sq,w_per_sq))
 w_knight_image = pygame.image.load(".\images\white_knight.png")
@@ -202,8 +196,15 @@ while run:
                             validMove = False
                         if validMove:
                             checkTakeOpponentPiece(idx[0], idx[1], dragged_piece, isWhitesMove)
-                            changedTurn(dragged_piece.pType, (original_idx_x, original_idx_y), idx)
+
+                            # TODO: Tidy up follow repeated  6 lines
                             isWhitesMove = not isWhitesMove
+                            opponentLastMovePawn2Spaces = False
+                            if dragged_piece.pType == ChessPieceTypes.PAWN:
+                                if original_idx_x == idx[0] and abs(original_idx_x - idx[1]) == 2:
+                                    opponentLastMovePawn2Spaces = True
+                                    opponentLastMovePawnLocation = idx
+
                             isPieceClicked = False
                     dragged_piece.setNewPosition(idx, pos)
                 else:
@@ -213,10 +214,12 @@ while run:
                         if index[0] == c.idxX and index[1] == c.idxY:
                             dragged_piece = c
                             # Test here to see if works as inteded
+                            print("inputting opponentLastMovePawnLocation: ", opponentLastMovePawnLocation)
                             legalMovesList = getAllLegalMoves(dragged_piece.idxX, dragged_piece.idxY, 
                                     whiteChessPieces if isWhitesMove else blackChessPieces, 
                                     blackChessPieces if isWhitesMove else whiteChessPieces, 
-                                    dragged_piece, isWhitesMove)
+                                    dragged_piece, isWhitesMove,
+                                    opponentLastMovePawn2Spaces, opponentLastMovePawnLocation)
                             is_dragging_piece = True
                             break
                     if is_dragging_piece:
@@ -244,8 +247,15 @@ while run:
                         if validMove:
                             # TODO: check actual valid move, i.e. not clicking the same square as currently on
                             checkTakeOpponentPiece(idx[0], idx[1], dragged_piece, isWhitesMove)
+
+                            # TODO: Tidy up follow repeated  6 lines
                             isWhitesMove = not isWhitesMove
-                            changedTurn(dragged_piece.pType, (original_idx_x, original_idx_y), idx)
+                            opponentLastMovePawn2Spaces = False
+                            if dragged_piece.pType == ChessPieceTypes.PAWN:
+                                if original_idx_x == idx[0] and abs(original_idx_x - idx[1]) == 2:
+                                    opponentLastMovePawn2Spaces = True
+                                    opponentLastMovePawnLocation = idx
+
                     # note i am setting set position or original index above if not a valid move
                     dragged_piece.setNewPosition(idx, pos)
 

@@ -24,9 +24,10 @@ class ChessPieceTypes:
 
 # to check for en passant
 opponentLastMovePawn2Spaces = False
+opponentLastMovePawnLocation = (-1,-1)
 
 # returns list of tuples of indexes e.g. [(3, 3), (4, 4)]
-def getAllLegalMoves(x, y, yourPcs, oppoPcs, piece, isWhite):
+def getAllLegalMoves(x, y, yourPcs, oppoPcs, piece, isWhite, oppLasMovPaw2, oppLasMovPawIdx):
 
     # TODO: if not in check allow castling and en passant
     # TODO: fix taking piece not removing king out of check...
@@ -39,7 +40,7 @@ def getAllLegalMoves(x, y, yourPcs, oppoPcs, piece, isWhite):
 
     # All pieces putting king in check
     # if 2 pieces checking the king, he is FORCED to move
-    inCheckList = checkKingInCheck((king.idxX, king.idxY), yourPcs, oppoPcs, isWhite, [])
+    inCheckList = checkKingInCheck((king.idxX, king.idxY), yourPcs, oppoPcs, isWhite, [], oppLasMovPaw2, oppLasMovPawIdx)
     numCheckingPcs = len(inCheckList)
 
     if numCheckingPcs == 2:
@@ -55,7 +56,7 @@ def getAllLegalMoves(x, y, yourPcs, oppoPcs, piece, isWhite):
             ChessPieceTypes.ROOK: getRookMoves(x, y, yourPcs, oppoPcs, piece, inCheckList), 
             ChessPieceTypes.KNIGHT: getKnightMoves(x, y, yourPcs, oppoPcs, piece, inCheckList), 
             ChessPieceTypes.BISHOP: getBishopMoves(x, y, yourPcs, oppoPcs, piece, inCheckList), 
-            ChessPieceTypes.PAWN: getPawnMoves(x, y, yourPcs, oppoPcs, piece, isWhite,inCheckList)
+            ChessPieceTypes.PAWN: getPawnMoves(x, y, yourPcs, oppoPcs, piece, isWhite,inCheckList, oppLasMovPaw2, oppLasMovPawIdx)
         }
         pieceMoves =  switcher.get(piece.pType, (-1, -1))
 
@@ -67,14 +68,14 @@ def getAllLegalMoves(x, y, yourPcs, oppoPcs, piece, isWhite):
                 if p.idxX == piece.idxX and p.idxY == piece.idxY:
                     p.idxX = move[0]
                     p.idxY = move[1]
-            isKingInCheckStill = checkKingInCheck((king.idxX, king.idxY), yourPcsCopy, oppoPcs, isWhite, [])
+            isKingInCheckStill = checkKingInCheck((king.idxX, king.idxY), yourPcsCopy, oppoPcs, isWhite, [], oppLasMovPaw2, oppLasMovPawIdx)
             if len(isKingInCheckStill) == 0 or (isKingInCheckStill[0].idxX == move[0] and isKingInCheckStill[0].idxY == move[1]):
                 validPieceMoves.append(move)
 
         return validPieceMoves
 
 # Returns list of pieces which are checking opponents king
-def checkKingInCheck(kPos, yourPcs, oppoPcs, isWhite, oppoCheckingPcs):
+def checkKingInCheck(kPos, yourPcs, oppoPcs, isWhite, oppoCheckingPcs, oppLasMovPaw2, oppLasMovPawIdx):
     oppoPieces = []
     inCheck = False
     for p in oppoPcs:
@@ -85,7 +86,7 @@ def checkKingInCheck(kPos, yourPcs, oppoPcs, isWhite, oppoCheckingPcs):
             ChessPieceTypes.ROOK: getRookMoves(p.idxX, p.idxY, oppoPcs, yourPcs, p, oppoCheckingPcs), 
             ChessPieceTypes.KNIGHT: getKnightMoves(p.idxX, p.idxY, oppoPcs, yourPcs, p, oppoCheckingPcs), 
             ChessPieceTypes.BISHOP: getBishopMoves(p.idxX, p.idxY, oppoPcs, yourPcs, p, oppoCheckingPcs),
-            ChessPieceTypes.PAWN: getPawnMoves(p.idxX, p.idxY, oppoPcs, yourPcs, p, not isWhite, oppoCheckingPcs)
+            ChessPieceTypes.PAWN: getPawnMoves(p.idxX, p.idxY, oppoPcs, yourPcs, p, not isWhite, oppoCheckingPcs, oppLasMovPaw2, oppLasMovPawIdx)
         }
         pieceMoves = switcher.get(p.pType, (-1, -1))
         if (kPos[0], kPos[1]) in pieceMoves:
@@ -226,8 +227,8 @@ def getKnightMoves(x, y, yourPcs, oppoPcs, piece, oppoCheckingPcs):
 def getQueenMoves(x, y, yourPcs, oppoPcs, piece, oppoCheckingPcs):
     return getBishopMoves(x, y, yourPcs, oppoPcs, piece, oppoCheckingPcs) + getRookMoves(x, y, yourPcs, oppoPcs, piece, oppoCheckingPcs)
 
-# TODO: checks, taking, enpassant
-def getPawnMoves(x, y, yourPcs, oppoPcs, piece, isWhite, oppoCheckingPcs):
+# TODO: enpassant, promoting
+def getPawnMoves(x, y, yourPcs, oppoPcs, piece, isWhite, oppoCheckingPcs, oppLasMovPaw2, oppLasMovPawIdx):
     moves = []
     if isWhite:
         if pieceNotThere((x,y-1), yourPcs) and pieceNotThere((x,y-1), oppoPcs): moves.append((x,y-1))
@@ -240,9 +241,12 @@ def getPawnMoves(x, y, yourPcs, oppoPcs, piece, isWhite, oppoCheckingPcs):
             if (pieceNotThere((x,y-2), yourPcs) and pieceNotThere((x,y-1), yourPcs) 
                 and pieceNotThere((x,y-2), oppoPcs) and pieceNotThere((x,y-1), oppoPcs)): 
                 moves.append((x,y-2))
-        # elif y == 1:
-            # promote?
-        # TODO: account for taking, and then en passant
+        if y == 3:
+            print("on 3rd rank white")
+            print("last pawn move 2 moves: ", opponentLastMovePawn2Spaces)
+            if abs(x - opponentLastMovePawnLocation[1]) == 1:
+                print("can en passant")
+        
     else:
         if pieceNotThere((x,y+1), yourPcs) and pieceNotThere((x,y+1), oppoPcs): moves.append((x,y+1))
         # Note: dont need to worry about out of bounds i dont think?
@@ -254,6 +258,10 @@ def getPawnMoves(x, y, yourPcs, oppoPcs, piece, isWhite, oppoCheckingPcs):
             if (pieceNotThere((x,y+2), yourPcs) and pieceNotThere((x,y+1), yourPcs)
                 and pieceNotThere((x,y+2), oppoPcs) and pieceNotThere((x,y+1), oppoPcs)): 
                 moves.append((x,y+2))
+        if y == 4:
+            print("on 4th rank and black")
+            if abs(x - opponentLastMovePawnLocation[1]) == 1:
+                print("can en passant")
     return moves
 
 # TODO: complete except castroling and checks
