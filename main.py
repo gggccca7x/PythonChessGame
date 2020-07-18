@@ -214,7 +214,7 @@ while run:
                         if index[0] == c.idxX and index[1] == c.idxY:
                             dragged_piece = c
                             # Test here to see if works as inteded
-                            print("inputting opponentLastMovePawnLocation: ", opponentLastMovePawnLocation, " true/false: ", opponentLastMovePawn2Spaces)
+                            # print("inputting opponentLastMovePawnLocation: ", opponentLastMovePawnLocation, " true/false: ", opponentLastMovePawn2Spaces)
                             legalMovesList = getAllLegalMoves(dragged_piece.idxX, dragged_piece.idxY, 
                                     whiteChessPieces if isWhitesMove else blackChessPieces, 
                                     blackChessPieces if isWhitesMove else whiteChessPieces, 

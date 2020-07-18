@@ -241,9 +241,9 @@ def getPawnMoves(x, y, yourPcs, oppoPcs, piece, isWhite, oppoCheckingPcs, oppLas
             if (pieceNotThere((x,y-2), yourPcs) and pieceNotThere((x,y-1), yourPcs) 
                 and pieceNotThere((x,y-2), oppoPcs) and pieceNotThere((x,y-1), oppoPcs)): 
                 moves.append((x,y-2))
-        if y == 3:
-            if abs(x - opponentLastMovePawnLocation[1]) == 1:
-                print("can en passant")
+        if y == 3 and oppLasMovPaw2:
+            if abs(x - oppLasMovPawIdx[1]) == 1:
+                moves.append((oppLasMovPawIdx[0],y-1))
         
     else:
         if pieceNotThere((x,y+1), yourPcs) and pieceNotThere((x,y+1), oppoPcs): moves.append((x,y+1))
@@ -256,9 +256,9 @@ def getPawnMoves(x, y, yourPcs, oppoPcs, piece, isWhite, oppoCheckingPcs, oppLas
             if (pieceNotThere((x,y+2), yourPcs) and pieceNotThere((x,y+1), yourPcs)
                 and pieceNotThere((x,y+2), oppoPcs) and pieceNotThere((x,y+1), oppoPcs)): 
                 moves.append((x,y+2))
-        if y == 4:
-            if abs(x - opponentLastMovePawnLocation[1]) == 1:
-                print("can en passant")
+        if y == 4 and oppLasMovPaw2:
+            if abs(x - oppLasMovPawIdx[1]) == 1:
+                moves.append((oppLasMovPawIdx[0],y+1))
     return moves
 
 # TODO: complete except castroling and checks
