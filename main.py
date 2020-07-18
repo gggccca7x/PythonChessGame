@@ -1,6 +1,8 @@
 import pygame
 from ChessLogic import getAllLegalMoves
 from ChessLogic import opponentLastMovePawn2Spaces
+from ChessLogic import ChessPiece
+from ChessLogic import ChessPieceTypes
 
 # TODO: Have a README.MD
 # Include something like: Please note - I am using a python interpreter with a conda environement...
@@ -15,22 +17,6 @@ from ChessLogic import opponentLastMovePawn2Spaces
 # TODO: add opacity to legal move rectangles
 
 # TODO: MACHINE LEARN TRAIN A MACHINE TO PLAY AGAINST ME!!!!
-
-class ChessPiece(object):
-    def __init__(self, image, idxX, idxY, pType):
-        self.image = image
-        pos = getPosFromIndex(idxX, idxY)
-        self.idxX = idxX
-        self.idxY = idxY
-        self.posX = pos[0]
-        self.posY = pos[1]
-        self.pType = pType
-
-    def setNewPosition(self, ix, iy, px, py):
-        self.idxX = ix
-        self.idxY = iy
-        self.posX = px
-        self.posY = py
 
 pygame.init()
 win = pygame.display.set_mode((900, 900))
@@ -148,10 +134,14 @@ w_queen_image = pygame.image.load(".\images\white_queen.png")
 w_queen_image = pygame.transform.scale(w_queen_image, (w_per_sq,w_per_sq))
 w_pawn_image = pygame.image.load(".\images\white_pawn.png")
 w_pawn_image = pygame.transform.scale(w_pawn_image, (w_per_sq,w_per_sq))
-whiteChessPieces = [ChessPiece(w_rook_image, 7, 7, 2), ChessPiece(w_rook_image, 0, 7, 2), ChessPiece(w_knight_image, 1, 7, 3), ChessPiece(w_knight_image, 6, 7, 3), 
-        ChessPiece(w_bishop_image, 5, 7, 4), ChessPiece(w_bishop_image, 2, 7, 4), ChessPiece(w_king_image, 4, 7, 0), ChessPiece(w_queen_image, 3, 7, 1),
-        ChessPiece(w_pawn_image, 0, 6, 5), ChessPiece(w_pawn_image, 1, 6, 5), ChessPiece(w_pawn_image, 2, 6, 5), ChessPiece(w_pawn_image, 3, 6, 5), 
-        ChessPiece(w_pawn_image, 4, 6, 5), ChessPiece(w_pawn_image, 5, 6, 5), ChessPiece(w_pawn_image, 6, 6, 5), ChessPiece(w_pawn_image, 7, 6, 5)]
+whiteChessPieces = [ChessPiece(w_rook_image, (7,7), getPosFromIndex(7,7), ChessPieceTypes.ROOK), ChessPiece(w_rook_image, (0,7), getPosFromIndex(0,7), ChessPieceTypes.ROOK), 
+        ChessPiece(w_knight_image, (1,7), getPosFromIndex(1,7), ChessPieceTypes.KNIGHT), ChessPiece(w_knight_image, (6,7), getPosFromIndex(6,7), ChessPieceTypes.KNIGHT), 
+        ChessPiece(w_bishop_image, (5,7), getPosFromIndex(5,7), ChessPieceTypes.BISHOP), ChessPiece(w_bishop_image, (2,7), getPosFromIndex(2,7), ChessPieceTypes.BISHOP), 
+        ChessPiece(w_king_image, (4,7), getPosFromIndex(4,7), ChessPieceTypes.KING), ChessPiece(w_queen_image, (3,7), getPosFromIndex(3,7), ChessPieceTypes.QUEEN),
+        ChessPiece(w_pawn_image, (0,6), getPosFromIndex(0,6), ChessPieceTypes.PAWN), ChessPiece(w_pawn_image, (1,6), getPosFromIndex(1,6), ChessPieceTypes.PAWN), 
+        ChessPiece(w_pawn_image, (2,6), getPosFromIndex(2,6), ChessPieceTypes.PAWN), ChessPiece(w_pawn_image, (3,6), getPosFromIndex(3,6), ChessPieceTypes.PAWN), 
+        ChessPiece(w_pawn_image, (4,6), getPosFromIndex(4,6), ChessPieceTypes.PAWN), ChessPiece(w_pawn_image, (5,6), getPosFromIndex(5,6), ChessPieceTypes.PAWN), 
+        ChessPiece(w_pawn_image, (6,6), getPosFromIndex(6,6), ChessPieceTypes.PAWN), ChessPiece(w_pawn_image, (7,6), getPosFromIndex(7,6), ChessPieceTypes.PAWN)]
 
 b_rook_image = pygame.image.load(".\images\\black_rook.png")
 b_rook_image = pygame.transform.scale(b_rook_image, (w_per_sq,w_per_sq))
@@ -165,10 +155,14 @@ b_queen_image = pygame.image.load(".\images\\black_queen.png")
 b_queen_image = pygame.transform.scale(b_queen_image, (w_per_sq,w_per_sq))
 b_pawn_image = pygame.image.load(".\images\\black_pawn.png")
 b_pawn_image = pygame.transform.scale(b_pawn_image, (w_per_sq,w_per_sq))
-blackChessPieces = [ChessPiece(b_rook_image, 7, 0, 2), ChessPiece(b_rook_image, 0, 0, 2), ChessPiece(b_knight_image, 1, 0, 3), ChessPiece(b_knight_image, 6, 0, 3), 
-        ChessPiece(b_bishop_image, 5, 0, 4), ChessPiece(b_bishop_image, 2, 0, 4), ChessPiece(b_king_image, 4, 0, 0), ChessPiece(b_queen_image, 3, 0, 1),
-        ChessPiece(b_pawn_image, 0, 1, 5), ChessPiece(b_pawn_image, 1, 1, 5), ChessPiece(b_pawn_image, 2, 1, 5), ChessPiece(b_pawn_image, 3, 1, 5), 
-        ChessPiece(b_pawn_image, 4, 1, 5), ChessPiece(b_pawn_image, 5, 1, 5), ChessPiece(b_pawn_image, 6, 1, 5), ChessPiece(b_pawn_image, 7, 1, 5)]
+blackChessPieces = [ChessPiece(b_rook_image, (7,0), getPosFromIndex(7,0), ChessPieceTypes.ROOK), ChessPiece(b_rook_image, (0,0), getPosFromIndex(0,0), ChessPieceTypes.ROOK), 
+        ChessPiece(b_knight_image, (1,0), getPosFromIndex(1,0), ChessPieceTypes.KNIGHT), ChessPiece(b_knight_image, (6,0), getPosFromIndex(6,0), ChessPieceTypes.KNIGHT), 
+        ChessPiece(b_bishop_image, (5,0), getPosFromIndex(5,0), ChessPieceTypes.BISHOP), ChessPiece(b_bishop_image, (2,0), getPosFromIndex(2,0), ChessPieceTypes.BISHOP), 
+        ChessPiece(b_king_image, (4,0), getPosFromIndex(4,0), ChessPieceTypes.KING), ChessPiece(b_queen_image, (3,0), getPosFromIndex(3,0), ChessPieceTypes.QUEEN),
+        ChessPiece(b_pawn_image, (0,1), getPosFromIndex(0,1), ChessPieceTypes.PAWN), ChessPiece(b_pawn_image, (1,1), getPosFromIndex(1,1), ChessPieceTypes.PAWN),
+        ChessPiece(b_pawn_image, (2,1), getPosFromIndex(2,1), ChessPieceTypes.PAWN), ChessPiece(b_pawn_image, (3,1), getPosFromIndex(3,1), ChessPieceTypes.PAWN), 
+        ChessPiece(b_pawn_image, (4,1), getPosFromIndex(4,1), ChessPieceTypes.PAWN), ChessPiece(b_pawn_image, (5,1), getPosFromIndex(5,1), ChessPieceTypes.PAWN), 
+        ChessPiece(b_pawn_image, (6,1), getPosFromIndex(6,1), ChessPieceTypes.PAWN), ChessPiece(b_pawn_image, (7,1), getPosFromIndex(7,1), ChessPieceTypes.PAWN)]
 
 # Initialisations dont matter tbh
 original_idx_x = 0
@@ -210,7 +204,7 @@ while run:
                             isWhitesMove = not isWhitesMove
                             isPieceClicked = False
                     # TODO: confirm is in the legal moves list
-                    dragged_piece.setNewPosition(idx[0], idx[1], pos[0], pos[1])
+                    dragged_piece.setNewPosition(idx, pos)
                 else:
                     index = getIndexFromPos(mouse_x, mouse_y)
                     chessPieces = whiteChessPieces if isWhitesMove else blackChessPieces
@@ -252,7 +246,7 @@ while run:
                             isWhitesMove = not isWhitesMove
                     # TODO: confirm is in the legal moves list
                     # note i am setting set position or original index above if not a valid move
-                    dragged_piece.setNewPosition(idx[0], idx[1], pos[0], pos[1])
+                    dragged_piece.setNewPosition(idx, pos)
 
         elif event.type == pygame.MOUSEMOTION:
             if is_dragging_piece:

@@ -1,14 +1,28 @@
-# TODO: rename to "ChessLogic" maybe?
+class ChessPiece(object):
+    def __init__(self, image, idx, pos, pType):
+        self.image = image
+        self.idxX = idx[0]
+        self.idxY = idx[1]
+        self.posX = pos[0]
+        self.posY = pos[1]
+        self.pType = pType
+
+    def setNewPosition(self, idx, pos):
+        self.idxX = idx[0]
+        self.idxY = idx[1]
+        self.posX = pos[0]
+        self.posY = pos[1]
 
 # list of numbers associated to specific type
-KING = 0
-QUEEN = 1
-ROOK = 2
-KNIGHT = 3
-BISHOP = 4
-PAWN = 5
+class ChessPieceTypes:
+    KING = 0
+    QUEEN = 1
+    ROOK = 2
+    KNIGHT = 3
+    BISHOP = 4
+    PAWN = 5
 
-# to check for en passant 
+# to check for en passant
 opponentLastMovePawn2Spaces = False
 
 # returns list of tuples of indexes e.g. [(3, 3), (4, 4)]
@@ -19,7 +33,7 @@ def getAllLegalMoves(x, y, yourPcs, oppoPcs, piece, isWhite):
 
     king = piece
     for p in yourPcs:
-        if p.pType == KING:
+        if p.pType == ChessPieceTypes.KING:
             king = p
             break
 
@@ -29,19 +43,19 @@ def getAllLegalMoves(x, y, yourPcs, oppoPcs, piece, isWhite):
     numCheckingPcs = len(inCheckList)
 
     if numCheckingPcs == 2:
-        if piece.pType == KING:
+        if piece.pType == ChessPieceTypes.KING:
             return getKingMoves(x, y, yourPcs, oppoPcs, piece, [])
         else:
             return []
     else: 
         # TODO: complete this with chess logic
         switcher = {
-            KING: getKingMoves(x, y, yourPcs, oppoPcs, piece, inCheckList),
-            QUEEN: getQueenMoves(x, y, yourPcs, oppoPcs, piece, inCheckList), 
-            ROOK: getRookMoves(x, y, yourPcs, oppoPcs, piece, inCheckList), 
-            KNIGHT: getKnightMoves(x, y, yourPcs, oppoPcs, piece, inCheckList), 
-            BISHOP: getBishopMoves(x, y, yourPcs, oppoPcs, piece, inCheckList), 
-            PAWN: getPawnMoves(x, y, yourPcs, oppoPcs, piece, isWhite,inCheckList)
+            ChessPieceTypes.KING: getKingMoves(x, y, yourPcs, oppoPcs, piece, inCheckList),
+            ChessPieceTypes.QUEEN: getQueenMoves(x, y, yourPcs, oppoPcs, piece, inCheckList), 
+            ChessPieceTypes.ROOK: getRookMoves(x, y, yourPcs, oppoPcs, piece, inCheckList), 
+            ChessPieceTypes.KNIGHT: getKnightMoves(x, y, yourPcs, oppoPcs, piece, inCheckList), 
+            ChessPieceTypes.BISHOP: getBishopMoves(x, y, yourPcs, oppoPcs, piece, inCheckList), 
+            ChessPieceTypes.PAWN: getPawnMoves(x, y, yourPcs, oppoPcs, piece, isWhite,inCheckList)
         }
         pieceMoves =  switcher.get(piece.pType, (-1, -1))
 
@@ -59,17 +73,6 @@ def getAllLegalMoves(x, y, yourPcs, oppoPcs, piece, isWhite):
 
         return validPieceMoves
 
-def returnAllMoves(x, y, yourPcs, oppoPcs, piece, isWhite, inCheckList):
-    switcher = {
-        KING: getKingMoves(x, y, yourPcs, oppoPcs, piece, inCheckList),
-        QUEEN: getQueenMoves(x, y, yourPcs, oppoPcs, piece, inCheckList), 
-        ROOK: getRookMoves(x, y, yourPcs, oppoPcs, piece, inCheckList), 
-        KNIGHT: getKnightMoves(x, y, yourPcs, oppoPcs, piece, inCheckList), 
-        BISHOP: getBishopMoves(x, y, yourPcs, oppoPcs, piece, inCheckList), 
-        PAWN: getPawnMoves(x, y, yourPcs, oppoPcs, piece, isWhite,inCheckList)
-    }
-    return switcher.get(piece.pType, (-1, -1))
-
 # Returns list of pieces which are checking opponents king
 def checkKingInCheck(kPos, yourPcs, oppoPcs, isWhite, oppoCheckingPcs):
     oppoPieces = []
@@ -77,12 +80,12 @@ def checkKingInCheck(kPos, yourPcs, oppoPcs, isWhite, oppoCheckingPcs):
     for p in oppoPcs:
         switcher = {
             # note: had to switch over oppoPcs and yourPcs in these methods
-            KING: getKingMoves(p.idxX, p.idxY, oppoPcs, yourPcs, p, oppoCheckingPcs),
-            QUEEN: getQueenMoves(p.idxX, p.idxY, oppoPcs, yourPcs, p, oppoCheckingPcs), 
-            ROOK: getRookMoves(p.idxX, p.idxY, oppoPcs, yourPcs, p, oppoCheckingPcs), 
-            KNIGHT: getKnightMoves(p.idxX, p.idxY, oppoPcs, yourPcs, p, oppoCheckingPcs), 
-            BISHOP: getBishopMoves(p.idxX, p.idxY, oppoPcs, yourPcs, p, oppoCheckingPcs),
-            PAWN: getPawnMoves(p.idxX, p.idxY, oppoPcs, yourPcs, p, not isWhite, oppoCheckingPcs)
+            ChessPieceTypes.KING: getKingMoves(p.idxX, p.idxY, oppoPcs, yourPcs, p, oppoCheckingPcs),
+            ChessPieceTypes.QUEEN: getQueenMoves(p.idxX, p.idxY, oppoPcs, yourPcs, p, oppoCheckingPcs), 
+            ChessPieceTypes.ROOK: getRookMoves(p.idxX, p.idxY, oppoPcs, yourPcs, p, oppoCheckingPcs), 
+            ChessPieceTypes.KNIGHT: getKnightMoves(p.idxX, p.idxY, oppoPcs, yourPcs, p, oppoCheckingPcs), 
+            ChessPieceTypes.BISHOP: getBishopMoves(p.idxX, p.idxY, oppoPcs, yourPcs, p, oppoCheckingPcs),
+            ChessPieceTypes.PAWN: getPawnMoves(p.idxX, p.idxY, oppoPcs, yourPcs, p, not isWhite, oppoCheckingPcs)
         }
         pieceMoves = switcher.get(p.pType, (-1, -1))
         if (kPos[0], kPos[1]) in pieceMoves:
