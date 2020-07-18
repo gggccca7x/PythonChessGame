@@ -96,8 +96,7 @@ def checkIfYourPieceAlreadyThere(posX, posY, piece, whiteTurn):
     for i in range(len(yourPieces)):
         if posX == yourPieces[i].posX and posY == yourPieces[i].posY and piece is not yourPieces[i]:
             return True
-    
-    return False # TODO: questioning if this should be here??
+    return False 
 
 def checkTakeOpponentPiece(idxX, idxY, piece, whiteTurn):
     opponentPieces = blackChessPieces if whiteTurn else whiteChessPieces
@@ -107,10 +106,6 @@ def checkTakeOpponentPiece(idxX, idxY, piece, whiteTurn):
             opponentPieces.remove(oppoPiece)
             break
 
-# need actual chess rules
-# TODO: find out what piece is moving
-# TODO: find out all the legal moves it has
-# TODO: return true if valid move
 def confirmValidity(xFrom, yFrom, xTo, yTo):
     for pos in legalMovesList:
         if(xTo, yTo) == pos:
@@ -121,6 +116,13 @@ def checkDifferentSquare(xFrom, yFrom, xTo, yTo):
     if xFrom == xTo and yFrom == yTo:
         return True
     return False
+
+def changedTurn(pieceType, fromIdx, toIdx):
+    opponentLastMovePawn2Spaces = False
+    if pieceType == ChessPieceTypes.PAWN:
+        if fromIdx[0] == toIdx[0] and abs(fromIdx[1] - toIdx[1]) == 2:
+            print("set to true")
+            opponentLastMovePawn2Spaces = True
 
 w_rook_image = pygame.image.load(".\images\white_rook.png")
 w_rook_image = pygame.transform.scale(w_rook_image, (w_per_sq,w_per_sq))
@@ -199,11 +201,10 @@ while run:
                             idx = (original_idx_x, original_idx_y)
                             validMove = False
                         if validMove:
-                            # TODO: check actual valid move, i.e. not clicking the same square as currently on
                             checkTakeOpponentPiece(idx[0], idx[1], dragged_piece, isWhitesMove)
+                            changedTurn(dragged_piece.pType, (original_idx_x, original_idx_y), idx)
                             isWhitesMove = not isWhitesMove
                             isPieceClicked = False
-                    # TODO: confirm is in the legal moves list
                     dragged_piece.setNewPosition(idx, pos)
                 else:
                     index = getIndexFromPos(mouse_x, mouse_y)
@@ -244,7 +245,7 @@ while run:
                             # TODO: check actual valid move, i.e. not clicking the same square as currently on
                             checkTakeOpponentPiece(idx[0], idx[1], dragged_piece, isWhitesMove)
                             isWhitesMove = not isWhitesMove
-                    # TODO: confirm is in the legal moves list
+                            changedTurn(dragged_piece.pType, (original_idx_x, original_idx_y), idx)
                     # note i am setting set position or original index above if not a valid move
                     dragged_piece.setNewPosition(idx, pos)
 
