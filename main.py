@@ -5,8 +5,6 @@ from ChessBoard import getAllLegalMoves
 # Include something like: Please note - I am using a python interpreter with a conda environement...
 # pygame: 1.9.6, python 3.7.6, conda 4.8.3
 
-# TODO: confirm player not in check
-# TODO: fix bug illegal move still takes piece
 # TODO: Bring to front the selected piece (move to bottom of the list)
 # TODO: Confirm pieces have legal chess moves
 # TODO: have some sort of take back mechanism

@@ -8,8 +8,11 @@ KNIGHT = 3
 BISHOP = 4
 PAWN = 5
 
-# return tuples of indexes e.g. (2, 3)
+# returns list of tuples of indexes e.g. [(3, 3), (4, 4)]
 def getAllLegalMoves(x, y, yourPcs, oppoPcs, piece, isWhite):
+
+    # TODO: if not in check allow castling and en passant
+    # TODO: fix taking piece not removing king out of check...
 
     king = piece
     for p in yourPcs:
@@ -18,8 +21,7 @@ def getAllLegalMoves(x, y, yourPcs, oppoPcs, piece, isWhite):
             break
 
     # All pieces putting king in check
-    # TODO: surely if 2 pieces checking the king, he is FORCED to move?
-    # and if 0 pieces checking king, it is fine
+    # if 2 pieces checking the king, he is FORCED to move
     inCheckList = checkKingInCheck((king.idxX, king.idxY), yourPcs, oppoPcs, isWhite, [])
     numCheckingPcs = len(inCheckList)
 
@@ -50,7 +52,7 @@ def getAllLegalMoves(x, y, yourPcs, oppoPcs, piece, isWhite):
                     p.idxY = move[1]
             isKingInCheckStill = checkKingInCheck((king.idxX, king.idxY), yourPcsCopy, oppoPcs, isWhite, [])
             print("is king in check: " + str(len(isKingInCheckStill)))
-            if len(isKingInCheckStill) == 0:
+            if len(isKingInCheckStill) == 0 or (isKingInCheckStill[0].idxX == move[0] and isKingInCheckStill[0].idxY == move[1]):
                 validPieceMoves.append(move)
 
         return validPieceMoves
@@ -66,7 +68,7 @@ def returnAllMoves(x, y, yourPcs, oppoPcs, piece, isWhite, inCheckList):
     }
     return switcher.get(piece.pType, (-1, -1))
 
-# Returns true if king in check, theres probs a better way to do this entire function though tbh
+# Returns list of pieces which are checking opponents king
 def checkKingInCheck(kPos, yourPcs, oppoPcs, isWhite, oppoCheckingPcs):
     oppoPieces = []
     inCheck = False
