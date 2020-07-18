@@ -29,8 +29,9 @@ GREEN = (40, 220, 40)
 YELLOW = (180, 180, 30)
 
 #Chess Board bound constants
-cb_bx1, cb_bx2, cb_by1, cb_by2 = 50, 850, 50, 850
-w_per_sq = 100
+# cb_bx2 = 8*w_per_sq + cb_bx1
+cb_bx1, cb_bx2, cb_by1, cb_by2 = 20, 660, 20, 660
+w_per_sq = 80
 list_sq_end = [cb_bx1 + w_per_sq , cb_bx1 + w_per_sq * 2, 
                 cb_bx1 + w_per_sq * 3, cb_bx1 + w_per_sq * 4,
                 cb_bx1 + w_per_sq * 5, cb_bx1 + w_per_sq * 6,
@@ -48,7 +49,7 @@ def drawBoard():
     for x in range(0,8):
         for y in range(0,8):
             if (x+y)%2 == 1:
-                pygame.draw.rect(win, BROWN, (x * w_per_sq + w_per_sq/2, y * w_per_sq + w_per_sq/2, 100, 100))
+                pygame.draw.rect(win, BROWN, (x * w_per_sq + cb_bx1, y * w_per_sq + cb_by1, w_per_sq, w_per_sq))
 
 def draw():
     drawBoard()
@@ -70,7 +71,7 @@ def drawLegalMoves():
         break
 
 def colourSelectedIndex(x, y, color):
-    pygame.draw.rect(win, color, (x * w_per_sq + w_per_sq/2, y * w_per_sq + w_per_sq/2, 100, 100))
+    pygame.draw.rect(win, color, (x * w_per_sq + cb_bx1, y * w_per_sq + cb_by1, w_per_sq, w_per_sq))
 
 #input index (0-7) as chessboard is 8x8
 def getPosFromIndex(x, y):
