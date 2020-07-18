@@ -19,15 +19,8 @@ from ChessLogic import ChessPieceTypes
 # TODO: MACHINE LEARN TRAIN A MACHINE TO PLAY AGAINST ME!!!!
 
 pygame.init()
-win = pygame.display.set_mode((900, 900))
+win = pygame.display.set_mode((700, 700))
 pygame.display.set_caption("Chess Game")
-
-BLACK = (20, 20, 20)
-WHITE = (230, 230, 230)
-BROWN = (165, 42, 42)
-GREEN = (40, 220, 40)
-YELLOW = (180, 180, 30)
-
 #Chess Board bound constants
 # cb_bx2 = 8*w_per_sq + cb_bx1
 cb_bx1, cb_bx2, cb_by1, cb_by2 = 20, 660, 20, 660
@@ -36,6 +29,12 @@ list_sq_end = [cb_bx1 + w_per_sq , cb_bx1 + w_per_sq * 2,
                 cb_bx1 + w_per_sq * 3, cb_bx1 + w_per_sq * 4,
                 cb_bx1 + w_per_sq * 5, cb_bx1 + w_per_sq * 6,
                 cb_bx1 + w_per_sq * 7, cb_bx1 + w_per_sq * 8]
+
+BLACK = (20, 20, 20)
+WHITE = (230, 230, 230)
+BROWN = (165, 42, 42)
+GREEN = (40, 220, 40)
+YELLOW = (180, 180, 30)
 
 # squares and lines - however, lines look a little ugly so maybe dont draw them anymore
 def drawBoard():
