@@ -243,6 +243,7 @@ def getPawnMoves(x, y, yourPcs, oppoPcs, piece, isWhite, oppoCheckingPcs, oppLas
                 moves.append((x,y-2))
         if y == 3:
             if abs(x - opponentLastMovePawnLocation[1]) == 1:
+                print("can en passant")
         
     else:
         if pieceNotThere((x,y+1), yourPcs) and pieceNotThere((x,y+1), oppoPcs): moves.append((x,y+1))
@@ -257,6 +258,7 @@ def getPawnMoves(x, y, yourPcs, oppoPcs, piece, isWhite, oppoCheckingPcs, oppLas
                 moves.append((x,y+2))
         if y == 4:
             if abs(x - opponentLastMovePawnLocation[1]) == 1:
+                print("can en passant")
     return moves
 
 # TODO: complete except castroling and checks
