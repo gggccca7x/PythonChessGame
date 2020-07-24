@@ -109,6 +109,15 @@ def checkTakeOpponentPiece(idxX, idxY, piece, whiteTurn):
             opponentPieces.remove(oppoPiece)
             break
 
+def checkTakeWithEnPassant(idxX, idxY, whiteTurn, opponentLastMovePawnLocation):
+    opponentPieces = blackChessPieces if whiteTurn else whiteChessPieces
+    change = 1 if whiteTurn else -1
+    for oppoPiece in opponentPieces:
+        if opponentLastMovePawnLocation[0] == oppoPiece.idxX and opponentLastMovePawnLocation[1] == oppoPiece.idxY:
+            if idxX == opponentLastMovePawnLocation[0] and idxY+change == opponentLastMovePawnLocation[1]:
+                opponentPieces.remove(oppoPiece)
+                break
+
 def confirmValidity(xFrom, yFrom, xTo, yTo):
     for pos in legalMovesList:
         if(xTo, yTo) == pos:
@@ -197,6 +206,9 @@ while run:
                             idx = (original_idx_x, original_idx_y)
                             validMove = False
                         if validMove:
+                            if dragged_piece.pType == ChessPieceTypes.PAWN and opponentLastMovePawn2Spaces == True:
+                                print("dragged piece is a pawn and opponent last move 2 pawn spaces")
+                                checkTakeWithEnPassant(idx[0], idx[1], isWhitesMove, opponentLastMovePawnLocation)
                             checkTakeOpponentPiece(idx[0], idx[1], dragged_piece, isWhitesMove)
 
                             # TODO: Tidy up follow repeated  6 lines
@@ -247,7 +259,6 @@ while run:
                             idx = (original_idx_x, original_idx_y)
                             validMove = False
                         if validMove:
-                            # TODO: check actual valid move, i.e. not clicking the same square as currently on
                             checkTakeOpponentPiece(idx[0], idx[1], dragged_piece, isWhitesMove)
 
                             # TODO: Tidy up follow repeated  6 lines

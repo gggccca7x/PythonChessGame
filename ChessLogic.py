@@ -242,7 +242,7 @@ def getPawnMoves(x, y, yourPcs, oppoPcs, piece, isWhite, oppoCheckingPcs, oppLas
                 and pieceNotThere((x,y-2), oppoPcs) and pieceNotThere((x,y-1), oppoPcs)): 
                 moves.append((x,y-2))
         if y == 3 and oppLasMovPaw2:
-            if abs(x - oppLasMovPawIdx[1]) == 1:
+            if abs(x - oppLasMovPawIdx[0]) == 1:
                 moves.append((oppLasMovPawIdx[0],y-1))
         
     else:
@@ -257,7 +257,7 @@ def getPawnMoves(x, y, yourPcs, oppoPcs, piece, isWhite, oppoCheckingPcs, oppLas
                 and pieceNotThere((x,y+2), oppoPcs) and pieceNotThere((x,y+1), oppoPcs)): 
                 moves.append((x,y+2))
         if y == 4 and oppLasMovPaw2:
-            if abs(x - oppLasMovPawIdx[1]) == 1:
+            if abs(x - oppLasMovPawIdx[0]) == 1:
                 moves.append((oppLasMovPawIdx[0],y+1))
     return moves
 
