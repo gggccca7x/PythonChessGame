@@ -207,7 +207,7 @@ while run:
                             validMove = False
                         if validMove:
                             if dragged_piece.pType == ChessPieceTypes.PAWN and opponentLastMovePawn2Spaces == True:
-                                print("dragged piece is a pawn and opponent last move 2 pawn spaces")
+                                # print("dragged piece is a pawn and opponent last move 2 pawn spaces")
                                 checkTakeWithEnPassant(idx[0], idx[1], isWhitesMove, opponentLastMovePawnLocation)
                             checkTakeOpponentPiece(idx[0], idx[1], dragged_piece, isWhitesMove)
 
@@ -259,6 +259,9 @@ while run:
                             idx = (original_idx_x, original_idx_y)
                             validMove = False
                         if validMove:
+                            if dragged_piece.pType == ChessPieceTypes.PAWN and opponentLastMovePawn2Spaces == True:
+                                # print("dragged piece is a pawn and opponent last move 2 pawn spaces")
+                                checkTakeWithEnPassant(idx[0], idx[1], isWhitesMove, opponentLastMovePawnLocation)
                             checkTakeOpponentPiece(idx[0], idx[1], dragged_piece, isWhitesMove)
 
                             # TODO: Tidy up follow repeated  6 lines
