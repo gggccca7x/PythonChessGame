@@ -135,7 +135,7 @@ def checkDifferentSquare(xFrom, yFrom, xTo, yTo):
 
 def checkCastled(idx, o_idx, whiteTurn):
     yourPieces = whiteChessPieces if whiteTurn else blackChessPieces
-    if abs(idx[0]-o_idx[0]) == 2:
+    if abs(idx[0] - o_idx[0]) == 2:
         if idx[0] == 2 and idx[1] == 0:
             for p in yourPieces:
                 if p.idxX == 0 and p.idxY == 0:
@@ -156,8 +156,6 @@ def checkCastled(idx, o_idx, whiteTurn):
                 if p.idxX == 7 and p.idxY == 7:
                     p.setNewPosition((5, 7), getPosFromIndex(5, 7))
                     break
-    return 0
-
 
 w_rook_image = pygame.image.load(".\images\white_rook.png")
 w_rook_image = pygame.transform.scale(w_rook_image, (w_per_sq,w_per_sq))

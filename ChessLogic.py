@@ -138,22 +138,25 @@ def checkCastlingPossible(yourPcs, oppoPcs, isWhite, moved_A_Rook, moved_H_Rook,
         if isWhite:
             if (pieceNotThere((1,7), yourPcs) and pieceNotThere((1,7), oppoPcs)
                 and pieceNotThere((2,7), yourPcs) and pieceNotThere((2,7), oppoPcs)
-                and pieceNotThere((3,7), yourPcs) and pieceNotThere((3,7), oppoPcs)):
-                    # TODO: account for opponent moves on squares in between castle 
+                and pieceNotThere((3,7), yourPcs) and pieceNotThere((3,7), oppoPcs)
+                and itemNotInList((1,7), allOppMoves) and itemNotInList((1,7), allOppMoves) and itemNotInList((1,7), allOppMoves)):
                     castlingMoves.append((2,7))
         else:
             if (pieceNotThere((1,0), yourPcs) and pieceNotThere((1,0), oppoPcs)
                 and pieceNotThere((2,0), yourPcs) and pieceNotThere((2,0), oppoPcs)
-                and pieceNotThere((3,0), yourPcs) and pieceNotThere((3,0), oppoPcs)):
+                and pieceNotThere((3,0), yourPcs) and pieceNotThere((3,0), oppoPcs)
+                and itemNotInList((1,0), allOppMoves) and itemNotInList((1,0), allOppMoves) and itemNotInList((1,0), allOppMoves)):
                     castlingMoves.append((2,0))
     if not moved_H_Rook:
         if isWhite:
             if (pieceNotThere((5,7), yourPcs) and pieceNotThere((5,7), oppoPcs)
-                and pieceNotThere((6,7), yourPcs) and pieceNotThere((6,7), oppoPcs)):
+                and pieceNotThere((6,7), yourPcs) and pieceNotThere((6,7), oppoPcs)
+                and itemNotInList((5,7), allOppMoves) and itemNotInList((6,7), allOppMoves)):
                     castlingMoves.append((6,7))
         else:
             if (pieceNotThere((5,0), yourPcs) and pieceNotThere((5,0), oppoPcs)
-                and pieceNotThere((6,0), yourPcs) and pieceNotThere((6,0), oppoPcs)):
+                and pieceNotThere((6,0), yourPcs) and pieceNotThere((6,0), oppoPcs)
+                and itemNotInList((5,0), allOppMoves) and itemNotInList((6,0), allOppMoves)):
                     castlingMoves.append((6,0))
 
     return castlingMoves
@@ -356,3 +359,9 @@ def checkYourPieces(moves, yourPcs):
 def pieceNotThere(pos, pcs):
     piecesPositions = [(piece.idxX, piece.idxY) for piece in pcs]
     return True if pos not in piecesPositions else False
+
+def itemNotInList(pos, lis):
+    for i in lis:
+        if i == pos:
+            return False
+    return True
