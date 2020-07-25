@@ -8,6 +8,7 @@ from ChessLogic import CastlingLogic
 
 # TODO: complete the readme
 
+# TODO: finish off castling mechanics by changing bools in CastlingLogic bool when rooks move, etc..
 # TODO: have some sort of take back mechanism
 # TODO: dragging shows legal moves
 # TODO: fix clicking to move piece - needs minor adjustment
