@@ -118,6 +118,7 @@ def checkTakeWithEnPassant(idxX, idxY, whiteTurn, opponentLastMovePawnLocation):
                 break
 
 def handlePawnPromotion(piece):
+    # TODO: Pawn only promotes to a queen
     piece.pType = ChessPieceTypes.QUEEN
     # note: I was using whites turn for the check, but because I'm changing the turn before this it was creating wrong coloured piece
     piece.image = w_queen_image if piece.idxY == 0 else b_queen_image
