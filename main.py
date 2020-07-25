@@ -7,7 +7,7 @@ from ChessLogic import ChessPieceTypes
 
 # TODO: Credit pieces assets
 # TODO: Have a README.MD
-# Include something like: Please note - I am using a python interpreter with a conda environement...
+# Include something like: Please note - I am using a python interpreter with a conda environment...
 # pygame: 1.9.6, python 3.7.6, conda 4.8.3
 
 # TODO: Bring to front the selected piece (move to bottom of the list)
@@ -17,8 +17,6 @@ from ChessLogic import ChessPieceTypes
 # TODO: allow castrol
 # TODO: fix clicking to move piece - needs minor adjustment
 # TODO: add opacity to legal move rectangles
-
-# TODO: MACHINE LEARN TRAIN A MACHINE TO PLAY AGAINST ME!!!!
 
 pygame.init()
 win = pygame.display.set_mode((700, 700))
@@ -221,7 +219,12 @@ while run:
                                     opponentLastMovePawnLocation = idx
 
                             isPieceClicked = False
+
+                    # TODO: Tidy up repeated 3 lines                            
                     dragged_piece.setNewPosition(idx, pos)
+                    if dragged_piece.pType == ChessPieceTypes.PAWN and (idx[1] == 0 or idx[1] == 7):
+                        print("Handle pawn promotion")
+                        
                 else:
                     index = getIndexFromPos(mouse_x, mouse_y)
                     chessPieces = whiteChessPieces if isWhitesMove else blackChessPieces
@@ -273,8 +276,11 @@ while run:
                                     opponentLastMovePawn2Spaces = True
                                     opponentLastMovePawnLocation = idx
 
-                    # note i am setting set position or original index above if not a valid move
+                    # note i am setting set position or original index above if not a valid move, this doesnt always move it to a new square
+                    # TODO: Tidy up repeated 3 lines
                     dragged_piece.setNewPosition(idx, pos)
+                    if dragged_piece.pType == ChessPieceTypes.PAWN and (idx[1] == 0 or idx[1] == 7):
+                        print("Handle pawn promotion")
 
         elif event.type == pygame.MOUSEMOTION:
             if is_dragging_piece:
