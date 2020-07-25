@@ -117,6 +117,11 @@ def checkTakeWithEnPassant(idxX, idxY, whiteTurn, opponentLastMovePawnLocation):
                 opponentPieces.remove(oppoPiece)
                 break
 
+def handlePawnPromotion(piece):
+    piece.pType = ChessPieceTypes.QUEEN
+    # note: I was using whites turn for the check, but because I'm changing the turn before this it was creating wrong coloured piece
+    piece.image = w_queen_image if piece.idxY == 0 else b_queen_image
+
 def confirmValidity(xFrom, yFrom, xTo, yTo):
     for pos in legalMovesList:
         if(xTo, yTo) == pos:
@@ -223,8 +228,8 @@ while run:
                     # TODO: Tidy up repeated 3 lines                            
                     dragged_piece.setNewPosition(idx, pos)
                     if dragged_piece.pType == ChessPieceTypes.PAWN and (idx[1] == 0 or idx[1] == 7):
-                        print("Handle pawn promotion")
-                        
+                        handlePawnPromotion(dragged_piece)
+
                 else:
                     index = getIndexFromPos(mouse_x, mouse_y)
                     chessPieces = whiteChessPieces if isWhitesMove else blackChessPieces
@@ -280,7 +285,7 @@ while run:
                     # TODO: Tidy up repeated 3 lines
                     dragged_piece.setNewPosition(idx, pos)
                     if dragged_piece.pType == ChessPieceTypes.PAWN and (idx[1] == 0 or idx[1] == 7):
-                        print("Handle pawn promotion")
+                        handlePawnPromotion(dragged_piece)
 
         elif event.type == pygame.MOUSEMOTION:
             if is_dragging_piece:
