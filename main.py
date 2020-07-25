@@ -8,11 +8,8 @@ from ChessLogic import CastlingLogic
 
 # TODO: complete the readme
 
-# TODO: Bring to front the selected piece (move to bottom of the list)
-# TODO: Confirm pieces have legal chess moves
 # TODO: have some sort of take back mechanism
 # TODO: dragging shows legal moves
-# TODO: allow castrol
 # TODO: fix clicking to move piece - needs minor adjustment
 # TODO: add opacity to legal move rectangles
 # TODO: promoting option, not only queen
@@ -53,20 +50,19 @@ def draw():
     drawBoard()
 
     if isPieceClicked:
-        # TODO: calculate legal moves and then draw
         colourSelectedIndex(dragged_piece.idxX, dragged_piece.idxY, GREEN)
         for idx in legalMovesList:
             colourSelectedIndex(idx[0], idx[1], YELLOW)
 
-    for c in whiteChessPieces:
-        win.blit(c.image, (c.posX, c.posY))
+    # checking to draw the white pieces after so they appear on top if whites move
+    if not isWhitesMove:
+        for c in whiteChessPieces:
+            win.blit(c.image, (c.posX, c.posY))
     for c in blackChessPieces:
         win.blit(c.image, (c.posX, c.posY))
-
-# TODO: complete and call this method
-def drawLegalMoves():
-    for move in legalMovesList:
-        break
+    if isWhitesMove:
+        for c in whiteChessPieces:
+            win.blit(c.image, (c.posX, c.posY))
 
 def colourSelectedIndex(x, y, color):
     pygame.draw.rect(win, color, (x * w_per_sq + cb_bx1, y * w_per_sq + cb_by1, w_per_sq, w_per_sq))

@@ -358,12 +358,5 @@ def pieceNotThere(pos, pcs):
     return True if pos not in piecesPositions else False
 
 # check if item in list or not
-# def itemNotInList(pos, lis):
-#     for i in lis:
-#         if i == pos:
-#             return False
-#     return True
-
-# check if item in list or not
 def itemNotInList(pos, lis):
     return True if pos not in lis else False
