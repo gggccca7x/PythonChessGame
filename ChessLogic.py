@@ -26,11 +26,24 @@ class ChessPieceTypes:
 opponentLastMovePawn2Spaces = False
 opponentLastMovePawnLocation = (-1,-1)
 
+# to check for castling
+hasWhiteCastled = False
+hasWhiteMovedARook = False
+hasWhiteMovedHRook = False
+hasWhiteMovedKing = False
+
+hasBlackCastled = False
+hasBlackMovedARook = False
+hasBlackMovedHRook = False
+hasBlackMovedKing = False
+
 # returns list of tuples of indexes e.g. [(3, 3), (4, 4)]
 def getAllLegalMoves(x, y, yourPcs, oppoPcs, piece, isWhite, oppLasMovPaw2, oppLasMovPawIdx):
 
-    # TODO: if not in check allow castling and en passant
-    # TODO: fix taking piece not removing king out of check...
+    # TODO: if not in check allow castling
+
+    oppPieces = getAllOpponentNextTurnMoves(yourPcs, oppoPcs, isWhite, [], oppLasMovPaw2, oppLasMovPawIdx)
+    print("opp moves: ", len(oppPieces))
 
     king = piece
     for p in yourPcs:
@@ -49,14 +62,13 @@ def getAllLegalMoves(x, y, yourPcs, oppoPcs, piece, isWhite, oppLasMovPaw2, oppL
         else:
             return []
     else: 
-        # TODO: complete this with chess logic
         switcher = {
             ChessPieceTypes.KING: getKingMoves(x, y, yourPcs, oppoPcs, piece, inCheckList),
             ChessPieceTypes.QUEEN: getQueenMoves(x, y, yourPcs, oppoPcs, piece, inCheckList), 
             ChessPieceTypes.ROOK: getRookMoves(x, y, yourPcs, oppoPcs, piece, inCheckList), 
             ChessPieceTypes.KNIGHT: getKnightMoves(x, y, yourPcs, oppoPcs, piece, inCheckList), 
             ChessPieceTypes.BISHOP: getBishopMoves(x, y, yourPcs, oppoPcs, piece, inCheckList), 
-            ChessPieceTypes.PAWN: getPawnMoves(x, y, yourPcs, oppoPcs, piece, isWhite,inCheckList, oppLasMovPaw2, oppLasMovPawIdx)
+            ChessPieceTypes.PAWN: getPawnMoves(x, y, yourPcs, oppoPcs, piece, isWhite, inCheckList, oppLasMovPaw2, oppLasMovPawIdx)
         }
         pieceMoves =  switcher.get(piece.pType, (-1, -1))
 
@@ -94,7 +106,23 @@ def checkKingInCheck(kPos, yourPcs, oppoPcs, isWhite, oppoCheckingPcs, oppLasMov
 
     return oppoPieces
 
-# TODO: complete except castroling and checks
+def getAllOpponentNextTurnMoves(yourPcs, oppoPcs, isWhite, oppoCheckingPcs, oppLasMovPaw2, oppLasMovPawIdx):
+    oppoPieces = []
+    for p in oppoPcs:
+        switcher = {
+            # note: had to switch over oppoPcs and yourPcs in these methods
+            ChessPieceTypes.KING: getKingMoves(p.idxX, p.idxY, oppoPcs, yourPcs, p, oppoCheckingPcs),
+            ChessPieceTypes.QUEEN: getQueenMoves(p.idxX, p.idxY, oppoPcs, yourPcs, p, oppoCheckingPcs), 
+            ChessPieceTypes.ROOK: getRookMoves(p.idxX, p.idxY, oppoPcs, yourPcs, p, oppoCheckingPcs), 
+            ChessPieceTypes.KNIGHT: getKnightMoves(p.idxX, p.idxY, oppoPcs, yourPcs, p, oppoCheckingPcs), 
+            ChessPieceTypes.BISHOP: getBishopMoves(p.idxX, p.idxY, oppoPcs, yourPcs, p, oppoCheckingPcs),
+            ChessPieceTypes.PAWN: getPawnMoves(p.idxX, p.idxY, oppoPcs, yourPcs, p, not isWhite, oppoCheckingPcs, oppLasMovPaw2, oppLasMovPawIdx)
+        }
+        pieceMoves = switcher.get(p.pType, (-1, -1))
+        oppoPieces.extend(pieceMoves)
+
+    return oppoPieces
+
 def getRookMoves(x, y, yourPcs, oppoPcs, piece, oppoCheckingPc):
     moves = []
     ix = x
@@ -136,7 +164,6 @@ def getRookMoves(x, y, yourPcs, oppoPcs, piece, oppoCheckingPc):
 
     return moves
 
-# TODO: bishop working perfectly except checks
 def getBishopMoves(x, y, yourPcs, oppoPcs, piece, oppoCheckingPcs):
     moves = []
     ix = x
@@ -186,7 +213,6 @@ def getBishopMoves(x, y, yourPcs, oppoPcs, piece, oppoCheckingPcs):
 
     return moves
 
-# TODO: knight working perfectly except checks
 def getKnightMoves(x, y, yourPcs, oppoPcs, piece, oppoCheckingPcs):
     moves = []
     ix = x - 2
@@ -244,7 +270,6 @@ def getPawnMoves(x, y, yourPcs, oppoPcs, piece, isWhite, oppoCheckingPcs, oppLas
         if y == 3 and oppLasMovPaw2:
             if abs(x - oppLasMovPawIdx[0]) == 1:
                 moves.append((oppLasMovPawIdx[0],y-1))
-        
     else:
         if pieceNotThere((x,y+1), yourPcs) and pieceNotThere((x,y+1), oppoPcs): moves.append((x,y+1))
         # Note: dont need to worry about out of bounds i dont think?

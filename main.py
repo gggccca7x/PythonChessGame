@@ -5,10 +5,7 @@ from ChessLogic import opponentLastMovePawnLocation
 from ChessLogic import ChessPiece
 from ChessLogic import ChessPieceTypes
 
-# TODO: Credit pieces assets
-# TODO: Have a README.MD
-# Include something like: Please note - I am using a python interpreter with a conda environment...
-# pygame: 1.9.6, python 3.7.6, conda 4.8.3
+# TODO: complete the readme
 
 # TODO: Bring to front the selected piece (move to bottom of the list)
 # TODO: Confirm pieces have legal chess moves
