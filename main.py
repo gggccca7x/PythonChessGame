@@ -5,6 +5,7 @@ from ChessLogic import opponentLastMovePawnLocation
 from ChessLogic import ChessPiece
 from ChessLogic import ChessPieceTypes
 
+# TODO: Credit pieces assets
 # TODO: Have a README.MD
 # Include something like: Please note - I am using a python interpreter with a conda environement...
 # pygame: 1.9.6, python 3.7.6, conda 4.8.3
@@ -99,8 +100,7 @@ def checkIfYourPieceAlreadyThere(posX, posY, piece, whiteTurn):
             return True
     return False 
 
-# only place where pieces are removed
-# TODO: account for en passant
+# check if this square has an opponent piece, and remove piece if so
 def checkTakeOpponentPiece(idxX, idxY, piece, whiteTurn):
     opponentPieces = blackChessPieces if whiteTurn else whiteChessPieces
 
@@ -109,6 +109,7 @@ def checkTakeOpponentPiece(idxX, idxY, piece, whiteTurn):
             opponentPieces.remove(oppoPiece)
             break
 
+# handle if en passant is played and therefore removes an opponent piece not on the same square
 def checkTakeWithEnPassant(idxX, idxY, whiteTurn, opponentLastMovePawnLocation):
     opponentPieces = blackChessPieces if whiteTurn else whiteChessPieces
     change = 1 if whiteTurn else -1
@@ -206,12 +207,12 @@ while run:
                             idx = (original_idx_x, original_idx_y)
                             validMove = False
                         if validMove:
+                            # TODO: Tidy up following repeated 3 lines
                             if dragged_piece.pType == ChessPieceTypes.PAWN and opponentLastMovePawn2Spaces == True:
-                                # print("dragged piece is a pawn and opponent last move 2 pawn spaces")
                                 checkTakeWithEnPassant(idx[0], idx[1], isWhitesMove, opponentLastMovePawnLocation)
                             checkTakeOpponentPiece(idx[0], idx[1], dragged_piece, isWhitesMove)
 
-                            # TODO: Tidy up follow repeated  6 lines
+                            # TODO: Tidy up following repeated 6 lines
                             isWhitesMove = not isWhitesMove
                             opponentLastMovePawn2Spaces = False
                             if dragged_piece.pType == ChessPieceTypes.PAWN:
@@ -259,12 +260,12 @@ while run:
                             idx = (original_idx_x, original_idx_y)
                             validMove = False
                         if validMove:
+                            # TODO: Tidy up following repeated 3 lines
                             if dragged_piece.pType == ChessPieceTypes.PAWN and opponentLastMovePawn2Spaces == True:
-                                # print("dragged piece is a pawn and opponent last move 2 pawn spaces")
                                 checkTakeWithEnPassant(idx[0], idx[1], isWhitesMove, opponentLastMovePawnLocation)
                             checkTakeOpponentPiece(idx[0], idx[1], dragged_piece, isWhitesMove)
 
-                            # TODO: Tidy up follow repeated  6 lines
+                            # TODO: Tidy up following repeated 6 lines
                             isWhitesMove = not isWhitesMove
                             opponentLastMovePawn2Spaces = False
                             if dragged_piece.pType == ChessPieceTypes.PAWN:
