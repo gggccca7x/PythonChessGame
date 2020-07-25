@@ -50,20 +50,21 @@ def getAllLegalMoves(x, y, yourPcs, oppoPcs, piece, isWhite, oppLasMovPaw2, oppL
             king = p
             break
 
-    # to account for castling
-    allOppMoves = getAllOpponentNextTurnMoves(yourPcs, oppoPcs, isWhite, [], oppLasMovPaw2, oppLasMovPawIdx)
-    if piece.pType == ChessPieceTypes.KING:
-        if isWhite:
-            if not castlingLogic.hasWhiteCastled and not castlingLogic.hasWhiteMovedKing:
-                validPieceMoves.extend(checkCastlingPossible(yourPcs, oppoPcs, isWhite, castlingLogic.hasWhiteMoved_A_Rook, castlingLogic.hasWhiteMoved_H_Rook, allOppMoves))
-        else:
-            if not castlingLogic.hasBlackCastled and not castlingLogic.hasBlackMovedKing:
-                validPieceMoves.extend(checkCastlingPossible(yourPcs, oppoPcs, isWhite, castlingLogic.hasBlackMoved_A_Rook, castlingLogic.hasBlackMoved_H_Rook, allOppMoves))
-
     # All pieces putting king in check
     # if 2 pieces checking the king, he is FORCED to move
     inCheckList = checkKingInCheck((king.idxX, king.idxY), yourPcs, oppoPcs, isWhite, [], oppLasMovPaw2, oppLasMovPawIdx)
     numCheckingPcs = len(inCheckList)
+
+    # to account for castling
+    allOppMoves = getAllOpponentNextTurnMoves(yourPcs, oppoPcs, isWhite, [], oppLasMovPaw2, oppLasMovPawIdx)
+    if numCheckingPcs < 1:
+        if piece.pType == ChessPieceTypes.KING:
+            if isWhite:
+                if not castlingLogic.hasWhiteCastled and not castlingLogic.hasWhiteMovedKing:
+                    validPieceMoves.extend(checkCastlingPossible(yourPcs, oppoPcs, isWhite, castlingLogic.hasWhiteMoved_A_Rook, castlingLogic.hasWhiteMoved_H_Rook, allOppMoves))
+            else:
+                if not castlingLogic.hasBlackCastled and not castlingLogic.hasBlackMovedKing:
+                    validPieceMoves.extend(checkCastlingPossible(yourPcs, oppoPcs, isWhite, castlingLogic.hasBlackMoved_A_Rook, castlingLogic.hasBlackMoved_H_Rook, allOppMoves))
 
     if numCheckingPcs == 2:
         if piece.pType == ChessPieceTypes.KING:
