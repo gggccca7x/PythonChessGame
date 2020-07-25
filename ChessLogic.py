@@ -145,7 +145,7 @@ def checkCastlingPossible(yourPcs, oppoPcs, isWhite, moved_A_Rook, moved_H_Rook,
             if (pieceNotThere((1,0), yourPcs) and pieceNotThere((1,0), oppoPcs)
                 and pieceNotThere((2,0), yourPcs) and pieceNotThere((2,0), oppoPcs)
                 and pieceNotThere((3,0), yourPcs) and pieceNotThere((3,0), oppoPcs)
-                and itemNotInList((1,0), allOppMoves) and itemNotInList((1,0), allOppMoves) and itemNotInList((1,0), allOppMoves)):
+                and itemNotInList((1,0), allOppMoves) and itemNotInList((2,0), allOppMoves) and itemNotInList((3,0), allOppMoves)):
                     castlingMoves.append((2,0))
     if not moved_H_Rook:
         if isWhite:
@@ -288,11 +288,9 @@ def getKnightMoves(x, y, yourPcs, oppoPcs, piece, oppoCheckingPcs):
         moves.append((ix, iy))
     return moves
 
-# TODO: complete except accounting for castling unlike rook this cannot do it and checks
 def getQueenMoves(x, y, yourPcs, oppoPcs, piece, oppoCheckingPcs):
     return getBishopMoves(x, y, yourPcs, oppoPcs, piece, oppoCheckingPcs) + getRookMoves(x, y, yourPcs, oppoPcs, piece, oppoCheckingPcs)
 
-# TODO: enpassant, promoting
 def getPawnMoves(x, y, yourPcs, oppoPcs, piece, isWhite, oppoCheckingPcs, oppLasMovPaw2, oppLasMovPawIdx):
     moves = []
     if isWhite:
@@ -325,7 +323,6 @@ def getPawnMoves(x, y, yourPcs, oppoPcs, piece, isWhite, oppoCheckingPcs, oppLas
                 moves.append((oppLasMovPawIdx[0],y+1))
     return moves
 
-# TODO: complete except castroling and checks
 def getKingMoves(x, y, yourPcs, oppoPcs, piece, oppoCheckingPcs):
     moves = []
     if y > 0:
@@ -360,8 +357,13 @@ def pieceNotThere(pos, pcs):
     piecesPositions = [(piece.idxX, piece.idxY) for piece in pcs]
     return True if pos not in piecesPositions else False
 
+# check if item in list or not
+# def itemNotInList(pos, lis):
+#     for i in lis:
+#         if i == pos:
+#             return False
+#     return True
+
+# check if item in list or not
 def itemNotInList(pos, lis):
-    for i in lis:
-        if i == pos:
-            return False
-    return True
+    return True if pos not in lis else False
