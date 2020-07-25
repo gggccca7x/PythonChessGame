@@ -138,6 +138,7 @@ def checkCastlingPossible(yourPcs, oppoPcs, isWhite, moved_A_Rook, moved_H_Rook,
             if (pieceNotThere((1,7), yourPcs) and pieceNotThere((1,7), oppoPcs)
                 and pieceNotThere((2,7), yourPcs) and pieceNotThere((2,7), oppoPcs)
                 and pieceNotThere((3,7), yourPcs) and pieceNotThere((3,7), oppoPcs)):
+                    # TODO: account for opponent moves on squares in between castle 
                     castlingMoves.append((2,7))
         else:
             if (pieceNotThere((1,0), yourPcs) and pieceNotThere((1,0), oppoPcs)
