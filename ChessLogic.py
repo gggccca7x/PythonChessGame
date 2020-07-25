@@ -22,34 +22,41 @@ class ChessPieceTypes:
     BISHOP = 4
     PAWN = 5
 
+class CastlingLogic:
+     def __init__(self):
+        # to check for castling
+        self.hasWhiteCastled = False
+        self.hasWhiteMoved_A_Rook = False
+        self.hasWhiteMoved_H_Rook = False
+        self.hasWhiteMovedKing = False
+
+        self.hasBlackCastled = False
+        self.hasBlackMoved_A_Rook = False
+        self.hasBlackMoved_H_Rook = False
+        self.hasBlackMovedKing = False
+
 # to check for en passant
 opponentLastMovePawn2Spaces = False
 opponentLastMovePawnLocation = (-1,-1)
 
-# to check for castling
-hasWhiteCastled = False
-hasWhiteMovedARook = False
-hasWhiteMovedHRook = False
-hasWhiteMovedKing = False
-
-hasBlackCastled = False
-hasBlackMovedARook = False
-hasBlackMovedHRook = False
-hasBlackMovedKing = False
-
 # returns list of tuples of indexes e.g. [(3, 3), (4, 4)]
-def getAllLegalMoves(x, y, yourPcs, oppoPcs, piece, isWhite, oppLasMovPaw2, oppLasMovPawIdx):
-
-    # TODO: if not in check allow castling
-
-    oppPieces = getAllOpponentNextTurnMoves(yourPcs, oppoPcs, isWhite, [], oppLasMovPaw2, oppLasMovPawIdx)
-    print("opp moves: ", len(oppPieces))
+def getAllLegalMoves(x, y, yourPcs, oppoPcs, piece, isWhite, oppLasMovPaw2, oppLasMovPawIdx, castlingLogic):
 
     king = piece
     for p in yourPcs:
         if p.pType == ChessPieceTypes.KING:
             king = p
             break
+
+    # to account for castling
+    allOppMoves = getAllOpponentNextTurnMoves(yourPcs, oppoPcs, isWhite, [], oppLasMovPaw2, oppLasMovPawIdx)
+    if piece.pType == ChessPieceTypes.KING:
+        if isWhite:
+            if not castlingLogic.hasWhiteCastled and not castlingLogic.hasWhiteMovedKing:
+                checkCastlingPossible(yourPcs, oppoPcs, isWhite, castlingLogic.hasWhiteMoved_A_Rook, castlingLogic.hasWhiteMoved_H_Rook, allOppMoves)
+        else:
+            if not castlingLogic.hasBlackCastled and not castlingLogic.hasBlackMovedKing:
+                checkCastlingPossible(yourPcs, oppoPcs, isWhite, castlingLogic.hasBlackMoved_A_Rook, castlingLogic.hasBlackMoved_H_Rook, allOppMoves)
 
     # All pieces putting king in check
     # if 2 pieces checking the king, he is FORCED to move
@@ -122,6 +129,34 @@ def getAllOpponentNextTurnMoves(yourPcs, oppoPcs, isWhite, oppoCheckingPcs, oppL
         oppoPieces.extend(pieceMoves)
 
     return oppoPieces
+
+def checkCastlingPossible(yourPcs, oppoPcs, isWhite, moved_A_Rook, moved_H_Rook, allOppMoves):
+    castlingMoves = []
+    if not moved_A_Rook:
+        if isWhite:
+            if (pieceNotThere((1,7), yourPcs) and pieceNotThere((1,7), oppoPcs)
+                and pieceNotThere((2,7), yourPcs) and pieceNotThere((2,7), oppoPcs)
+                and pieceNotThere((3,7), yourPcs) and pieceNotThere((3,7), oppoPcs)):
+                    print("white castling a side should be allowed")
+                    castlingMoves.append((2,7))
+        else:
+            if (pieceNotThere((1,0), yourPcs) and pieceNotThere((1,0), oppoPcs)
+                and pieceNotThere((2,0), yourPcs) and pieceNotThere((2,0), oppoPcs)
+                and pieceNotThere((3,0), yourPcs) and pieceNotThere((3,0), oppoPcs)):
+                    print("black castling a side should be allowed")
+                    castlingMoves.append((2,0))
+    if not moved_H_Rook:
+        if isWhite:
+            if (pieceNotThere((5,7), yourPcs) and pieceNotThere((5,7), oppoPcs)
+                and pieceNotThere((6,7), yourPcs) and pieceNotThere((6,7), oppoPcs)):
+                    print("castling h side should be allowed")
+                    castlingMoves.append((6,7))
+        else:
+            if (pieceNotThere((5,0), yourPcs) and pieceNotThere((5,0), oppoPcs)
+                and pieceNotThere((6,0), yourPcs) and pieceNotThere((6,0), oppoPcs)):
+                    print("castling h side should be allowed")
+                    castlingMoves.append((6,0))
+
 
 def getRookMoves(x, y, yourPcs, oppoPcs, piece, oppoCheckingPc):
     moves = []

@@ -4,6 +4,7 @@ from ChessLogic import opponentLastMovePawn2Spaces
 from ChessLogic import opponentLastMovePawnLocation
 from ChessLogic import ChessPiece
 from ChessLogic import ChessPieceTypes
+from ChessLogic import CastlingLogic
 
 # TODO: complete the readme
 
@@ -179,6 +180,8 @@ original_idx_y = 1
 dragged_piece = whiteChessPieces[0]
 is_dragging_piece = False
 
+castlingLogic = CastlingLogic()
+
 run = True
 isWhitesMove = True
 isPieceClicked = False # Specifically Clicked
@@ -240,7 +243,8 @@ while run:
                                     whiteChessPieces if isWhitesMove else blackChessPieces, 
                                     blackChessPieces if isWhitesMove else whiteChessPieces, 
                                     dragged_piece, isWhitesMove,
-                                    opponentLastMovePawn2Spaces, opponentLastMovePawnLocation)
+                                    opponentLastMovePawn2Spaces, opponentLastMovePawnLocation,
+                                    castlingLogic)
                             is_dragging_piece = True
                             break
                     if is_dragging_piece:
