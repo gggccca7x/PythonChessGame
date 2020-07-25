@@ -132,6 +132,11 @@ def checkDifferentSquare(xFrom, yFrom, xTo, yTo):
         return True
     return False
 
+def checkCastled(idx, o_idx, isWhitesMove):
+    print("check castled")
+    return 0
+
+
 w_rook_image = pygame.image.load(".\images\white_rook.png")
 w_rook_image = pygame.transform.scale(w_rook_image, (w_per_sq,w_per_sq))
 w_knight_image = pygame.image.load(".\images\white_knight.png")
@@ -211,9 +216,12 @@ while run:
                             idx = (original_idx_x, original_idx_y)
                             validMove = False
                         if validMove:
-                            # TODO: Tidy up following repeated 3 lines
+                            
+                            # TODO: Tidy up following repeated 5 lines
                             if dragged_piece.pType == ChessPieceTypes.PAWN and opponentLastMovePawn2Spaces == True:
                                 checkTakeWithEnPassant(idx[0], idx[1], isWhitesMove, opponentLastMovePawnLocation)
+                            if dragged_piece.pType == ChessPieceTypes.KING:
+                                checkCastled(idx, (original_idx_x, original_idx_y), isWhitesMove)
                             checkTakeOpponentPiece(idx[0], idx[1], dragged_piece, isWhitesMove)
 
                             # TODO: Tidy up following repeated 6 lines
@@ -270,9 +278,11 @@ while run:
                             idx = (original_idx_x, original_idx_y)
                             validMove = False
                         if validMove:
-                            # TODO: Tidy up following repeated 3 lines
+                            # TODO: Tidy up following repeated 5 lines
                             if dragged_piece.pType == ChessPieceTypes.PAWN and opponentLastMovePawn2Spaces == True:
                                 checkTakeWithEnPassant(idx[0], idx[1], isWhitesMove, opponentLastMovePawnLocation)
+                            if dragged_piece.pType == ChessPieceTypes.KING:
+                                checkCastled(idx, (original_idx_x, original_idx_y), isWhitesMove)
                             checkTakeOpponentPiece(idx[0], idx[1], dragged_piece, isWhitesMove)
 
                             # TODO: Tidy up following repeated 6 lines
