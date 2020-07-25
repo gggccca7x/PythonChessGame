@@ -131,26 +131,35 @@ def checkDifferentSquare(xFrom, yFrom, xTo, yTo):
     return False
 
 def checkCastled(idx, o_idx, whiteTurn):
+    if whiteTurn:
+        castlingLogic.hasWhiteMovedKing = True
+    else:
+        castlingLogic.hasBlackMovedKing = True
+        
     yourPieces = whiteChessPieces if whiteTurn else blackChessPieces
     if abs(idx[0] - o_idx[0]) == 2:
         if idx[0] == 2 and idx[1] == 0:
             for p in yourPieces:
                 if p.idxX == 0 and p.idxY == 0:
                     p.setNewPosition((3, 0), getPosFromIndex(3, 0))
+                    castlingLogic.hasBlackCastled = True
                     break
         elif idx[0] == 2 and idx[1] == 7:
             for p in yourPieces:
                 if p.idxX == 0 and p.idxY == 7:
+                    castlingLogic.hasWhiteCastled = True
                     p.setNewPosition((3, 7), getPosFromIndex(3, 7))
                     break
         elif idx[0] == 6 and idx[1] == 0:
             for p in yourPieces:
                 if p.idxX == 7 and p.idxY == 0:
+                    castlingLogic.hasBlackCastled = True
                     p.setNewPosition((5, 0), getPosFromIndex(5, 0))
                     break
         elif idx[0] == 6 and idx[1] == 7:
             for p in yourPieces:
                 if p.idxX == 7 and p.idxY == 7:
+                    castlingLogic.hasWhiteCastled = True
                     p.setNewPosition((5, 7), getPosFromIndex(5, 7))
                     break
 
