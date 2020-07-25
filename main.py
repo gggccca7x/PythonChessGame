@@ -135,7 +135,7 @@ def checkCastled(idx, o_idx, whiteTurn):
         castlingLogic.hasWhiteMovedKing = True
     else:
         castlingLogic.hasBlackMovedKing = True
-        
+
     yourPieces = whiteChessPieces if whiteTurn else blackChessPieces
     if abs(idx[0] - o_idx[0]) == 2:
         if idx[0] == 2 and idx[1] == 0:
@@ -162,6 +162,16 @@ def checkCastled(idx, o_idx, whiteTurn):
                     castlingLogic.hasWhiteCastled = True
                     p.setNewPosition((5, 7), getPosFromIndex(5, 7))
                     break
+
+def movedRook(x, y):
+    if x == 0 and y == 0:
+        castlingLogic.hasBlackMoved_A_Rook = True
+    elif x == 7 and y == 0:
+        castlingLogic.hasBlackMoved_H_Rook = True
+    elif x == 0 and y == 7:
+        castlingLogic.hasWhiteMoved_A_Rook = True
+    elif x == 7 and y == 7:
+        castlingLogic.hasWhiteMoved_H_Rook = True
 
 w_rook_image = pygame.image.load(".\images\white_rook.png")
 w_rook_image = pygame.transform.scale(w_rook_image, (w_per_sq,w_per_sq))
@@ -215,7 +225,7 @@ castlingLogic = CastlingLogic()
 
 run = True
 isWhitesMove = True
-isPieceClicked = False # Specifically Clicked
+isPieceClicked = False # Specifically Clicked, and not held and dragged
 
 legalMovesList = []
 
@@ -229,7 +239,6 @@ while run:
             if event.button == 1:
                 mouse_x, mouse_y = event.pos
                 if isPieceClicked:
-                    # TODO: process next move if clicked
                     idx = getIndexFromPos(mouse_x, mouse_y)
                     pos = getPosFromIndex(idx[0], idx[1])
                     sameSquare = checkDifferentSquare(original_idx_x, original_idx_y, idx[0], idx[1])
@@ -243,11 +252,13 @@ while run:
                             validMove = False
                         if validMove:
 
-                            # TODO: Tidy up following repeated 5 lines
+                            # TODO: Tidy up following repeated 7 lines
                             if dragged_piece.pType == ChessPieceTypes.PAWN and opponentLastMovePawn2Spaces == True:
                                 checkTakeWithEnPassant(idx[0], idx[1], isWhitesMove, opponentLastMovePawnLocation)
-                            if dragged_piece.pType == ChessPieceTypes.KING:
+                            elif dragged_piece.pType == ChessPieceTypes.KING:
                                 checkCastled(idx, (original_idx_x, original_idx_y), isWhitesMove)
+                            elif dragged_piece.pType == ChessPieceTypes.ROOK:
+                                movedRook(original_idx_x, original_idx_y)
                             checkTakeOpponentPiece(idx[0], idx[1], dragged_piece, isWhitesMove)
 
                             # TODO: Tidy up following repeated 6 lines
@@ -304,11 +315,13 @@ while run:
                             idx = (original_idx_x, original_idx_y)
                             validMove = False
                         if validMove:
-                            # TODO: Tidy up following repeated 5 lines
+                            # TODO: Tidy up following repeated 7 lines
                             if dragged_piece.pType == ChessPieceTypes.PAWN and opponentLastMovePawn2Spaces == True:
                                 checkTakeWithEnPassant(idx[0], idx[1], isWhitesMove, opponentLastMovePawnLocation)
-                            if dragged_piece.pType == ChessPieceTypes.KING:
+                            elif dragged_piece.pType == ChessPieceTypes.KING:
                                 checkCastled(idx, (original_idx_x, original_idx_y), isWhitesMove)
+                            elif dragged_piece.pType == ChessPieceTypes.ROOK:
+                                movedRook(original_idx_x, original_idx_y)
                             checkTakeOpponentPiece(idx[0], idx[1], dragged_piece, isWhitesMove)
 
                             # TODO: Tidy up following repeated 6 lines
