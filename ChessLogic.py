@@ -139,7 +139,7 @@ def checkCastlingPossible(yourPcs, oppoPcs, isWhite, moved_A_Rook, moved_H_Rook,
             if (pieceNotThere((1,7), yourPcs) and pieceNotThere((1,7), oppoPcs)
                 and pieceNotThere((2,7), yourPcs) and pieceNotThere((2,7), oppoPcs)
                 and pieceNotThere((3,7), yourPcs) and pieceNotThere((3,7), oppoPcs)
-                and itemNotInList((1,7), allOppMoves) and itemNotInList((1,7), allOppMoves) and itemNotInList((1,7), allOppMoves)):
+                and itemNotInList((1,7), allOppMoves) and itemNotInList((2,7), allOppMoves) and itemNotInList((3,7), allOppMoves)):
                     castlingMoves.append((2,7))
         else:
             if (pieceNotThere((1,0), yourPcs) and pieceNotThere((1,0), oppoPcs)
