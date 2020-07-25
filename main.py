@@ -15,6 +15,7 @@ from ChessLogic import CastlingLogic
 # TODO: allow castrol
 # TODO: fix clicking to move piece - needs minor adjustment
 # TODO: add opacity to legal move rectangles
+# TODO: promoting option, not only queen
 
 pygame.init()
 win = pygame.display.set_mode((700, 700))
@@ -132,8 +133,17 @@ def checkDifferentSquare(xFrom, yFrom, xTo, yTo):
         return True
     return False
 
-def checkCastled(idx, o_idx, isWhitesMove):
-    print("check castled")
+def checkCastled(idx, o_idx, whiteTurn):
+    yourPieces = whiteChessPieces if whiteTurn else blackChessPieces
+    if abs(idx[0]-o_idx[0]) == 2:
+        if idx[0] == 2 and idx[1] == 0:
+            print("black castle A rook")
+        elif idx[0] == 2 and idx[1] == 7:
+            print("white castle A rook")
+        elif idx[0] == 6 and idx[1] == 0:
+            print("black castle H rook")
+        elif idx[0] == 6 and idx[1] == 7:
+            print("white castle H rook")
     return 0
 
 
@@ -216,7 +226,7 @@ while run:
                             idx = (original_idx_x, original_idx_y)
                             validMove = False
                         if validMove:
-                            
+
                             # TODO: Tidy up following repeated 5 lines
                             if dragged_piece.pType == ChessPieceTypes.PAWN and opponentLastMovePawn2Spaces == True:
                                 checkTakeWithEnPassant(idx[0], idx[1], isWhitesMove, opponentLastMovePawnLocation)
